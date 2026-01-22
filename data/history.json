@@ -389,5 +389,85 @@
         "matches": []
       }
     ]
+  },
+  {
+    "runAt": "2026-01-22T22:48:28.870Z",
+    "durationMs": 17250,
+    "scanned": 0,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [
+      {
+        "marketplace": "reverb",
+        "productId": "roland-system-8",
+        "message": "Missing REVERB_TOKEN"
+      },
+      {
+        "marketplace": "ebay",
+        "productId": "roland-system-8",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      },
+      {
+        "marketplace": "reverb",
+        "productId": "roland-s-1",
+        "message": "Missing REVERB_TOKEN"
+      },
+      {
+        "marketplace": "ebay",
+        "productId": "roland-s-1",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      }
+    ],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 900,
+        "scanned": 0,
+        "matches": []
+      },
+      {
+        "productId": "roland-s-1",
+        "productName": "Roland S-1",
+        "thresholdUsd": 180,
+        "scanned": 0,
+        "matches": []
+      }
+    ]
+  },
+  {
+    "runAt": "2026-01-22T22:50:54.870Z",
+    "durationMs": 22978,
+    "scanned": 50,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [
+      {
+        "marketplace": "ebay",
+        "productId": "roland-system-8",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      },
+      {
+        "marketplace": "ebay",
+        "productId": "roland-s-1",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      }
+    ],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 900,
+        "scanned": 25,
+        "matches": []
+      },
+      {
+        "productId": "roland-s-1",
+        "productName": "Roland S-1",
+        "thresholdUsd": 180,
+        "scanned": 25,
+        "matches": []
+      }
+    ]
   }
 ]
