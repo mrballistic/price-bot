@@ -1,4 +1,3 @@
-
 import fs from 'fs';
 import path from 'path';
 
@@ -40,20 +39,36 @@ export default function Page() {
         <thead>
           <tr>
             <th style={{ textAlign: 'left', borderBottom: '1px solid #ddd', padding: 8 }}>runAt</th>
-            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>scanned</th>
-            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>matches</th>
-            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>alerts</th>
-            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>errors</th>
+            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>
+              scanned
+            </th>
+            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>
+              matches
+            </th>
+            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>
+              alerts
+            </th>
+            <th style={{ textAlign: 'right', borderBottom: '1px solid #ddd', padding: 8 }}>
+              errors
+            </th>
           </tr>
         </thead>
         <tbody>
           {recent.map((r, idx) => (
             <tr key={idx}>
               <td style={{ padding: 8, borderBottom: '1px solid #f0f0f0' }}>{r.runAt}</td>
-              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>{r.scanned}</td>
-              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>{r.matches}</td>
-              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>{r.alerts}</td>
-              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>{(r.errors || []).length}</td>
+              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>
+                {r.scanned}
+              </td>
+              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>
+                {r.matches}
+              </td>
+              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>
+                {r.alerts}
+              </td>
+              <td style={{ padding: 8, textAlign: 'right', borderBottom: '1px solid #f0f0f0' }}>
+                {(r.errors || []).length}
+              </td>
             </tr>
           ))}
         </tbody>

@@ -1,4 +1,3 @@
-
 import fs from 'fs';
 import path from 'path';
 import { MarketplaceId, SeenEntry, StateFile } from '../types';
@@ -29,12 +28,21 @@ export function appendHistory(record: unknown): void {
   fs.writeFileSync(HISTORY_PATH, JSON.stringify(arr, null, 2) + '\n', 'utf-8');
 }
 
-export function ensureStateBuckets(state: StateFile, market: MarketplaceId, productId: string): void {
+export function ensureStateBuckets(
+  state: StateFile,
+  market: MarketplaceId,
+  productId: string,
+): void {
   state.seen[market] = state.seen[market] || ({} as any);
   state.seen[market][productId] = state.seen[market][productId] || {};
 }
 
-export function isSeen(state: StateFile, market: MarketplaceId, productId: string, listingId: string): boolean {
+export function isSeen(
+  state: StateFile,
+  market: MarketplaceId,
+  productId: string,
+  listingId: string,
+): boolean {
   return Boolean(state.seen?.[market]?.[productId]?.[listingId]);
 }
 

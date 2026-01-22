@@ -1,4 +1,3 @@
-
 import { MarketplaceAdapter } from './types';
 import { createEbayAdapter } from './ebay';
 import { createReverbAdapter } from './reverb';

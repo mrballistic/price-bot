@@ -1,4 +1,3 @@
-
 # Discord embed layout
 
 The bot uses a scannable embed format that’s quick to evaluate:
@@ -19,4 +18,5 @@ The bot uses a scannable embed format that’s quick to evaluate:
   - **Image** (if provided)
 
 ## Why embeds are chunked
+
 Discord webhook messages are limited in embeds per message (commonly 10). The bot chunks alerts accordingly.

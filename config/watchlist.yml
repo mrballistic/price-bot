@@ -1,64 +1,115 @@
-
 products:
   - id: roland-system-8
-    name: "Roland System-8"
+    name: 'Roland System-8'
     maxPriceUsd: 900
-    marketplaces: ["reverb", "ebay"]
+    marketplaces: ['reverb', 'ebay']
     includeTerms:
-      - "roland system-8"
-      - "roland system 8"
-      - "system-8"
-      - "system 8"
+      - 'roland system-8'
+      - 'roland system 8'
+      - 'system-8'
+      - 'system 8'
     excludeTerms:
-      - "case"
-      - "deck saver"
-      - "decksaver"
-      - "overlay"
-      - "template"
-      - "manual"
-      - "knob"
-      - "stand"
-      - "power supply"
-      - "adapter"
-      - "parts"
-      - "repair"
-      - "broken"
-      - "for parts"
-      - "patch"
-      - "patches"
-      - "plug-out"
-      - "plugout"
+      - 'case'
+      - 'deck saver'
+      - 'decksaver'
+      - 'overlay'
+      - 'template'
+      - 'manual'
+      - 'knob'
+      - 'stand'
+      - 'power supply'
+      - 'adapter'
+      - 'parts'
+      - 'repair'
+      - 'broken'
+      - 'for parts'
+      - 'patch'
+      - 'patches'
+      - 'plug-out'
+      - 'plugout'
+      # Accessories
+      - 'dust cover'
+      - 'cover'
+      - 'wooden'
+      - 'wood'
+      - 'cabinet'
+      - 'stand'
+      - 'bag'
+      - 'gig bag'
+      - 'carry'
+      - 'flight'
+      - 'rack'
+      - 'mount'
+      - 'skin'
+      - 'sticker'
+      - 'panel'
+      - 'faceplate'
+      # Parts/Repairs
+      - 'replacement'
+      - 'spare'
+      - 'button'
+      - 'slider'
+      - 'fader'
+      - 'encoder'
+      - 'pcb'
+      - 'board'
+      - 'screen'
+      - 'display'
+      - 'not working'
+      - 'faulty'
+      - 'damaged'
+      - 'potentiometer'
+      - 'cheek'
+      - 'cheeks'
+      - 'oak'
+      - 'end panel'
+      - 'side panel'
 
   - id: roland-s-1
-    name: "Roland S-1"
+    name: 'Roland S-1'
     maxPriceUsd: 180
-    marketplaces: ["reverb", "ebay"]
+    marketplaces: ['reverb', 'ebay']
     includeTerms:
-      - "roland s-1"
-      - "roland s1"
-      - "aira s-1"
-      - "aira s1"
-      - "s-1 aira"
+      - 'roland s-1'
+      - 'roland s1'
+      - 'aira s-1'
+      - 'aira s1'
+      - 's-1 aira'
     excludeTerms:
-      - "case"
-      - "deck saver"
-      - "decksaver"
-      - "overlay"
-      - "template"
-      - "manual"
-      - "knob"
-      - "stand"
-      - "power supply"
-      - "adapter"
-      - "parts"
-      - "repair"
-      - "broken"
-      - "for parts"
-      - "bundle"
-      - "lot"
+      - 'case'
+      - 'deck saver'
+      - 'decksaver'
+      - 'overlay'
+      - 'template'
+      - 'manual'
+      - 'knob'
+      - 'stand'
+      - 'power supply'
+      - 'adapter'
+      - 'parts'
+      - 'repair'
+      - 'broken'
+      - 'for parts'
+      - 'bundle'
+      - 'lot'
+      # Accessories
+      - 'dust cover'
+      - 'cover'
+      - 'bag'
+      - 'gig bag'
+      - 'carry'
+      - 'skin'
+      - 'sticker'
+      # Parts/Repairs
+      - 'replacement'
+      - 'spare'
+      - 'button'
+      - 'not working'
+      - 'faulty'
+      - 'damaged'
 
 settings:
-  currency: "USD"
+  currency: 'USD'
   includeShippingInThreshold: true
   maxResultsPerMarketplace: 25
   requestDelayMs: 800

@@ -1,4 +1,3 @@
-
 type Level = 'debug' | 'info' | 'warn' | 'error';
 
 const levelOrder: Record<Level, number> = {

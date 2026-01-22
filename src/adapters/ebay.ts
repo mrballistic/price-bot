@@ -1,4 +1,3 @@
-
 import { Listing } from '../types';
 import { logger } from '../core/logger';
 import { sleep } from '../core/sleep';
@@ -129,9 +128,10 @@ export function createEbayAdapter(): MarketplaceAdapter {
       const max = cfg.settings.maxResultsPerMarketplace;
       const delayMs = cfg.settings.requestDelayMs;
 
-      const queries = (product.includeTerms && product.includeTerms.length > 0
-        ? product.includeTerms
-        : [product.name]
+      const queries = (
+        product.includeTerms && product.includeTerms.length > 0
+          ? product.includeTerms
+          : [product.name]
       ).slice(0, 4);
 
       const all: Listing[] = [];
@@ -139,10 +139,11 @@ export function createEbayAdapter(): MarketplaceAdapter {
 
       for (const q of queries) {
         await sleep(delayMs);
-        const listings = await retry(
-          () => searchEbayOnce(q, max),
-          { retries: 3, baseDelayMs: 500, label: `ebay.search(${q})` },
-        );
+        const listings = await retry(() => searchEbayOnce(q, max), {
+          retries: 3,
+          baseDelayMs: 500,
+          label: `ebay.search(${q})`,
+        });
 
         for (const l of listings) {
           if (seen.has(l.sourceId)) continue;

@@ -1,4 +1,3 @@
-
 import { Match, WatchlistConfig } from '../types';
 import { logger } from '../core/logger';
 
@@ -22,7 +21,11 @@ function fmtUsd(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
-export async function sendDiscordAlerts(matches: Match[], cfg: WatchlistConfig, runAtIso: string): Promise<number> {
+export async function sendDiscordAlerts(
+  matches: Match[],
+  cfg: WatchlistConfig,
+  runAtIso: string,
+): Promise<number> {
   const webhook = process.env.DISCORD_WEBHOOK_URL;
   if (!webhook) throw new Error('Missing DISCORD_WEBHOOK_URL');
 
@@ -45,7 +48,11 @@ export async function sendDiscordAlerts(matches: Match[], cfg: WatchlistConfig, 
     const embeds: DiscordEmbed[] = chunk.map((m) => {
       const l = m.listing;
       const shippingText =
-        l.shipping?.known === false ? 'Unknown' : l.shipping ? fmtUsd(l.shipping.amount) : 'Unknown';
+        l.shipping?.known === false
+          ? 'Unknown'
+          : l.shipping
+            ? fmtUsd(l.shipping.amount)
+            : 'Unknown';
 
       const fields = [
         { name: 'Price', value: fmtUsd(l.price.amount), inline: true },

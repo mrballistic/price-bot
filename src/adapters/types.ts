@@ -1,4 +1,3 @@
-
 import { Listing, MarketplaceId, ProductConfig, WatchlistConfig } from '../types';
 
 export type SearchParams = {

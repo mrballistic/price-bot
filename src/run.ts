@@ -1,9 +1,16 @@
-
 import { loadConfig } from './config';
 import { getAdapters } from './adapters';
 import { logger } from './core/logger';
 import { filterMatches } from './core/match';
-import { appendHistory, markSeen, nowIso, readState, writeState, isSeen, ensureStateBuckets } from './core/state';
+import {
+  appendHistory,
+  markSeen,
+  nowIso,
+  readState,
+  writeState,
+  isSeen,
+  ensureStateBuckets,
+} from './core/state';
 import { sendDiscordAlerts } from './notify/discord';
 import { MarketplaceId, Match, RunRecord, SeenEntry } from './types';
 
@@ -48,7 +55,11 @@ async function main(): Promise<void> {
     for (const market of product.marketplaces) {
       const adapter = adapters[market];
       if (!adapter) {
-        errors.push({ marketplace: market as MarketplaceId, productId: product.id, message: `No adapter for ${market}` });
+        errors.push({
+          marketplace: market as MarketplaceId,
+          productId: product.id,
+          message: `No adapter for ${market}`,
+        });
         continue;
       }
 

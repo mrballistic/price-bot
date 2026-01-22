@@ -1,10 +1,9 @@
-
 name: Price Watcher
 
 on:
   schedule:
     # Avoid top-of-hour schedules. GitHub notes that scheduled workflows can be delayed during periods of high load.
-    - cron: "17,47 * * * *"
+    - cron: '17,47 * * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -24,8 +23,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '20'
+          cache: 'npm'
 
       - run: npm ci
       - run: npm run build

@@ -1,4 +1,3 @@
-
 import { Listing } from '../types';
 import { logger } from '../core/logger';
 import { sleep } from '../core/sleep';
@@ -25,13 +24,18 @@ function toListing(item: any): Listing | null {
   const id = item?.id;
   const title = item?.title;
   const url = pickWebUrl(item);
-  const price = parseMoney(item?.price) || parseMoney(item?.price_with_shipping) || parseMoney(item?.listing_price);
+  const price =
+    parseMoney(item?.price) ||
+    parseMoney(item?.price_with_shipping) ||
+    parseMoney(item?.listing_price);
 
   if (!id || !title || !url || !price) return null;
 
   // Reverb shipping can be nested; best-effort extraction.
   const ship = parseMoney(item?.shipping?.rate) || parseMoney(item?.shipping_price) || null;
-  const shipping = ship ? { ...ship, known: true } : { amount: 0, currency: price.currency, known: false };
+  const shipping = ship
+    ? { ...ship, known: true }
+    : { amount: 0, currency: price.currency, known: false };
 
   const img = item?.photos?.[0]?._links?.full?.href || item?.photos?.[0]?._links?.thumbnail?.href;
 
@@ -91,9 +95,10 @@ export function createReverbAdapter(): MarketplaceAdapter {
       const max = cfg.settings.maxResultsPerMarketplace;
       const delayMs = cfg.settings.requestDelayMs;
 
-      const queries = (product.includeTerms && product.includeTerms.length > 0
-        ? product.includeTerms
-        : [product.name]
+      const queries = (
+        product.includeTerms && product.includeTerms.length > 0
+          ? product.includeTerms
+          : [product.name]
       ).slice(0, 4);
 
       const all: Listing[] = [];
@@ -101,10 +106,11 @@ export function createReverbAdapter(): MarketplaceAdapter {
 
       for (const q of queries) {
         await sleep(delayMs);
-        const listings = await retry(
-          () => searchReverbOnce(q, max),
-          { retries: 3, baseDelayMs: 500, label: `reverb.search(${q})` },
-        );
+        const listings = await retry(() => searchReverbOnce(q, max), {
+          retries: 3,
+          baseDelayMs: 500,
+          label: `reverb.search(${q})`,
+        });
 
         for (const l of listings) {
           if (seen.has(l.sourceId)) continue;

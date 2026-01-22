@@ -1,4 +1,3 @@
-
 export type MarketplaceId = 'ebay' | 'reverb';
 
 export type Money = {

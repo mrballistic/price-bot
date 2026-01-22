@@ -1,4 +1,3 @@
-
 import { Listing, Match, ProductConfig, WatchlistConfig } from '../types';
 
 const DEFAULT_EXCLUDES = [

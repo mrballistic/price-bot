@@ -1,4 +1,3 @@
-
 # Contributing
 
 - Keep marketplace logic in adapters (`src/adapters/*`)

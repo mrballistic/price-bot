@@ -1,4 +1,3 @@
-
 import { logger } from './logger';
 
 export async function retry<T>(
@@ -13,7 +12,9 @@ export async function retry<T>(
       lastErr = err;
       if (attempt >= opts.retries) break;
       const delay = opts.baseDelayMs * Math.pow(2, attempt);
-      logger.warn(`${opts.label} failed (attempt ${attempt + 1}/${opts.retries + 1}); retrying in ${delay}ms`);
+      logger.warn(
+        `${opts.label} failed (attempt ${attempt + 1}/${opts.retries + 1}); retrying in ${delay}ms`,
+      );
       await new Promise((r) => setTimeout(r, delay));
     }
   }
