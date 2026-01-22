@@ -1,8 +1,18 @@
 {
   "version": 1,
-  "updatedAt": "2026-01-22T23:13:39.245Z",
+  "updatedAt": "2026-01-22T23:21:08.668Z",
   "seen": {
     "ebay": {},
-    "reverb": {}
+    "reverb": {
+      "roland-system-8": {
+        "92090904": {
+          "firstSeenAt": "2026-01-22T23:21:08.668Z",
+          "lastSeenAt": "2026-01-22T23:21:08.668Z",
+          "lastEffectivePrice": 899.99,
+          "url": "https://reverb.com/item/92090904-tannoy-system-8-studio-monitors-pair",
+          "title": "Tannoy System 8 Studio Monitors (Pair)"
+        }
+      }
+    }
   }
 }

@@ -652,5 +652,144 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-01-22T23:21:08.668Z",
+    "durationMs": 19267,
+    "scanned": 50,
+    "matches": 1,
+    "alerts": 1,
+    "errors": [
+      {
+        "marketplace": "ebay",
+        "productId": "roland-system-8",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      },
+      {
+        "marketplace": "ebay",
+        "productId": "roland-s-1",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      }
+    ],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 25,
+        "matches": [
+          {
+            "productId": "roland-system-8",
+            "productName": "Roland System-8",
+            "maxPriceUsd": 1400,
+            "listing": {
+              "source": "reverb",
+              "sourceId": "92090904",
+              "title": "Tannoy System 8 Studio Monitors (Pair)",
+              "url": "https://reverb.com/item/92090904-tannoy-system-8-studio-monitors-pair",
+              "price": {
+                "amount": 899.99,
+                "currency": "USD"
+              },
+              "shipping": {
+                "amount": 0,
+                "currency": "USD",
+                "known": false
+              },
+              "imageUrl": "https://rvb-img.reverb.com/i/s--Nw10nqKc--/quality=medium-low,height=800,width=800,fit=contain/cpxakdzkzaiqk6rfwig6.jpg",
+              "condition": "[object Object]",
+              "listedAt": "2025-09-05T12:34:28-05:00"
+            },
+            "effectivePriceUsd": 899.99,
+            "shippingNote": "Shipping unknown (verify on listing)"
+          }
+        ],
+        "marketStats": {
+          "count": 25,
+          "minPrice": 11.04,
+          "maxPrice": 5500,
+          "avgPrice": 972.65,
+          "medianPrice": 399,
+          "samples": [
+            {
+              "title": "Roland VG-8 Guitar System Brochure  1995",
+              "price": 11.04,
+              "url": "https://reverb.com/item/92250815-roland-vg-8-guitar-system-brochure-1995",
+              "source": "reverb"
+            },
+            {
+              "title": "Tannoy PBM 6.5 Studio Nearfield Monitors (Pair)",
+              "price": 129,
+              "url": "https://reverb.com/item/93734999-tannoy-pbm-6-5-studio-nearfield-monitors-pair",
+              "source": "reverb"
+            },
+            {
+              "title": "Valvotronics System8 System 8 EQ3a Modular Equalizer Module",
+              "price": 399,
+              "url": "https://reverb.com/item/78831455-valvotronics-system8-system-8-eq3a-modular-equalizer-module",
+              "source": "reverb"
+            },
+            {
+              "title": "JBL Professional EON208P Portable All-in-One 2-way PA System with 8-Channel Mixer and Bluetooth",
+              "price": 1139,
+              "url": "https://reverb.com/item/65403712-jbl-professional-eon208p-portable-all-in-one-2-way-pa-system-with-8-channel-mixer-and-bluetooth",
+              "source": "reverb"
+            },
+            {
+              "title": "E-mu SP-1200 Late-80's - Original",
+              "price": 5500,
+              "url": "https://reverb.com/item/92706033-e-mu-sp-1200-late-80-s-original",
+              "source": "reverb"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-s-1",
+        "productName": "Roland S-1",
+        "thresholdUsd": 220,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 25,
+          "minPrice": 12.95,
+          "maxPrice": 5999,
+          "avgPrice": 599.94,
+          "medianPrice": 150,
+          "samples": [
+            {
+              "title": "ORIGINAL Roland Alpha Dial Encoder Knob (22485102) for Juno-1, Juno-2, HS-10, HS-80, JX-10, S-50",
+              "price": 12.95,
+              "url": "https://reverb.com/item/89801757-original-roland-alpha-dial-encoder-knob-22485102-for-juno-1-juno-2-hs-10-hs-80-jx-10-s-50",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland Black Series 20ft A/S 1/4” Instrument Cable",
+              "price": 44.99,
+              "url": "https://reverb.com/item/3442738-roland-black-series-20ft-a-s-1-4-instrument-cable",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland Orchestral Family Vol 1& 2 Rhythm Section CD ROM Disks S-750 S-770 #54938",
+              "price": 150,
+              "url": "https://reverb.com/item/84772201-roland-orchestral-family-vol-1-2-rhythm-section-cd-rom-disks-s-750-s-770-54938",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland S-1608 16 x 8 Stage Unit CG01VM4",
+              "price": 269.99,
+              "url": "https://reverb.com/item/93940711-roland-s-1608-16-x-8-stage-unit-cg01vm4",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland TD-50KVX V-Drum Kit w/ 22\" Bass Drum & TD-50X module upgrade. Buy from CA's #1 Dealer !!",
+              "price": 5999,
+              "url": "https://reverb.com/item/91946423-roland-td-50kvx-v-drum-kit-w-22-bass-drum-td-50x-module-upgrade-buy-from-ca-s-1-dealer",
+              "source": "reverb"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
