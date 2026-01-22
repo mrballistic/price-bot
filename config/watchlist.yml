@@ -11,6 +11,10 @@ products:
       - 'system-8 synth'
       - 'system 8 synthesizer'
       - 'system 8 synth'
+      - 'system-8 49-key'
+      - 'system 8 49-key'
+      - 'system-8 plug-out'
+      - 'system 8 plug-out'
     excludeTerms:
       # Other "System 8" products
       - 'valvotronics'
@@ -44,8 +48,6 @@ products:
       - 'for parts'
       - 'patch'
       - 'patches'
-      - 'plug-out'
-      - 'plugout'
       # Accessories
       - 'dust cover'
       - 'cover'
@@ -102,6 +104,11 @@ products:
       - 'aira s-1'
       - 'aira s1'
       - 's-1 aira'
+      - 's-1 tweak'
+      - 's1 tweak'
+      - 's-1 compact'
+      - 'aira compact s-1'
+      - 'tweak synthesizer'
     excludeTerms:
       - 'case'
       - 'deck saver'

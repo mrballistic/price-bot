@@ -88,6 +88,40 @@ async function searchReverbOnce(q: string, limit: number): Promise<Listing[]> {
   return listings;
 }
 
+async function searchReverbByProductSlug(slug: string, limit: number): Promise<Listing[]> {
+  const token = process.env.REVERB_TOKEN;
+  if (!token) throw new Error('Missing REVERB_TOKEN');
+
+  // Reverb CSP (Canonical Standard Product) endpoint
+  const url = new URL(`https://api.reverb.com/api/csps/${encodeURIComponent(slug)}/listings`);
+  url.searchParams.set('per_page', String(Math.min(limit, 50)));
+  // Filter to US sellers only
+  url.searchParams.set('ships_to', 'US');
+  url.searchParams.set('item_region', 'US');
+
+  const resp = await fetch(url.toString(), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Accept-Version': '3.0',
+    },
+  });
+
+  if (!resp.ok) {
+    const txt = await resp.text();
+    throw new Error(`Reverb CSP search error: ${resp.status} ${txt}`);
+  }
+
+  const json = (await resp.json()) as any;
+  const items = Array.isArray(json?.listings) ? json.listings : Array.isArray(json) ? json : [];
+  const listings: Listing[] = [];
+  for (const it of items) {
+    const l = toListing(it);
+    if (l) listings.push(l);
+  }
+  return listings;
+}
+
 export function createReverbAdapter(): MarketplaceAdapter {
   return {
     id: 'reverb',
@@ -95,14 +129,37 @@ export function createReverbAdapter(): MarketplaceAdapter {
       const max = cfg.settings.maxResultsPerMarketplace;
       const delayMs = cfg.settings.requestDelayMs;
 
+      const all: Listing[] = [];
+      const seen = new Set<string>();
+
+      // First, search by product slugs if provided (most accurate)
+      const slugs = product.reverbProductSlugs ?? [];
+      for (const slug of slugs.slice(0, 2)) {
+        await sleep(delayMs);
+        try {
+          const listings = await retry(() => searchReverbByProductSlug(slug, max), {
+            retries: 3,
+            baseDelayMs: 500,
+            label: `reverb.csp(${slug})`,
+          });
+
+          for (const l of listings) {
+            if (seen.has(l.sourceId)) continue;
+            seen.add(l.sourceId);
+            all.push(l);
+          }
+        } catch (err) {
+          // CSP endpoint might 404 if slug is invalid; fall through to keyword search
+          logger.debug(`Reverb CSP search failed for ${slug}: ${err}`);
+        }
+      }
+
+      // Then do keyword searches
       const queries = (
         product.includeTerms && product.includeTerms.length > 0
           ? product.includeTerms
           : [product.name]
       ).slice(0, 4);
-
-      const all: Listing[] = [];
-      const seen = new Set<string>();
 
       for (const q of queries) {
         await sleep(delayMs);

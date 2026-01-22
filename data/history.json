@@ -1,8 +1,8 @@
 [
   {
-    "runAt": "2026-01-22T23:33:50.148Z",
-    "durationMs": 16675,
-    "scanned": 33,
+    "runAt": "2026-01-22T23:50:45.765Z",
+    "durationMs": 19860,
+    "scanned": 50,
     "matches": 0,
     "alerts": 0,
     "errors": [
@@ -12,9 +12,19 @@
         "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
       },
       {
+        "marketplace": "amazon",
+        "productId": "roland-system-8",
+        "message": "Missing AMAZON_PARTNER_TAG"
+      },
+      {
         "marketplace": "ebay",
         "productId": "roland-s-1",
         "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      },
+      {
+        "marketplace": "amazon",
+        "productId": "roland-s-1",
+        "message": "Missing AMAZON_PARTNER_TAG"
       }
     ],
     "byProduct": [
@@ -22,15 +32,28 @@
         "productId": "roland-system-8",
         "productName": "Roland System-8",
         "thresholdUsd": 1400,
-        "scanned": 8,
+        "scanned": 25,
         "matches": [],
         "marketStats": {
-          "count": 0,
-          "minPrice": null,
-          "maxPrice": null,
-          "avgPrice": null,
-          "medianPrice": null,
-          "samples": []
+          "count": 2,
+          "minPrice": 1850,
+          "maxPrice": 1900,
+          "avgPrice": 1875,
+          "medianPrice": 1875,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1850,
+              "url": "https://reverb.com/item/93245757-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1900,
+              "url": "https://reverb.com/item/92933667-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb"
+            }
+          ]
         }
       },
       {
@@ -40,11 +63,11 @@
         "scanned": 25,
         "matches": [],
         "marketStats": {
-          "count": 2,
+          "count": 3,
           "minPrice": 242.99,
           "maxPrice": 269.99,
-          "avgPrice": 256.49,
-          "medianPrice": 256.49,
+          "avgPrice": 260.99,
+          "medianPrice": 269.99,
           "samples": [
             {
               "title": "ROLAND S-1 TWEAK SYNTHESIZER : B-STOCK : [DETROIT MODULAR]",
@@ -56,6 +79,12 @@
               "title": "Roland S-1 Compact Polyphonic Tweak Synthesizer Module",
               "price": 269.99,
               "url": "https://reverb.com/item/68984057-roland-s-1-compact-polyphonic-tweak-synthesizer-module",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland Aira Compact S-1 Tweak Synthesizer",
+              "price": 269.99,
+              "url": "https://reverb.com/item/71045680-roland-aira-compact-s-1-tweak-synthesizer",
               "source": "reverb"
             }
           ]

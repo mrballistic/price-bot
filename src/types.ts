@@ -27,6 +27,7 @@ export type ProductConfig = {
   marketplaces: MarketplaceId[];
   includeTerms?: string[];
   excludeTerms?: string[];
+  reverbProductSlugs?: string[]; // Reverb CSP slugs for direct product queries
 };
 
 export type WatchlistConfig = {
