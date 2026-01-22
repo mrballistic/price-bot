@@ -81,6 +81,11 @@ export function filterMatches(
     if (norm(l.price.currency) !== 'usd') continue;
 
     const { effective, shippingNote } = computeEffectivePriceUsd(l, cfg);
+
+    // Check min price (skip accessories priced too low)
+    if (product.minPriceUsd !== undefined && effective < product.minPriceUsd) continue;
+
+    // Check max price
     if (effective <= product.maxPriceUsd) {
       out.push({
         productId: product.id,

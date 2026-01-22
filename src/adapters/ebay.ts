@@ -96,7 +96,8 @@ async function searchEbayOnce(q: string, limit: number): Promise<Listing[]> {
   const url = new URL(`${getEbayBaseUrl()}/buy/browse/v1/item_summary/search`);
   url.searchParams.set('q', q);
   url.searchParams.set('limit', String(limit));
-  // You can optionally add browse API filters later; we keep it minimal for robustness.
+  // Filter to US sellers only (avoid tariff issues)
+  url.searchParams.set('filter', 'itemLocationCountry:US');
 
   const resp = await fetch(url.toString(), {
     headers: {

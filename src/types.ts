@@ -22,6 +22,7 @@ export type Listing = {
 export type ProductConfig = {
   id: string;
   name: string;
+  minPriceUsd?: number;
   maxPriceUsd: number;
   marketplaces: MarketplaceId[];
   includeTerms?: string[];
@@ -63,6 +64,21 @@ export type Match = {
   shippingNote?: string;
 };
 
+export type MarketStats = {
+  count: number;
+  minPrice: number | null;
+  maxPrice: number | null;
+  avgPrice: number | null;
+  medianPrice: number | null;
+  // Sample listings at different price points (low, mid, high)
+  samples: Array<{
+    title: string;
+    price: number;
+    url: string;
+    source: MarketplaceId;
+  }>;
+};
+
 export type RunRecord = {
   runAt: string;
   durationMs: number;
@@ -76,5 +92,6 @@ export type RunRecord = {
     thresholdUsd: number;
     scanned: number;
     matches: Match[];
+    marketStats?: MarketStats;
   }>;
 };

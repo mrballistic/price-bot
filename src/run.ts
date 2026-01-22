@@ -1,7 +1,7 @@
 import { loadConfig } from './config';
 import { getAdapters } from './adapters';
 import { logger } from './core/logger';
-import { filterMatches } from './core/match';
+import { filterMatches, computeEffectivePriceUsd } from './core/match';
 import {
   appendHistory,
   markSeen,
@@ -12,7 +12,7 @@ import {
   ensureStateBuckets,
 } from './core/state';
 import { sendDiscordAlerts } from './notify/discord';
-import { MarketplaceId, Match, RunRecord, SeenEntry } from './types';
+import { Listing, MarketplaceId, MarketStats, Match, RunRecord, SeenEntry } from './types';
 
 function groupMatchesByProduct(matches: Match[]): Record<string, Match[]> {
   const m: Record<string, Match[]> = {};
@@ -29,6 +29,63 @@ function groupMatchesByProduct(matches: Match[]): Record<string, Match[]> {
 function stringifyError(err: unknown): string {
   if (err instanceof Error) return err.message;
   return String(err);
+}
+
+function calculateMarketStats(listings: Listing[], cfg: { settings: { includeShippingInThreshold: boolean } }): MarketStats {
+  if (listings.length === 0) {
+    return { count: 0, minPrice: null, maxPrice: null, avgPrice: null, medianPrice: null, samples: [] };
+  }
+
+  // Calculate effective prices for all USD listings
+  const priced = listings
+    .filter((l) => l.price.currency.toUpperCase() === 'USD')
+    .map((l) => {
+      const { effective } = computeEffectivePriceUsd(l, cfg as any);
+      return { listing: l, price: effective };
+    })
+    .sort((a, b) => a.price - b.price);
+
+  if (priced.length === 0) {
+    return { count: 0, minPrice: null, maxPrice: null, avgPrice: null, medianPrice: null, samples: [] };
+  }
+
+  const prices = priced.map((p) => p.price);
+  const sum = prices.reduce((a, b) => a + b, 0);
+  const avg = sum / prices.length;
+  const mid = Math.floor(prices.length / 2);
+  const median = prices.length % 2 === 0 ? (prices[mid - 1] + prices[mid]) / 2 : prices[mid];
+
+  // Pick samples: lowest, median, highest (and maybe a couple in between)
+  const samples: MarketStats['samples'] = [];
+  const addSample = (idx: number) => {
+    if (idx >= 0 && idx < priced.length) {
+      const p = priced[idx];
+      // Avoid duplicates
+      if (!samples.some((s) => s.url === p.listing.url)) {
+        samples.push({
+          title: p.listing.title,
+          price: p.price,
+          url: p.listing.url,
+          source: p.listing.source,
+        });
+      }
+    }
+  };
+
+  addSample(0); // lowest
+  addSample(Math.floor(priced.length * 0.25)); // 25th percentile
+  addSample(Math.floor(priced.length * 0.5)); // median
+  addSample(Math.floor(priced.length * 0.75)); // 75th percentile
+  addSample(priced.length - 1); // highest
+
+  return {
+    count: priced.length,
+    minPrice: prices[0],
+    maxPrice: prices[prices.length - 1],
+    avgPrice: Math.round(avg * 100) / 100,
+    medianPrice: Math.round(median * 100) / 100,
+    samples,
+  };
 }
 
 async function main(): Promise<void> {
@@ -113,12 +170,16 @@ async function main(): Promise<void> {
       logger.info(`No new alerts for ${product.id} (matches=${matches.length}, fresh=0)`);
     }
 
+    // Calculate market stats from ALL listings (not just matches)
+    const marketStats = calculateMarketStats(rawListings, cfg);
+
     byProduct.push({
       productId: product.id,
       productName: product.name,
       thresholdUsd: product.maxPriceUsd,
       scanned: productScanned,
       matches: matches.slice(0, 50),
+      marketStats,
     });
   }
 

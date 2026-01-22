@@ -61,9 +61,9 @@ async function searchReverbOnce(q: string, limit: number): Promise<Listing[]> {
   const url = new URL('https://api.reverb.com/api/listings');
   url.searchParams.set('query', q);
   url.searchParams.set('per_page', String(Math.min(limit, 50)));
-  // Optional: used listings only. Some APIs use "condition" or "conditions".
-  // We'll keep minimal to maximize compatibility and filter locally.
-  // url.searchParams.set('condition', 'used');
+  // Filter to US sellers only (avoid tariff issues)
+  url.searchParams.set('ships_to', 'US');
+  url.searchParams.set('item_region', 'US');
 
   const resp = await fetch(url.toString(), {
     headers: {

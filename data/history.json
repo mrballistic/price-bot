@@ -539,5 +539,118 @@
         "matches": []
       }
     ]
+  },
+  {
+    "runAt": "2026-01-22T23:13:39.245Z",
+    "durationMs": 21069,
+    "scanned": 50,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [
+      {
+        "marketplace": "ebay",
+        "productId": "roland-system-8",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      },
+      {
+        "marketplace": "ebay",
+        "productId": "roland-s-1",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      }
+    ],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 900,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 25,
+          "minPrice": 8.5,
+          "maxPrice": 2018.48,
+          "avgPrice": 734.58,
+          "medianPrice": 94.65,
+          "samples": [
+            {
+              "title": "Roland Aira System-8 potentiometer pot pots with center detent System8",
+              "price": 8.5,
+              "url": "https://reverb.com/item/92396296-roland-aira-system-8-potentiometer-pot-pots-with-center-detent-system8",
+              "source": "reverb"
+            },
+            {
+              "title": "Rockville Double X Braced Keyboard Stand w Push Button Lock For Roland SYSTEM-8",
+              "price": 39.95,
+              "url": "https://reverb.com/item/25797244-rockville-double-x-braced-keyboard-stand-w-push-button-lock-for-roland-system-8",
+              "source": "reverb"
+            },
+            {
+              "title": "Genuine Roland System 8 - Wooden End cheeks",
+              "price": 94.65,
+              "url": "https://reverb.com/item/64506245-genuine-roland-system-8-wooden-end-cheeks",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1514.45,
+              "url": "https://reverb.com/item/92215967-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland System 8",
+              "price": 2018.48,
+              "url": "https://reverb.com/item/63736896-roland-system-8",
+              "source": "reverb"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-s-1",
+        "productName": "Roland S-1",
+        "thresholdUsd": 180,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 25,
+          "minPrice": 18.72,
+          "maxPrice": 269.99,
+          "avgPrice": 132.23,
+          "medianPrice": 69.36,
+          "samples": [
+            {
+              "title": "STAND for Roland AIRA Compact P-6 / T-8 / J-6 / S-1 - 15°",
+              "price": 18.72,
+              "url": "https://reverb.com/item/83349630-stand-for-roland-aira-compact-p-6-t-8-j-6-s-1-15",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland Black Series 10ft A/S 1/4” Instrument Cable",
+              "price": 31.99,
+              "url": "https://reverb.com/item/3442736-roland-black-series-10ft-a-s-1-4-instrument-cable",
+              "source": "reverb"
+            },
+            {
+              "title": "TRIPLE STAND for Roland AIRA Compact P-6 / T-8 / J-6 / S-1",
+              "price": 69.36,
+              "url": "https://reverb.com/item/83349634-triple-stand-for-roland-aira-compact-p-6-t-8-j-6-s-1",
+              "source": "reverb"
+            },
+            {
+              "title": "Expander Roland S 1 Sound Module",
+              "price": 226.31,
+              "url": "https://reverb.com/item/69613630-expander-roland-s-1-sound-module",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland S-1608 16 x 8 Stage Unit CG01VM4",
+              "price": 269.99,
+              "url": "https://reverb.com/item/93940711-roland-s-1608-16-x-8-stage-unit-cg01vm4",
+              "source": "reverb"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]

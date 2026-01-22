@@ -1,7 +1,8 @@
 products:
   - id: roland-system-8
     name: 'Roland System-8'
-    maxPriceUsd: 900
+    minPriceUsd: 800
+    maxPriceUsd: 1400
     marketplaces: ['reverb', 'ebay']
     includeTerms:
       - 'roland system-8'
@@ -67,7 +68,8 @@ products:
 
   - id: roland-s-1
     name: 'Roland S-1'
-    maxPriceUsd: 180
+    minPriceUsd: 100
+    maxPriceUsd: 220
     marketplaces: ['reverb', 'ebay']
     includeTerms:
       - 'roland s-1'

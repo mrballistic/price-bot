@@ -21,8 +21,10 @@ import {
   Tabs,
   Tab,
   Button,
-  Link,
-  Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Link as MuiLink,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -33,6 +35,8 @@ import {
   OpenInNew,
   AttachMoney,
   Storefront,
+  ExpandMore,
+  ShowChart,
 } from '@mui/icons-material';
 import { ActivityChart, AlertsBarChart } from './Charts';
 
@@ -57,12 +61,27 @@ interface Match {
   shippingNote?: string;
 }
 
+interface MarketStats {
+  count: number;
+  minPrice: number | null;
+  maxPrice: number | null;
+  avgPrice: number | null;
+  medianPrice: number | null;
+  samples: Array<{
+    title: string;
+    price: number;
+    url: string;
+    source: string;
+  }>;
+}
+
 interface ProductByRun {
   productId: string;
   productName: string;
   thresholdUsd: number;
   scanned: number;
   matches: Match[];
+  marketStats?: MarketStats;
 }
 
 interface RunRecord {
@@ -108,8 +127,8 @@ function StatCard({
   color: string;
 }) {
   return (
-    <Card>
-      <CardContent>
+    <Card sx={{ height: '100%' }}>
+      <CardContent sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box
             sx={{
@@ -118,15 +137,16 @@ function StatCard({
               bgcolor: color + '20',
               color: color,
               display: 'flex',
+              flexShrink: 0,
             }}
           >
             {icon}
           </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary">
+          <Box sx={{ minWidth: 0 }}>
+            <Typography variant="body2" color="text.secondary" noWrap>
               {title}
             </Typography>
-            <Typography variant="h5" fontWeight={700}>
+            <Typography variant="h6" fontWeight={700} noWrap>
               {value}
             </Typography>
           </Box>
@@ -136,7 +156,7 @@ function StatCard({
   );
 }
 
-function ProductCard({ product }: { product: ProductConfig }) {
+function ProductCard({ product, marketStats }: { product: ProductConfig; marketStats?: MarketStats }) {
   return (
     <Card>
       <CardContent>
@@ -144,12 +164,43 @@ function ProductCard({ product }: { product: ProductConfig }) {
           <Storefront color="primary" />
           <Typography variant="h6">{product.name}</Typography>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
           <AttachMoney sx={{ fontSize: 18, color: 'success.main' }} />
           <Typography variant="body2" color="text.secondary">
-            Max: <strong>${product.maxPriceUsd}</strong>
+            Alert threshold: <strong>${product.maxPriceUsd}</strong>
           </Typography>
         </Box>
+
+        {/* Market Stats */}
+        {marketStats && marketStats.count > 0 && (
+          <Box sx={{ bgcolor: 'action.hover', borderRadius: 1, p: 1.5, mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
+              <ShowChart sx={{ fontSize: 16 }} />
+              <Typography variant="caption" fontWeight={600}>
+                Market Pricing ({marketStats.count} listings)
+              </Typography>
+            </Box>
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <Typography variant="caption" color="text.secondary">Min</Typography>
+                <Typography variant="body2" fontWeight={600}>${marketStats.minPrice}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="caption" color="text.secondary">Max</Typography>
+                <Typography variant="body2" fontWeight={600}>${marketStats.maxPrice}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="caption" color="text.secondary">Avg</Typography>
+                <Typography variant="body2" fontWeight={600}>${marketStats.avgPrice}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="caption" color="text.secondary">Median</Typography>
+                <Typography variant="body2" fontWeight={600}>${marketStats.medianPrice}</Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+
         <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', mb: 1 }}>
           {product.marketplaces.map((m) => (
             <Chip key={m} label={m} size="small" variant="outlined" />
@@ -227,11 +278,60 @@ function HitCard({ match }: { match: Match }) {
   );
 }
 
-function formatTime(iso: string) {
-  return new Date(iso).toLocaleString('en-US', {
+function MarketSamplesList({ samples }: { samples: MarketStats['samples'] }) {
+  if (!samples || samples.length === 0) return null;
+  return (
+    <Box sx={{ mt: 2 }}>
+      <Typography variant="subtitle2" gutterBottom>
+        Sample Listings (by price)
+      </Typography>
+      <TableContainer component={Paper} variant="outlined">
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell>Source</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {samples.map((s, i) => (
+              <TableRow key={i} hover>
+                <TableCell>
+                  <MuiLink href={s.url} target="_blank" rel="noopener noreferrer" underline="hover">
+                    {s.title.length > 60 ? s.title.slice(0, 60) + '...' : s.title}
+                  </MuiLink>
+                </TableCell>
+                <TableCell align="right">${s.price.toFixed(2)}</TableCell>
+                <TableCell>
+                  <Chip label={s.source} size="small" variant="outlined" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+}
+
+function formatTime(iso: string, short = false) {
+  const d = new Date(iso);
+  if (short) {
+    // Compact format for stat cards: "Jan 22, 3:07p"
+    const month = d.toLocaleString('en-US', { month: 'short' });
+    const day = d.getDate();
+    const hour = d.getHours();
+    const minute = d.getMinutes().toString().padStart(2, '0');
+    const h12 = hour % 12 || 12;
+    const ampm = hour < 12 ? 'a' : 'p';
+    return `${month} ${day}, ${h12}:${minute}${ampm}`;
+  }
+  // Full format: "Jan 22, 3:07 PM"
+  return d.toLocaleString('en-US', {
     month: 'short',
     day: 'numeric',
-    hour: '2-digit',
+    hour: 'numeric',
     minute: '2-digit',
   });
 }
@@ -243,6 +343,8 @@ function formatDuration(ms: number) {
 
 export default function Dashboard({ history, state, config }: DashboardProps) {
   const [selectedProduct, setSelectedProduct] = useState<string>('all');
+  const [hitsExpanded, setHitsExpanded] = useState(true);
+  const [marketExpanded, setMarketExpanded] = useState(true);
 
   const last = history.length > 0 ? history[history.length - 1] : null;
   const recent = history.slice(-20).reverse();
@@ -255,6 +357,19 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
           history.flatMap((r) => r.byProduct).map((p) => [p.productId, { id: p.productId, name: p.productName, maxPriceUsd: p.thresholdUsd, marketplaces: [] }])
         ).values()
       );
+
+  // Get latest market stats per product from most recent run
+  const latestMarketStats = useMemo(() => {
+    const stats: Record<string, MarketStats> = {};
+    if (last) {
+      for (const prod of last.byProduct) {
+        if (prod.marketStats) {
+          stats[prod.productId] = prod.marketStats;
+        }
+      }
+    }
+    return stats;
+  }, [last]);
 
   // Collect all matches from history, filtered by selected product
   const allMatches = useMemo(() => {
@@ -288,11 +403,40 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
         ...r,
         scanned: prod?.scanned || 0,
         matches: prod?.matches.length || 0,
-        alerts: prod?.matches.length || 0, // approximation
+        alerts: prod?.matches.length || 0,
         errors: r.errors?.filter((e) => e.productId === selectedProduct) || [],
       };
     });
   }, [recent, selectedProduct]);
+
+  // Get current market stats for selected product
+  const currentMarketStats = useMemo(() => {
+    if (selectedProduct === 'all') {
+      // Combine all stats
+      const allSamples: MarketStats['samples'] = [];
+      let totalCount = 0;
+      const allPrices: number[] = [];
+      for (const stats of Object.values(latestMarketStats)) {
+        if (stats.count > 0) {
+          totalCount += stats.count;
+          allSamples.push(...stats.samples);
+          if (stats.minPrice) allPrices.push(stats.minPrice);
+          if (stats.maxPrice) allPrices.push(stats.maxPrice);
+        }
+      }
+      if (totalCount === 0) return null;
+      allSamples.sort((a, b) => a.price - b.price);
+      return {
+        count: totalCount,
+        minPrice: allPrices.length > 0 ? Math.min(...allPrices) : null,
+        maxPrice: allPrices.length > 0 ? Math.max(...allPrices) : null,
+        avgPrice: null,
+        medianPrice: null,
+        samples: allSamples.slice(0, 10),
+      } as MarketStats;
+    }
+    return latestMarketStats[selectedProduct] || null;
+  }, [selectedProduct, latestMarketStats]);
 
   // Calculate totals
   const totalScanned = filteredRecent.reduce((sum, r) => sum + r.scanned, 0);
@@ -335,7 +479,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
           <Grid container spacing={2}>
             {products.map((p: any) => (
               <Grid item xs={12} sm={6} md={4} key={p.id}>
-                <ProductCard product={p} />
+                <ProductCard product={p} marketStats={latestMarketStats[p.id]} />
               </Grid>
             ))}
           </Grid>
@@ -362,7 +506,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
         <Grid item xs={12} sm={6} md={3}>
           <StatCard
             title="Last Run"
-            value={last ? formatTime(last.runAt) : '—'}
+            value={last ? formatTime(last.runAt, true) : '—'}
             icon={<Schedule />}
             color="#6366f1"
           />
@@ -393,32 +537,117 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
         </Grid>
       </Grid>
 
-      {/* Hits Section */}
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Hits ({allMatches.length})
-          </Typography>
+      {/* Market Pricing Section */}
+      {currentMarketStats && currentMarketStats.count > 0 && (
+        <Accordion
+          expanded={marketExpanded}
+          onChange={(_, expanded) => setMarketExpanded(expanded)}
+          sx={{ mb: 4 }}
+        >
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <ShowChart color="primary" />
+              <Typography variant="h6">
+                Market Pricing ({currentMarketStats.count} listings scanned)
+              </Typography>
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Grid container spacing={2} sx={{ mb: 2 }}>
+              {currentMarketStats.minPrice && (
+                <Grid item xs={6} sm={3}>
+                  <Card variant="outlined">
+                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                      <Typography variant="caption" color="text.secondary">Lowest</Typography>
+                      <Typography variant="h5" color="success.main" fontWeight={700}>
+                        ${currentMarketStats.minPrice}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+              {currentMarketStats.medianPrice && (
+                <Grid item xs={6} sm={3}>
+                  <Card variant="outlined">
+                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                      <Typography variant="caption" color="text.secondary">Median</Typography>
+                      <Typography variant="h5" fontWeight={700}>
+                        ${currentMarketStats.medianPrice}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+              {currentMarketStats.avgPrice && (
+                <Grid item xs={6} sm={3}>
+                  <Card variant="outlined">
+                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                      <Typography variant="caption" color="text.secondary">Average</Typography>
+                      <Typography variant="h5" fontWeight={700}>
+                        ${currentMarketStats.avgPrice}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+              {currentMarketStats.maxPrice && (
+                <Grid item xs={6} sm={3}>
+                  <Card variant="outlined">
+                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                      <Typography variant="caption" color="text.secondary">Highest</Typography>
+                      <Typography variant="h5" color="error.main" fontWeight={700}>
+                        ${currentMarketStats.maxPrice}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
+            </Grid>
+            <MarketSamplesList samples={currentMarketStats.samples} />
+          </AccordionDetails>
+        </Accordion>
+      )}
+
+      {/* Hits Section - Collapsible */}
+      <Accordion
+        expanded={hitsExpanded}
+        onChange={(_, expanded) => setHitsExpanded(expanded)}
+        sx={{ mb: 4 }}
+      >
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Notifications color="success" />
+            <Typography variant="h6">
+              Hits ({allMatches.length})
+            </Typography>
+            {allMatches.length > 0 && (
+              <Chip label="Under threshold" size="small" color="success" sx={{ ml: 1 }} />
+            )}
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
           {allMatches.length === 0 ? (
             <Alert severity="info">
               No matches found yet{selectedProduct !== 'all' ? ' for this product' : ''}. The bot will alert you when listings match your criteria.
             </Alert>
           ) : (
-            <Grid container spacing={2}>
-              {allMatches.slice(0, 12).map((m, i) => (
-                <Grid item xs={12} md={6} key={`${m.listing.source}-${m.listing.sourceId}-${i}`}>
-                  <HitCard match={m} />
-                </Grid>
-              ))}
-            </Grid>
+            <>
+              <Grid container spacing={2}>
+                {allMatches.slice(0, 12).map((m, i) => (
+                  <Grid item xs={12} md={6} key={`${m.listing.source}-${m.listing.sourceId}-${i}`}>
+                    <HitCard match={m} />
+                  </Grid>
+                ))}
+              </Grid>
+              {allMatches.length > 12 && (
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
+                  Showing 12 of {allMatches.length} matches
+                </Typography>
+              )}
+            </>
           )}
-          {allMatches.length > 12 && (
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
-              Showing 12 of {allMatches.length} matches
-            </Typography>
-          )}
-        </CardContent>
-      </Card>
+        </AccordionDetails>
+      </Accordion>
 
       {/* Charts */}
       {history.length > 0 && (
