@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   run:
@@ -53,3 +55,20 @@ jobs:
 
           git commit -m "chore: update price watcher state"
           git push
+
+      - name: Build dashboard
+        working-directory: apps/dashboard
+        env:
+          DATA_DIR: ${{ github.workspace }}
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/dashboard/out
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
