@@ -469,5 +469,40 @@
         "matches": []
       }
     ]
+  },
+  {
+    "runAt": "2026-01-22T23:00:39.752Z",
+    "durationMs": 21558,
+    "scanned": 50,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [
+      {
+        "marketplace": "ebay",
+        "productId": "roland-system-8",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      },
+      {
+        "marketplace": "ebay",
+        "productId": "roland-s-1",
+        "message": "Missing EBAY_CLIENT_ID/EBAY_CLIENT_SECRET"
+      }
+    ],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 900,
+        "scanned": 25,
+        "matches": []
+      },
+      {
+        "productId": "roland-s-1",
+        "productName": "Roland S-1",
+        "thresholdUsd": 180,
+        "scanned": 25,
+        "matches": []
+      }
+    ]
   }
 ]
