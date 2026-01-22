@@ -3,10 +3,14 @@ products:
     name: 'Roland System-8'
     minPriceUsd: 800
     maxPriceUsd: 1400
-    marketplaces: ['reverb', 'ebay']
+    marketplaces: ['reverb', 'ebay', 'amazon']
     includeTerms:
       - 'roland system-8'
       - 'roland system 8'
+      - 'system-8 synthesizer'
+      - 'system-8 synth'
+      - 'system 8 synthesizer'
+      - 'system 8 synth'
     excludeTerms:
       # Other "System 8" products
       - 'valvotronics'
@@ -91,7 +95,7 @@ products:
     name: 'Roland S-1'
     minPriceUsd: 100
     maxPriceUsd: 220
-    marketplaces: ['reverb', 'ebay']
+    marketplaces: ['reverb', 'ebay', 'amazon']
     includeTerms:
       - 'roland s-1'
       - 'roland s1'

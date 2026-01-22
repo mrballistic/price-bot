@@ -1,4 +1,4 @@
-export type MarketplaceId = 'ebay' | 'reverb';
+export type MarketplaceId = 'ebay' | 'reverb' | 'amazon';
 
 export type Money = {
   amount: number;
