@@ -7,9 +7,23 @@ products:
     includeTerms:
       - 'roland system-8'
       - 'roland system 8'
-      - 'system-8'
-      - 'system 8'
     excludeTerms:
+      # Other "System 8" products
+      - 'valvotronics'
+      - 'eq3'
+      - 'equalizer'
+      - 'modular'
+      # Other Roland/gear
+      - 'vg-8'
+      - 'vg8'
+      - 'brochure'
+      - 'catalog'
+      - 'jbl'
+      - 'pa system'
+      - 'e-mu'
+      - 'emu'
+      - 'sp-1200'
+      - 'nearfield'
       - 'case'
       - 'deck saver'
       - 'decksaver'
@@ -65,6 +79,13 @@ products:
       - 'oak'
       - 'end panel'
       - 'side panel'
+      # Other products with "System 8" in name
+      - 'tannoy'
+      - 'monitor'
+      - 'monitors'
+      - 'speaker'
+      - 'speakers'
+      - 'studio monitor'
 
   - id: roland-s-1
     name: 'Roland S-1'
@@ -109,6 +130,27 @@ products:
       - 'not working'
       - 'faulty'
       - 'damaged'
+      # Other Roland products
+      - 'cable'
+      - 'cd'
+      - 'cd-rom'
+      - 'cdrom'
+      - 'disk'
+      - 'stage unit'
+      - 's-1608'
+      - 's-330'
+      - 's-550'
+      - 's-760'
+      - 'drum'
+      - 'v-drum'
+      - 'td-'
+      - 'dial'
+      - 'encoder'
+      - 'juno'
+      - 'jupiter'
+      - 'section'
+      - 'orchestral'
+      - 'vol '
 
 settings:
   currency: 'USD'

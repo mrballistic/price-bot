@@ -1,7 +1,7 @@
 import { loadConfig } from './config';
 import { getAdapters } from './adapters';
 import { logger } from './core/logger';
-import { filterMatches, computeEffectivePriceUsd } from './core/match';
+import { filterMatches, computeEffectivePriceUsd, titlePasses } from './core/match';
 import {
   appendHistory,
   markSeen,
@@ -170,8 +170,9 @@ async function main(): Promise<void> {
       logger.info(`No new alerts for ${product.id} (matches=${matches.length}, fresh=0)`);
     }
 
-    // Calculate market stats from ALL listings (not just matches)
-    const marketStats = calculateMarketStats(rawListings, cfg);
+    // Calculate market stats from listings that pass title filters (but ignore price thresholds)
+    const filteredForStats = rawListings.filter((l) => titlePasses(product, l.title));
+    const marketStats = calculateMarketStats(filteredForStats, cfg);
 
     byProduct.push({
       productId: product.id,
