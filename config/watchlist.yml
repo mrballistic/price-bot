@@ -1,0 +1,66 @@
+
+products:
+  - id: roland-system-8
+    name: "Roland System-8"
+    maxPriceUsd: 900
+    marketplaces: ["reverb", "ebay"]
+    includeTerms:
+      - "roland system-8"
+      - "roland system 8"
+      - "system-8"
+      - "system 8"
+    excludeTerms:
+      - "case"
+      - "deck saver"
+      - "decksaver"
+      - "overlay"
+      - "template"
+      - "manual"
+      - "knob"
+      - "stand"
+      - "power supply"
+      - "adapter"
+      - "parts"
+      - "repair"
+      - "broken"
+      - "for parts"
+      - "patch"
+      - "patches"
+      - "plug-out"
+      - "plugout"
+
+  - id: roland-s-1
+    name: "Roland S-1"
+    maxPriceUsd: 180
+    marketplaces: ["reverb", "ebay"]
+    includeTerms:
+      - "roland s-1"
+      - "roland s1"
+      - "aira s-1"
+      - "aira s1"
+      - "s-1 aira"
+    excludeTerms:
+      - "case"
+      - "deck saver"
+      - "decksaver"
+      - "overlay"
+      - "template"
+      - "manual"
+      - "knob"
+      - "stand"
+      - "power supply"
+      - "adapter"
+      - "parts"
+      - "repair"
+      - "broken"
+      - "for parts"
+      - "bundle"
+      - "lot"
+
+settings:
+  currency: "USD"
+  includeShippingInThreshold: true
+  maxResultsPerMarketplace: 25
+  requestDelayMs: 800
+  maxEmbedsPerDiscordMessage: 10
+  maxListingsPerProductPerRun: 25
