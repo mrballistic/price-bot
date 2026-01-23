@@ -2,7 +2,8 @@ name: Price Watcher
 
 on:
   schedule:
-    # Avoid top-of-hour schedules. GitHub notes that scheduled workflows can be delayed during periods of high load.
+    # Runs at :17 and :47 past every hour (twice per hour)
+    # Avoids top-of-hour to reduce GitHub Actions queue delays
     - cron: '17,47 * * * *'
   workflow_dispatch: {}
 
