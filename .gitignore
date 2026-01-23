@@ -1,5 +1,29 @@
-
+# Dependencies
 node_modules
+
+# Build outputs
 dist
+apps/dashboard/.next
+apps/dashboard/out
+
+# Environment
 .env
+.env.local
+.env*.local
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo

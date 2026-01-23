@@ -1,6 +1,23 @@
 {
   "name": "price-bot",
   "version": "0.1.0",
+  "description": "Headless price watcher for used music gear across marketplaces with Discord alerts",
+  "author": "Todd Greco",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrballistic/price-bot.git"
+  },
+  "keywords": [
+    "price-watcher",
+    "reverb",
+    "ebay",
+    "amazon",
+    "discord",
+    "music-gear",
+    "synth",
+    "deals"
+  ],
   "private": true,
   "type": "commonjs",
   "main": "dist/run.js",
