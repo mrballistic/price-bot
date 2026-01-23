@@ -878,5 +878,89 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-01-23T22:39:37.221Z",
+    "durationMs": 21349,
+    "scanned": 100,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 3,
+          "minPrice": 1835.99,
+          "maxPrice": 1900,
+          "avgPrice": 1862,
+          "medianPrice": 1850,
+          "samples": [
+            {
+              "title": "Roland System-8 Plug-Out Synthesizer",
+              "price": 1835.99,
+              "url": "https://www.ebay.com/itm/177801719873?_skw=roland+system-8&hash=item2965cef041:i:177801719873",
+              "source": "ebay"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1850,
+              "url": "https://reverb.com/item/93245757-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1900,
+              "url": "https://reverb.com/item/92933667-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-s-1",
+        "productName": "Roland S-1",
+        "thresholdUsd": 220,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 4,
+          "minPrice": 242.99,
+          "maxPrice": 269.99,
+          "avgPrice": 263.24,
+          "medianPrice": 269.99,
+          "samples": [
+            {
+              "title": "ROLAND S-1 TWEAK SYNTHESIZER : B-STOCK : [DETROIT MODULAR]",
+              "price": 242.99,
+              "url": "https://reverb.com/item/91164233-roland-s-1-tweak-synthesizer-b-stock-detroit-modular",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland AIRA Compact S-1 - Tweak Synth [Three Wave Music]",
+              "price": 269.99,
+              "url": "https://reverb.com/item/69067073-roland-aira-compact-s-1-tweak-synth-three-wave-music",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland S-1 Compact Polyphonic Tweak Synthesizer Module",
+              "price": 269.99,
+              "url": "https://reverb.com/item/68984057-roland-s-1-compact-polyphonic-tweak-synthesizer-module",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland Aira Compact S-1 Tweak Synth Portable Polyphonic Synthesizer",
+              "price": 269.99,
+              "url": "https://www.ebay.com/itm/376751140905?_skw=roland+s-1&hash=item57b81e3029:g:XS4AAeSw7UNpMKtx",
+              "source": "ebay"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
