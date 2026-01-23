@@ -6,12 +6,13 @@ Headless price watcher for used music gear across marketplaces (**Reverb**, **eB
 
 - Loads a watchlist from `config/watchlist.yml`
 - Queries marketplaces via adapters (US sellers only to avoid tariff issues)
-- Normalizes listings and applies keyword matching with include/exclude terms
+- Normalizes listings and applies keyword matching with include/exclude terms (supports regex)
 - Filters by min/max price thresholds (optionally including shipping)
 - Calculates market stats (min/max/avg/median) for price tracking outside thresholds
 - De-duplicates alerts using `data/state.json`
+- **Price-drop alerts**: Re-alerts when a previously-seen listing drops below threshold
 - Writes run history to `data/history.json`
-- Sends Discord webhook alerts for new matches
+- Sends Discord webhook alerts for new matches and price drops
 - Designed to run on a schedule via **GitHub Actions**
 
 ## Quick start (local)
@@ -71,11 +72,15 @@ products:
     includeTerms:         # At least one must match
       - 'product name'
       - 'alternate name'
+      - '/product\s*v\d+/i'  # Regex pattern (wrapped in /.../)
     excludeTerms:         # None can match
       - 'case'
       - 'cover'
       - 'parts'
+      - '/\bfor\s+parts\b/'  # Regex pattern
 ```
+
+**Regex support:** Terms wrapped in `/pattern/` are treated as regular expressions. Flags can be added after the closing slash (e.g., `/pattern/i` for case-insensitive). By default, all regex patterns are case-insensitive.
 
 ## Marketplace APIs
 
@@ -85,14 +90,31 @@ products:
 
 All adapters filter to US-based sellers only. If a marketplace fails, the run continues and reports errors in the summary.
 
+## Discord alerts
+
+Alerts are sent as rich embeds with:
+- Listing title, image, and link
+- Price, shipping, and effective total
+- Marketplace and condition
+- Threshold comparison
+
+**Price-drop alerts** are highlighted with:
+- Green color and 📉 emoji
+- Previous price → new price with savings amount
+- "PRICE DROP" label in footer
+
 ## Dashboard
 
 The Next.js dashboard in `apps/dashboard` provides:
-- Run history and statistics
-- Market pricing trends with charts
-- Product filtering
-- Recent alerts/hits
-- Dark mode (via system preference)
+- **Stats overview**: Last run time, items scanned, alerts sent, errors
+- **Product cards**: Each watched product with alert thresholds and market stats
+- **Market pricing**: Live min/max/avg/median prices with sample listings
+- **Hits section**: All matches under threshold, sorted by price
+- **Activity charts**: Scan activity and alerts over time (Recharts)
+- **Product filtering**: Filter all views by product
+- **Dark mode**: Automatic via system preference (no toggle needed)
+
+Built with MUI (Material UI) and deployed as a static site.
 
 **Run locally:**
 ```bash

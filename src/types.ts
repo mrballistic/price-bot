@@ -63,6 +63,10 @@ export type Match = {
   listing: Listing;
   effectivePriceUsd: number;
   shippingNote?: string;
+  priceDrop?: {
+    previousPrice: number;
+    dropAmount: number;
+  };
 };
 
 export type MarketStats = {

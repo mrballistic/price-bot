@@ -64,18 +64,45 @@ export async function sendDiscordAlerts(
       if (l.condition) fields.push({ name: 'Condition', value: l.condition, inline: true });
       if (m.shippingNote) fields.push({ name: 'Note', value: m.shippingNote, inline: false });
 
+      // Add price drop info if applicable
+      if (m.priceDrop) {
+        fields.push({
+          name: '📉 Price Drop',
+          value: `Was ${fmtUsd(m.priceDrop.previousPrice)} → Now ${fmtUsd(m.effectivePriceUsd)} (−${fmtUsd(m.priceDrop.dropAmount)})`,
+          inline: false,
+        });
+      }
+
+      const isPriceDrop = !!m.priceDrop;
+      const footerText = isPriceDrop
+        ? `${productName} • PRICE DROP • threshold <= $${threshold}`
+        : `${productName} • threshold <= $${threshold}`;
+
       return {
-        title: l.title,
+        title: isPriceDrop ? `📉 ${l.title}` : l.title,
         url: l.url,
         timestamp: runAtIso,
+        color: isPriceDrop ? 0x00ff00 : undefined, // Green for price drops
         fields,
         image: l.imageUrl ? { url: l.imageUrl } : undefined,
-        footer: { text: `${productName} • threshold <= $${threshold}` },
+        footer: { text: footerText },
       };
     });
 
+    const priceDropCount = chunk.filter((m) => m.priceDrop).length;
+    const newListingCount = chunk.length - priceDropCount;
+
+    let content = `🎹 **Deal alert:** ${productName} (<= $${threshold})\n`;
+    if (newListingCount > 0 && priceDropCount > 0) {
+      content += `Found **${newListingCount}** new listing(s) and **${priceDropCount}** price drop(s).`;
+    } else if (priceDropCount > 0) {
+      content += `📉 **${priceDropCount}** price drop(s) detected!`;
+    } else {
+      content += `Found **${newListingCount}** new listing(s).`;
+    }
+
     const payload: DiscordPayload = {
-      content: `🎹 **Deal alert:** ${productName} (<= $${threshold})\nFound **${chunk.length}** matching listing(s).`,
+      content,
       embeds,
     };
 

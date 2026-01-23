@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import {
+  AppBar,
   Box,
   Card,
   CardContent,
@@ -25,6 +26,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   Link as MuiLink,
+  Toolbar,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -37,6 +39,7 @@ import {
   Storefront,
   ExpandMore,
   ShowChart,
+  Piano,
 } from '@mui/icons-material';
 import { ActivityChart, AlertsBarChart } from './Charts';
 
@@ -460,15 +463,20 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Price Bot Dashboard
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Monitoring marketplace prices for your watchlist
-        </Typography>
-      </Box>
+    <>
+      <AppBar position="fixed" elevation={1}>
+        <Toolbar>
+          <Piano sx={{ mr: 1.5 }} />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
+            Price Bot Dashboard
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.8 }}>
+            {state.updatedAt ? `Updated ${formatTime(state.updatedAt, true)}` : ''}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Toolbar /> {/* Spacer for fixed AppBar */}
+      <Container maxWidth="lg" sx={{ py: 4 }}>
 
       {/* Products Being Watched */}
       {products.length > 0 && (
@@ -747,12 +755,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
         </CardContent>
       </Card>
 
-      {/* Footer */}
-      <Box sx={{ mt: 4, textAlign: 'center' }}>
-        <Typography variant="body2" color="text.secondary">
-          Last updated: {state.updatedAt ? formatTime(state.updatedAt) : '—'}
-        </Typography>
-      </Box>
     </Container>
+    </>
   );
 }

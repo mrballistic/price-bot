@@ -136,12 +136,28 @@ async function main(): Promise<void> {
     const matches = filterMatches(product, rawListings, cfg);
     totalMatches += matches.length;
 
-    // De-dupe: only alert for unseen listing IDs
+    // De-dupe: only alert for unseen listing IDs OR price drops
     const fresh: Match[] = [];
     for (const m of matches) {
       ensureStateBuckets(state, m.listing.source, product.id);
-      if (!isSeen(state, m.listing.source, product.id, m.listing.sourceId)) {
+      const existing = state.seen?.[m.listing.source]?.[product.id]?.[m.listing.sourceId];
+
+      if (!existing) {
+        // New listing
         fresh.push(m);
+      } else if (m.effectivePriceUsd < existing.lastEffectivePrice) {
+        // Price drop! Alert again with price drop info
+        const dropAmount = existing.lastEffectivePrice - m.effectivePriceUsd;
+        fresh.push({
+          ...m,
+          priceDrop: {
+            previousPrice: existing.lastEffectivePrice,
+            dropAmount,
+          },
+        });
+        logger.info(
+          `Price drop detected: ${m.listing.title} dropped $${dropAmount.toFixed(2)} (was $${existing.lastEffectivePrice}, now $${m.effectivePriceUsd})`,
+        );
       }
     }
 

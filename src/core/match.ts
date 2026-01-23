@@ -1,4 +1,5 @@
 import { Listing, Match, ProductConfig, WatchlistConfig } from '../types';
+import { logger } from './logger';
 
 const DEFAULT_EXCLUDES = [
   'deck saver',
@@ -20,22 +21,57 @@ function norm(s: string): string {
   return s.toLowerCase().replace(/\s+/g, ' ').trim();
 }
 
+/**
+ * Check if a term is a regex pattern (wrapped in /.../ or /.../<flags>)
+ */
+function isRegexPattern(term: string): boolean {
+  return /^\/.*\/[gimsuy]*$/.test(term);
+}
+
+/**
+ * Parse a regex pattern string like /pattern/flags into a RegExp
+ */
+function parseRegex(pattern: string): RegExp | null {
+  const match = pattern.match(/^\/(.*)\/([gimsuy]*)$/);
+  if (!match) return null;
+  try {
+    // Always add 'i' flag for case-insensitive matching unless already specified
+    const flags = match[2].includes('i') ? match[2] : match[2] + 'i';
+    return new RegExp(match[1], flags);
+  } catch (e) {
+    logger.warn(`Invalid regex pattern: ${pattern}`);
+    return null;
+  }
+}
+
+/**
+ * Check if text matches a term (either literal substring or regex pattern)
+ */
+function matchesTerm(text: string, term: string): boolean {
+  if (isRegexPattern(term)) {
+    const regex = parseRegex(term);
+    return regex ? regex.test(text) : false;
+  }
+  // Literal substring match (case-insensitive via norm)
+  return text.includes(norm(term));
+}
+
 export function titlePasses(product: ProductConfig, title: string): boolean {
   const t = norm(title);
 
-  const includeTerms = (product.includeTerms ?? []).map(norm).filter(Boolean);
+  const includeTerms = (product.includeTerms ?? []).filter(Boolean);
   const excludeTerms = Array.from(
-    new Set([...(product.excludeTerms ?? []).map(norm), ...DEFAULT_EXCLUDES.map(norm)]),
+    new Set([...(product.excludeTerms ?? []), ...DEFAULT_EXCLUDES]),
   ).filter(Boolean);
 
   // Must match at least one include term if provided.
   if (includeTerms.length > 0) {
-    const ok = includeTerms.some((term) => t.includes(term));
+    const ok = includeTerms.some((term) => matchesTerm(t, term));
     if (!ok) return false;
   }
 
   // Excludes
-  if (excludeTerms.some((term) => term && t.includes(term))) return false;
+  if (excludeTerms.some((term) => term && matchesTerm(t, term))) return false;
 
   // Heuristic: reject listings that look like *only* accessories (e.g., "System-8 case")
   // If the title contains accessory words AND does not contain "roland" for these two products, reject.

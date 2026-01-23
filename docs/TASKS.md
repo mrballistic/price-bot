@@ -13,8 +13,15 @@
 
 ## Next iterations
 
-- [ ] Price-drop alerts (alert if an existing listing drops below threshold)
-- [ ] Better currency handling (FX)
-- [ ] Stronger product matching (regex + model disambiguation)
-- [ ] More marketplaces via adapters
-- [ ] Dashboard improvements (charts, filters, search)
+- [x] Price-drop alerts (alert if an existing listing drops below threshold)
+- [x] ~~Better currency handling (FX)~~ Not needed - US sellers only, all USD
+- [x] Stronger product matching (include/exclude terms, min price filtering)
+- [x] More marketplaces via adapters (Amazon PA-API)
+- [x] Dashboard improvements (MUI, charts, filters, dark mode, market stats)
+
+## Future ideas
+
+- [x] Regex support for matching
+- [ ] Email/SMS notifications
+- [ ] Saved searches / user accounts
+- [ ] Price history tracking per listing
