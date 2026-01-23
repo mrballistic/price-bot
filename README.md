@@ -132,3 +132,7 @@ npm run dev
 - `docs/QUERY_STRATEGY.md` - Search strategy details
 - `docs/DISCORD_EMBEDS.md` - Discord message format
 - `AGENTS.md` - Instructions for coding agents
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
