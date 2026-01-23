@@ -27,6 +27,7 @@ import {
   AccordionDetails,
   Link as MuiLink,
   Toolbar,
+  Tooltip,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -408,6 +409,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
         matches: prod?.matches.length || 0,
         alerts: prod?.matches.length || 0,
         errors: r.errors?.filter((e) => e.productId === selectedProduct) || [],
+        byProduct: prod ? [prod] : [],
       };
     });
   }, [recent, selectedProduct]);
@@ -734,14 +736,59 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
                       <TableCell align="right">{r.matches}</TableCell>
                       <TableCell align="right">
                         {r.alerts > 0 ? (
-                          <Chip label={r.alerts} color="success" size="small" />
+                          <Tooltip
+                            title={
+                              <Box sx={{ p: 0.5 }}>
+                                {r.byProduct.flatMap((p) =>
+                                  p.matches.slice(0, 5).map((m, i) => (
+                                    <Box key={`${p.productId}-${i}`} sx={{ mb: 0.5 }}>
+                                      <Typography variant="caption" display="block" sx={{ fontWeight: 600 }}>
+                                        ${m.effectivePriceUsd.toFixed(0)} - {m.productName}
+                                      </Typography>
+                                      <Typography variant="caption" display="block" sx={{ opacity: 0.9, maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        {m.listing.title.slice(0, 50)}{m.listing.title.length > 50 ? '...' : ''}
+                                      </Typography>
+                                    </Box>
+                                  ))
+                                )}
+                                {r.byProduct.reduce((sum, p) => sum + p.matches.length, 0) > 5 && (
+                                  <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                                    +{r.byProduct.reduce((sum, p) => sum + p.matches.length, 0) - 5} more
+                                  </Typography>
+                                )}
+                              </Box>
+                            }
+                            arrow
+                            placement="left"
+                          >
+                            <Chip label={r.alerts} color="success" size="small" sx={{ cursor: 'help' }} />
+                          </Tooltip>
                         ) : (
                           r.alerts
                         )}
                       </TableCell>
                       <TableCell align="right">
                         {(r.errors?.length || 0) > 0 ? (
-                          <Chip label={r.errors?.length} color="error" size="small" />
+                          <Tooltip
+                            title={
+                              <Box sx={{ p: 0.5 }}>
+                                {r.errors?.map((e, i) => (
+                                  <Box key={i} sx={{ mb: i < (r.errors?.length || 0) - 1 ? 1 : 0 }}>
+                                    <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                                      {e.marketplace}/{e.productId}
+                                    </Typography>
+                                    <Typography variant="caption" display="block" sx={{ opacity: 0.9 }}>
+                                      {e.message}
+                                    </Typography>
+                                  </Box>
+                                ))}
+                              </Box>
+                            }
+                            arrow
+                            placement="left"
+                          >
+                            <Chip label={r.errors?.length} color="error" size="small" sx={{ cursor: 'help' }} />
+                          </Tooltip>
                         ) : (
                           0
                         )}
