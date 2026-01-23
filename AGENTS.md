@@ -38,14 +38,28 @@ This repository is intended to be iterated on by coding agents (Claude, Codex, e
   npm run typecheck
   ```
 
+### Dashboard (apps/dashboard)
+
+- Dev server:
+  ```bash
+  cd apps/dashboard && npm run dev
+  ```
+- Build:
+  ```bash
+  cd apps/dashboard && npm run build
+  ```
+
 ## Environment variables (required for live runs)
 
 - `DISCORD_WEBHOOK_URL`
-- `EBAY_CLIENT_ID`
-- `EBAY_CLIENT_SECRET`
 - `REVERB_TOKEN`
 
-Optional:
+Optional (enable additional marketplaces):
+
+- `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` - eBay Buy Browse API
+- `AMAZON_ACCESS_KEY` / `AMAZON_SECRET_KEY` / `AMAZON_PARTNER_TAG` - Amazon PA-API 5.0
+
+Optional settings:
 
 - `EBAY_ENV` = `production` (default) or `sandbox`
 - `LOG_LEVEL` = `debug|info|warn|error` (default `info`)

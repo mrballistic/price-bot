@@ -5,14 +5,29 @@ The bot uses a two-phase approach:
 1. **Broad retrieval** from marketplaces using 2–4 search queries per product (derived from `includeTerms`).
 2. **Local filtering** with include/exclude terms + heuristics, then price checks.
 
-This approach is more robust than relying on marketplace “advanced query” syntax.
+This approach is more robust than relying on marketplace "advanced query" syntax.
 
 ## General tuning tips
 
 - Keep `includeTerms` short but specific (model + brand when possible).
 - Put common accessory/bundle words in `excludeTerms`.
-- Prefer excluding a few obvious accessory terms over overly complex regex early on.
+- Use `minPriceUsd` to filter out cheap accessories automatically.
 - If you see a recurring false positive, add its distinctive word(s) to `excludeTerms`.
+
+## Regex support
+
+Terms wrapped in `/pattern/` are treated as regular expressions:
+
+```yaml
+includeTerms:
+  - 'roland system-8'           # Literal match
+  - '/system[-\s]?8\b/i'        # Regex: matches "system-8", "system 8", "system8"
+excludeTerms:
+  - '/\b(for\s+)?parts\b/'      # Regex: matches "parts" or "for parts"
+```
+
+- Flags can be added after the closing slash (e.g., `/pattern/gi`)
+- All regex patterns are case-insensitive by default
 
 ## Roland System-8
 

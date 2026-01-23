@@ -1,10 +1,12 @@
 # Discord embed layout
 
-The bot uses a scannable embed format that’s quick to evaluate:
+The bot uses a scannable embed format that's quick to evaluate:
+
+## New listing alerts
 
 - Message header:
-  - 🎹 Deal alert: <Product> (<= $threshold)
-  - Found N matching listing(s)
+  - 🎹 **Deal alert:** <Product> (<= $threshold)
+  - Found **N** new listing(s).
 
 - Each listing is an **embed**:
   - **Title**: listing title (clickable)
@@ -16,6 +18,21 @@ The bot uses a scannable embed format that’s quick to evaluate:
     - Condition (if available)
     - Note (e.g., shipping unknown)
   - **Image** (if provided)
+  - **Footer**: Product name • threshold <= $X
+
+## Price-drop alerts
+
+When a previously-seen listing drops below threshold:
+
+- Message header:
+  - 🎹 **Deal alert:** <Product> (<= $threshold)
+  - 📉 **N** price drop(s) detected!
+
+- Price-drop embeds have:
+  - **Title**: 📉 listing title
+  - **Color**: Green (0x00ff00)
+  - **Extra field**: "📉 Price Drop" showing `Was $X → Now $Y (−$Z)`
+  - **Footer**: Product name • PRICE DROP • threshold <= $X
 
 ## Why embeds are chunked
 
