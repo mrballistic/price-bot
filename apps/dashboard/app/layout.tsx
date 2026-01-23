@@ -4,9 +4,6 @@ import ThemeRegistry from './ThemeRegistry';
 export const metadata = {
   title: 'Price Bot Dashboard',
   description: 'Monitor your price alerts and run history',
-  icons: {
-    icon: '/favicon.svg',
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
