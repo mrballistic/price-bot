@@ -2,9 +2,9 @@ name: Price Watcher
 
 on:
   schedule:
-    # Runs at :17 and :47 past every hour (twice per hour)
+    # Runs at :12 and :47 past every hour (twice per hour)
     # Avoids top-of-hour to reduce GitHub Actions queue delays
-    - cron: '17,47 * * * *'
+    - cron: '12,47 * * * *'
   workflow_dispatch: {}
 
 permissions:
