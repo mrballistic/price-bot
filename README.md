@@ -1,5 +1,10 @@
 # <img src="apps/dashboard/app/icon.svg" width="32" height="32" alt="icon" style="vertical-align: middle;"> price-bot (Used Gear Price Watcher)
 
+[![CI](https://github.com/mrballistic/price-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/mrballistic/price-bot/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
+
 Headless price watcher for used music gear across marketplaces (**Reverb**, **eBay**, and **Amazon**), with alerts to **Discord** and an optional dashboard.
 
 ## What it does
