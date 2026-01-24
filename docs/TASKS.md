@@ -19,6 +19,13 @@
 - [x] More marketplaces via adapters (Amazon PA-API)
 - [x] Dashboard improvements (MUI, charts, filters, dark mode, market stats)
 
+## Quality & Testing
+
+- [x] Comprehensive test suite (115 tests, 97%+ coverage)
+- [x] ESLint with strict TypeScript rules
+- [x] Pre-commit hooks (Husky + lint-staged)
+- [x] CI pipeline with lint, typecheck, and tests
+
 ## Future ideas
 
 - [x] Regex support for matching

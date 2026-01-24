@@ -6,7 +6,7 @@ Monitor multiple marketplaces for specific used products and alert when a listin
 
 ## Goals
 
-- Watch specific products (starting with Roland System-8 and Roland S-1).
+- Watch specific products (e.g., Roland System-8, Elektron Analog Heat).
 - Support multiple marketplaces via adapter pattern.
 - Run headless via GitHub Actions.
 - Notify via Discord webhook.
@@ -43,8 +43,8 @@ Monitor multiple marketplaces for specific used products and alert when a listin
    - stats, charts, product filtering, dark mode
    - deployed to GitHub Pages
 8. Scheduling:
-   - GitHub Actions cron (every 30 min) + manual dispatch
-   - CI workflow for build validation
+   - Pipedream triggers GitHub Actions workflow (every 30 min)
+   - CI workflow for build validation (lint, typecheck, tests)
 
 ## Success criteria
 

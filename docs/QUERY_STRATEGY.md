@@ -54,7 +54,9 @@ Extra heuristic you can add later:
 - Require "system-8" or "system 8" AND ( "roland" OR "system-8 synthesizer" )
 - Reject if title contains accessory words and does NOT contain "roland"
 
-## Roland S-1
+## Roland S-1 (example)
+
+> Note: This product is no longer in the default watchlist but is kept here as an example of tuning strategy.
 
 Common false positives:
 
