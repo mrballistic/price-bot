@@ -99,10 +99,13 @@ products:
     maxPriceUsd: 900
     marketplaces: ['reverb', 'ebay']
     includeTerms:
+      # Plain text for eBay/Reverb search queries (first 4 are used)
+      - 'elektron analog heat +fx'
+      - 'analog heat +fx'
+      - 'elektron heat +fx'
+      # Regex patterns for flexible title matching
       - '/analog\s*heat\s*\+\s*fx/i'
-      - '/analog\s*heat\s*plus\s*fx/i'
       - '/heat\s*\+\s*fx/i'
-      - '/heat\s*plus\s*fx/i'
     excludeTerms:
       # Other versions
       - 'mkii'
