@@ -1,4 +1,4 @@
-# price-bot (Used Gear Price Watcher)
+# <img src="apps/dashboard/app/icon.svg" width="32" height="32" alt="icon" style="vertical-align: middle;"> price-bot (Used Gear Price Watcher)
 
 Headless price watcher for used music gear across marketplaces (**Reverb**, **eBay**, and **Amazon**), with alerts to **Discord** and an optional dashboard.
 
