@@ -27,9 +27,10 @@ import { MarketplaceAdapter, SearchParams } from './types';
  * @returns Parsed money object or null if invalid
  * @private
  */
-function parseMoney(val: any): { amount: number; currency: string } | null {
-  const v = val?.amount ?? val?.value ?? val;
-  const c = val?.currency ?? val?.currency_code ?? val?.currencyCode;
+function parseMoney(val: unknown): { amount: number; currency: string } | null {
+  const o = val as Record<string, unknown> | undefined;
+  const v = o?.amount ?? o?.value ?? val;
+  const c = o?.currency ?? o?.currency_code ?? o?.currencyCode;
   const num = typeof v === 'string' ? Number(v) : typeof v === 'number' ? v : NaN;
   if (Number.isNaN(num) || !c) return null;
   return { amount: num, currency: String(c) };
@@ -44,11 +45,14 @@ function parseMoney(val: any): { amount: number; currency: string } | null {
  * @returns The listing's web URL or null if not found
  * @private
  */
-function pickWebUrl(listing: any): string | null {
-  const href = listing?._links?.web?.href || listing?._links?.web?.url;
+function pickWebUrl(listing: unknown): string | null {
+  const l = listing as Record<string, unknown> | undefined;
+  const links = l?._links as Record<string, unknown> | undefined;
+  const web = links?.web as Record<string, unknown> | undefined;
+  const href = web?.href || web?.url;
   if (href) return String(href);
-  if (listing?.url) return String(listing.url);
-  if (listing?.permalink) return String(listing.permalink);
+  if (l?.url) return String(l.url);
+  if (l?.permalink) return String(l.permalink);
   return null;
 }
 
@@ -62,24 +66,30 @@ function pickWebUrl(listing: any): string | null {
  * @returns Normalized listing or null if required fields missing
  * @private
  */
-function toListing(item: any): Listing | null {
-  const id = item?.id;
-  const title = item?.title;
+function toListing(item: unknown): Listing | null {
+  const i = item as Record<string, unknown> | undefined;
+  const id = i?.id as string | number | undefined;
+  const title = i?.title as string | undefined;
   const url = pickWebUrl(item);
   const price =
-    parseMoney(item?.price) ||
-    parseMoney(item?.price_with_shipping) ||
-    parseMoney(item?.listing_price);
+    parseMoney(i?.price) || parseMoney(i?.price_with_shipping) || parseMoney(i?.listing_price);
 
   if (!id || !title || !url || !price) return null;
 
   // Reverb shipping can be nested; best-effort extraction.
-  const ship = parseMoney(item?.shipping?.rate) || parseMoney(item?.shipping_price) || null;
+  const shippingObj = i?.shipping as Record<string, unknown> | undefined;
+  const ship = parseMoney(shippingObj?.rate) || parseMoney(i?.shipping_price) || null;
   const shipping = ship
     ? { ...ship, known: true }
     : { amount: 0, currency: price.currency, known: false };
 
-  const img = item?.photos?.[0]?._links?.full?.href || item?.photos?.[0]?._links?.thumbnail?.href;
+  const photos = i?.photos as Array<Record<string, unknown>> | undefined;
+  const firstPhoto = photos?.[0];
+  const photoLinks = firstPhoto?._links as Record<string, unknown> | undefined;
+  const fullLink = photoLinks?.full as Record<string, unknown> | undefined;
+  const thumbLink = photoLinks?.thumbnail as Record<string, unknown> | undefined;
+  const img = (fullLink?.href || thumbLink?.href) as string | undefined;
+  const shop = i?.shop as Record<string, unknown> | undefined;
 
   return {
     source: 'reverb',
@@ -89,9 +99,9 @@ function toListing(item: any): Listing | null {
     price,
     shipping,
     imageUrl: img ? String(img) : undefined,
-    condition: item?.condition ? String(item.condition) : undefined,
-    location: item?.shop?.country ? String(item.shop.country) : undefined,
-    listedAt: item?.created_at ? String(item.created_at) : undefined,
+    condition: i?.condition ? String(i.condition) : undefined,
+    location: shop?.country ? String(shop.country) : undefined,
+    listedAt: i?.created_at ? String(i.created_at) : undefined,
   };
 }
 
@@ -131,8 +141,12 @@ async function searchReverbOnce(q: string, limit: number): Promise<Listing[]> {
     throw new Error(`Reverb search error: ${resp.status} ${txt}`);
   }
 
-  const json = (await resp.json()) as any;
-  const items = Array.isArray(json?.listings) ? json.listings : Array.isArray(json) ? json : [];
+  const json = (await resp.json()) as Record<string, unknown>;
+  const items = Array.isArray(json?.listings)
+    ? (json.listings as unknown[])
+    : Array.isArray(json)
+      ? json
+      : [];
   const listings: Listing[] = [];
   for (const it of items) {
     const l = toListing(it);
@@ -178,8 +192,12 @@ async function searchReverbByProductSlug(slug: string, limit: number): Promise<L
     throw new Error(`Reverb CSP search error: ${resp.status} ${txt}`);
   }
 
-  const json = (await resp.json()) as any;
-  const items = Array.isArray(json?.listings) ? json.listings : Array.isArray(json) ? json : [];
+  const json = (await resp.json()) as Record<string, unknown>;
+  const items = Array.isArray(json?.listings)
+    ? (json.listings as unknown[])
+    : Array.isArray(json)
+      ? json
+      : [];
   const listings: Listing[] = [];
   for (const it of items) {
     const l = toListing(it);

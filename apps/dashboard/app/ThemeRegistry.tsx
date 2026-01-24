@@ -75,8 +75,12 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
               root: {
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                backgroundColor: prefersDarkMode ? 'rgba(30, 41, 59, 0.75)' : 'rgba(255, 255, 255, 0.75)',
-                border: prefersDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
+                backgroundColor: prefersDarkMode
+                  ? 'rgba(30, 41, 59, 0.75)'
+                  : 'rgba(255, 255, 255, 0.75)',
+                border: prefersDarkMode
+                  ? '1px solid rgba(255,255,255,0.1)'
+                  : '1px solid rgba(0,0,0,0.05)',
                 boxShadow: prefersDarkMode
                   ? '0 8px 32px rgba(0,0,0,0.3)'
                   : '0 8px 32px rgba(0,0,0,0.1)',
@@ -88,8 +92,12 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
               root: {
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                backgroundColor: prefersDarkMode ? 'rgba(15, 23, 42, 0.8)' : 'rgba(255, 255, 255, 0.8)',
-                borderBottom: prefersDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
+                backgroundColor: prefersDarkMode
+                  ? 'rgba(15, 23, 42, 0.8)'
+                  : 'rgba(255, 255, 255, 0.8)',
+                borderBottom: prefersDarkMode
+                  ? '1px solid rgba(255,255,255,0.1)'
+                  : '1px solid rgba(0,0,0,0.05)',
                 boxShadow: 'none',
               },
             },
@@ -99,7 +107,9 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
               root: {
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                backgroundColor: prefersDarkMode ? 'rgba(30, 41, 59, 0.75)' : 'rgba(255, 255, 255, 0.75)',
+                backgroundColor: prefersDarkMode
+                  ? 'rgba(30, 41, 59, 0.75)'
+                  : 'rgba(255, 255, 255, 0.75)',
               },
             },
           },
@@ -108,8 +118,12 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
               root: {
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                backgroundColor: prefersDarkMode ? 'rgba(30, 41, 59, 0.75)' : 'rgba(255, 255, 255, 0.75)',
-                border: prefersDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
+                backgroundColor: prefersDarkMode
+                  ? 'rgba(30, 41, 59, 0.75)'
+                  : 'rgba(255, 255, 255, 0.75)',
+                border: prefersDarkMode
+                  ? '1px solid rgba(255,255,255,0.1)'
+                  : '1px solid rgba(0,0,0,0.05)',
                 '&:before': {
                   display: 'none',
                 },
@@ -118,7 +132,7 @@ export default function ThemeRegistry({ children }: { children: ReactNode }) {
           },
         },
       }),
-    [prefersDarkMode]
+    [prefersDarkMode],
   );
 
   // Handle basePath for GitHub Pages deployment

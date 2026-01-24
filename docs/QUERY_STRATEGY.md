@@ -20,10 +20,10 @@ Terms wrapped in `/pattern/` are treated as regular expressions:
 
 ```yaml
 includeTerms:
-  - 'roland system-8'           # Literal match
-  - '/system[-\s]?8\b/i'        # Regex: matches "system-8", "system 8", "system8"
+  - 'roland system-8' # Literal match
+  - '/system[-\s]?8\b/i' # Regex: matches "system-8", "system 8", "system8"
 excludeTerms:
-  - '/\b(for\s+)?parts\b/'      # Regex: matches "parts" or "for parts"
+  - '/\b(for\s+)?parts\b/' # Regex: matches "parts" or "for parts"
 ```
 
 - Flags can be added after the closing slash (e.g., `/pattern/gi`)

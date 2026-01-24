@@ -66,7 +66,12 @@ function hmacSha256(key: Buffer | string, data: string): Buffer {
  * @returns Signing key as Buffer
  * @private
  */
-function getSignatureKey(secretKey: string, dateStamp: string, region: string, service: string): Buffer {
+function getSignatureKey(
+  secretKey: string,
+  dateStamp: string,
+  region: string,
+  service: string,
+): Buffer {
   const kDate = hmacSha256(`AWS4${secretKey}`, dateStamp);
   const kRegion = hmacSha256(kDate, region);
   const kService = hmacSha256(kRegion, service);
@@ -119,7 +124,12 @@ function signRequest(
   ].join('\n');
 
   const credentialScope = `${dateStamp}/${REGION}/${SERVICE}/aws4_request`;
-  const stringToSign = ['AWS4-HMAC-SHA256', amzDate, credentialScope, sha256(canonicalRequest)].join('\n');
+  const stringToSign = [
+    'AWS4-HMAC-SHA256',
+    amzDate,
+    credentialScope,
+    sha256(canonicalRequest),
+  ].join('\n');
 
   const signingKey = getSignatureKey(secretKey, dateStamp, REGION, SERVICE);
   const signature = hmacSha256(signingKey, stringToSign).toString('hex');
@@ -141,9 +151,12 @@ function signRequest(
  * @returns Parsed money object or null if invalid
  * @private
  */
-function parseMoney(offer: any): { amount: number; currency: string } | null {
-  const price = offer?.Price?.Amount ?? offer?.SavingBasis?.Amount;
-  const currency = offer?.Price?.Currency ?? offer?.SavingBasis?.Currency ?? 'USD';
+function parseMoney(offer: unknown): { amount: number; currency: string } | null {
+  const o = offer as Record<string, unknown> | undefined;
+  const priceObj = o?.Price as Record<string, unknown> | undefined;
+  const savingsObj = o?.SavingBasis as Record<string, unknown> | undefined;
+  const price = priceObj?.Amount ?? savingsObj?.Amount;
+  const currency = (priceObj?.Currency ?? savingsObj?.Currency ?? 'USD') as string;
   if (typeof price !== 'number' || Number.isNaN(price)) return null;
   return { amount: price, currency };
 }
@@ -158,25 +171,35 @@ function parseMoney(offer: any): { amount: number; currency: string } | null {
  * @returns Normalized listing or null if required fields missing
  * @private
  */
-function toListing(item: any): Listing | null {
-  const asin = item?.ASIN;
-  const title = item?.ItemInfo?.Title?.DisplayValue;
-  const url = item?.DetailPageURL;
+function toListing(item: unknown): Listing | null {
+  const i = item as Record<string, unknown> | undefined;
+  const asin = i?.ASIN as string | undefined;
+  const itemInfo = i?.ItemInfo as Record<string, unknown> | undefined;
+  const titleObj = itemInfo?.Title as Record<string, unknown> | undefined;
+  const title = titleObj?.DisplayValue as string | undefined;
+  const url = i?.DetailPageURL as string | undefined;
 
   // Get price from offers
-  const offers = item?.Offers?.Listings?.[0];
+  const offersObj = i?.Offers as Record<string, unknown> | undefined;
+  const listingsArr = offersObj?.Listings as unknown[] | undefined;
+  const offers = listingsArr?.[0] as Record<string, unknown> | undefined;
   const price = parseMoney(offers);
 
   if (!asin || !title || !url || !price) return null;
 
   // Shipping - Amazon often includes it or offers Prime
-  const deliveryInfo = offers?.DeliveryInfo;
+  const deliveryInfo = offers?.DeliveryInfo as Record<string, unknown> | undefined;
   const shipping = deliveryInfo?.IsFreeShippingEligible
     ? { amount: 0, currency: price.currency, known: true }
     : { amount: 0, currency: price.currency, known: false };
 
-  const img = item?.Images?.Primary?.Large?.URL || item?.Images?.Primary?.Medium?.URL;
-  const condition = offers?.Condition?.Value;
+  const imagesObj = i?.Images as Record<string, unknown> | undefined;
+  const primaryImg = imagesObj?.Primary as Record<string, unknown> | undefined;
+  const largeImg = primaryImg?.Large as Record<string, unknown> | undefined;
+  const mediumImg = primaryImg?.Medium as Record<string, unknown> | undefined;
+  const img = (largeImg?.URL || mediumImg?.URL) as string | undefined;
+  const conditionObj = offers?.Condition as Record<string, unknown> | undefined;
+  const condition = conditionObj?.Value as string | undefined;
 
   return {
     source: 'amazon',
@@ -242,15 +265,17 @@ async function searchAmazonOnce(q: string, limit: number, partnerTag: string): P
     throw new Error(`Amazon search error: ${resp.status} ${txt}`);
   }
 
-  const json = (await resp.json()) as any;
+  const json = (await resp.json()) as Record<string, unknown>;
 
   // Check for API errors
   if (json.Errors) {
-    const errMsg = json.Errors.map((e: any) => e.Message).join('; ');
+    const errors = json.Errors as Array<{ Message?: string }>;
+    const errMsg = errors.map((e) => e.Message).join('; ');
     throw new Error(`Amazon API error: ${errMsg}`);
   }
 
-  const items = json?.SearchResult?.Items ?? [];
+  const searchResult = json?.SearchResult as Record<string, unknown> | undefined;
+  const items = (searchResult?.Items ?? []) as unknown[];
   const listings: Listing[] = [];
 
   for (const item of items) {
@@ -291,7 +316,9 @@ export function createAmazonAdapter(): MarketplaceAdapter {
       const delayMs = cfg.settings.requestDelayMs;
 
       const queries = (
-        product.includeTerms && product.includeTerms.length > 0 ? product.includeTerms : [product.name]
+        product.includeTerms && product.includeTerms.length > 0
+          ? product.includeTerms
+          : [product.name]
       ).slice(0, 4);
 
       const all: Listing[] = [];

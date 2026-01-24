@@ -27,31 +27,19 @@ import {
   nowIso,
   readState,
   writeState,
-  isSeen,
   ensureStateBuckets,
   cleanupOldSoldItems,
 } from './core/state';
 import { sendDiscordAlerts } from './notify/discord';
-import { Listing, MarketplaceId, MarketStats, Match, RunRecord, SeenEntry } from './types';
-
-/**
- * Groups matches by their product ID and sorts each group by effective price.
- *
- * @param matches - Array of matches to group
- * @returns Record mapping product IDs to sorted arrays of matches
- * @private
- */
-function groupMatchesByProduct(matches: Match[]): Record<string, Match[]> {
-  const m: Record<string, Match[]> = {};
-  for (const x of matches) {
-    m[x.productId] = m[x.productId] || [];
-    m[x.productId].push(x);
-  }
-  for (const k of Object.keys(m)) {
-    m[k].sort((a, b) => a.effectivePriceUsd - b.effectivePriceUsd);
-  }
-  return m;
-}
+import {
+  Listing,
+  MarketplaceId,
+  MarketStats,
+  Match,
+  RunRecord,
+  SeenEntry,
+  WatchlistConfig,
+} from './types';
 
 /**
  * Converts an unknown error value to a string message.
@@ -77,22 +65,39 @@ function stringifyError(err: unknown): string {
  * @returns Market statistics including price range, averages, and sample listings
  * @private
  */
-function calculateMarketStats(listings: Listing[], cfg: { settings: { includeShippingInThreshold: boolean } }): MarketStats {
+function calculateMarketStats(
+  listings: Listing[],
+  cfg: { settings: { includeShippingInThreshold: boolean } },
+): MarketStats {
   if (listings.length === 0) {
-    return { count: 0, minPrice: null, maxPrice: null, avgPrice: null, medianPrice: null, samples: [] };
+    return {
+      count: 0,
+      minPrice: null,
+      maxPrice: null,
+      avgPrice: null,
+      medianPrice: null,
+      samples: [],
+    };
   }
 
   // Calculate effective prices for all USD listings
   const priced = listings
     .filter((l) => l.price.currency.toUpperCase() === 'USD')
     .map((l) => {
-      const { effective } = computeEffectivePriceUsd(l, cfg as any);
+      const { effective } = computeEffectivePriceUsd(l, cfg as WatchlistConfig);
       return { listing: l, price: effective };
     })
     .sort((a, b) => a.price - b.price);
 
   if (priced.length === 0) {
-    return { count: 0, minPrice: null, maxPrice: null, avgPrice: null, medianPrice: null, samples: [] };
+    return {
+      count: 0,
+      minPrice: null,
+      maxPrice: null,
+      avgPrice: null,
+      medianPrice: null,
+      samples: [],
+    };
   }
 
   const prices = priced.map((p) => p.price);
@@ -334,7 +339,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error(err);
   process.exit(1);
 });

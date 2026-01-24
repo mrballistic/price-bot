@@ -104,9 +104,10 @@ async function getAccessToken(): Promise<string> {
  * @returns Parsed money or null if invalid
  * @private
  */
-function parseMoney(val: any): { amount: number; currency: string } | null {
-  const v = val?.value ?? val?.amount ?? val;
-  const c = val?.currency ?? val?.currencyCode;
+function parseMoney(val: unknown): { amount: number; currency: string } | null {
+  const o = val as Record<string, unknown> | undefined;
+  const v = o?.value ?? o?.amount ?? val;
+  const c = o?.currency ?? o?.currencyCode;
   const num = typeof v === 'string' ? Number(v) : typeof v === 'number' ? v : NaN;
   if (Number.isNaN(num) || !c) return null;
   return { amount: num, currency: String(c) };
@@ -122,20 +123,24 @@ function parseMoney(val: any): { amount: number; currency: string } | null {
  * @returns Normalized listing or null if required fields missing
  * @private
  */
-function toListing(item: any): Listing | null {
-  const id = item?.itemId || item?.legacyItemId;
-  const title = item?.title;
-  const url = item?.itemWebUrl;
-  const price = parseMoney(item?.price);
+function toListing(item: unknown): Listing | null {
+  const i = item as Record<string, unknown> | undefined;
+  const id = (i?.itemId || i?.legacyItemId) as string | undefined;
+  const title = i?.title as string | undefined;
+  const url = i?.itemWebUrl as string | undefined;
+  const price = parseMoney(i?.price);
   if (!id || !title || !url || !price) return null;
 
-  const ship0 = item?.shippingOptions?.[0]?.shippingCost;
+  const shippingOptions = i?.shippingOptions as Array<Record<string, unknown>> | undefined;
+  const ship0 = shippingOptions?.[0]?.shippingCost;
   const shippingParsed = parseMoney(ship0);
   const shipping = shippingParsed
     ? { ...shippingParsed, known: true }
     : { amount: 0, currency: price.currency, known: false };
 
-  const img = item?.image?.imageUrl;
+  const imageObj = i?.image as Record<string, unknown> | undefined;
+  const img = imageObj?.imageUrl as string | undefined;
+  const itemLocation = i?.itemLocation as Record<string, unknown> | undefined;
 
   return {
     source: 'ebay',
@@ -145,9 +150,9 @@ function toListing(item: any): Listing | null {
     price,
     shipping,
     imageUrl: img ? String(img) : undefined,
-    condition: item?.condition ? String(item.condition) : undefined,
-    location: item?.itemLocation?.country ? String(item.itemLocation.country) : undefined,
-    listedAt: item?.itemCreationDate ? String(item.itemCreationDate) : undefined,
+    condition: i?.condition ? String(i.condition) : undefined,
+    location: itemLocation?.country ? String(itemLocation.country) : undefined,
+    listedAt: i?.itemCreationDate ? String(i.itemCreationDate) : undefined,
   };
 }
 
@@ -185,8 +190,8 @@ async function searchEbayOnce(q: string, limit: number): Promise<Listing[]> {
     throw new Error(`eBay search error: ${resp.status} ${txt}`);
   }
 
-  const json = (await resp.json()) as any;
-  const items = Array.isArray(json?.itemSummaries) ? json.itemSummaries : [];
+  const json = (await resp.json()) as Record<string, unknown>;
+  const items = Array.isArray(json?.itemSummaries) ? (json.itemSummaries as unknown[]) : [];
   const listings: Listing[] = [];
   for (const it of items) {
     const l = toListing(it);

@@ -228,7 +228,13 @@ function StatCard({
  * @param props.marketStats - Latest market statistics for this product
  * @returns Rendered product card
  */
-function ProductCard({ product, marketStats }: { product: ProductConfig; marketStats?: MarketStats }) {
+function ProductCard({
+  product,
+  marketStats,
+}: {
+  product: ProductConfig;
+  marketStats?: MarketStats;
+}) {
   return (
     <Card>
       <CardContent>
@@ -254,20 +260,36 @@ function ProductCard({ product, marketStats }: { product: ProductConfig; marketS
             </Box>
             <Grid container spacing={1}>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Min</Typography>
-                <Typography variant="body2" fontWeight={600}>${marketStats.minPrice}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Min
+                </Typography>
+                <Typography variant="body2" fontWeight={600}>
+                  ${marketStats.minPrice}
+                </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Max</Typography>
-                <Typography variant="body2" fontWeight={600}>${marketStats.maxPrice}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Max
+                </Typography>
+                <Typography variant="body2" fontWeight={600}>
+                  ${marketStats.maxPrice}
+                </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Avg</Typography>
-                <Typography variant="body2" fontWeight={600}>${marketStats.avgPrice}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Avg
+                </Typography>
+                <Typography variant="body2" fontWeight={600}>
+                  ${marketStats.avgPrice}
+                </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="caption" color="text.secondary">Median</Typography>
-                <Typography variant="body2" fontWeight={600}>${marketStats.medianPrice}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Median
+                </Typography>
+                <Typography variant="body2" fontWeight={600}>
+                  ${marketStats.medianPrice}
+                </Typography>
               </Grid>
             </Grid>
           </Box>
@@ -303,33 +325,41 @@ function ProductCard({ product, marketStats }: { product: ProductConfig; marketS
 function HitCard({ match }: { match: Match }) {
   const { listing } = match;
   return (
-    <Card sx={{
-      display: 'flex',
-      flexDirection: { xs: 'column', sm: 'row' },
-      overflow: 'hidden',
-      opacity: match.sold ? 0.7 : 1,
-    }}>
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        overflow: 'hidden',
+        opacity: match.sold ? 0.7 : 1,
+      }}
+    >
       {listing.imageUrl && (
         <CardMedia
           component="img"
-          sx={{ width: { xs: '100%', sm: 140 }, height: { xs: 140, sm: 'auto' }, objectFit: 'cover' }}
+          sx={{
+            width: { xs: '100%', sm: 140 },
+            height: { xs: 140, sm: 'auto' },
+            objectFit: 'cover',
+          }}
           image={listing.imageUrl}
           alt={listing.title}
         />
       )}
       <CardContent sx={{ flex: 1, py: 1.5 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: 1,
+          }}
+        >
           <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.3 }}>
             {listing.title.length > 80 ? listing.title.slice(0, 80) + '...' : listing.title}
           </Typography>
           <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
             {match.sold && (
-              <Chip
-                label="SOLD"
-                size="small"
-                color="error"
-                sx={{ fontWeight: 600 }}
-              />
+              <Chip label="SOLD" size="small" color="error" sx={{ fontWeight: 600 }} />
             )}
             <Chip
               label={listing.source}
@@ -354,7 +384,9 @@ function HitCard({ match }: { match: Match }) {
           </Typography>
           {listing.condition && listing.condition !== '[object Object]' && (
             <>
-              <Typography variant="caption" color="text.secondary">•</Typography>
+              <Typography variant="caption" color="text.secondary">
+                •
+              </Typography>
               <Typography variant="caption" color="text.secondary">
                 {listing.condition}
               </Typography>
@@ -520,13 +552,24 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
   const recent = history.slice(-20).reverse();
 
   // Get unique products from config or history
-  const products = config.products.length > 0
-    ? config.products
-    : Array.from(
-        new Map(
-          history.flatMap((r) => r.byProduct).map((p) => [p.productId, { id: p.productId, name: p.productName, maxPriceUsd: p.thresholdUsd, marketplaces: [] }])
-        ).values()
-      );
+  const products =
+    config.products.length > 0
+      ? config.products
+      : Array.from(
+          new Map(
+            history
+              .flatMap((r) => r.byProduct)
+              .map((p) => [
+                p.productId,
+                {
+                  id: p.productId,
+                  name: p.productName,
+                  maxPriceUsd: p.thresholdUsd,
+                  marketplaces: [],
+                },
+              ]),
+          ).values(),
+        );
 
   // Get latest market stats per product from most recent run
   const latestMarketStats = useMemo(() => {
@@ -660,330 +703,380 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
       </AppBar>
       <Toolbar /> {/* Spacer for fixed AppBar */}
       <Container maxWidth="lg" sx={{ py: 4 }}>
+        {/* Products Being Watched */}
+        {products.length > 0 && (
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              Products Being Watched
+            </Typography>
+            <Grid container spacing={2}>
+              {products.map((p: any) => (
+                <Grid item xs={12} sm={6} md={4} key={p.id}>
+                  <ProductCard product={p} marketStats={latestMarketStats[p.id]} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
 
-      {/* Products Being Watched */}
-      {products.length > 0 && (
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h6" gutterBottom>
-            Products Being Watched
-          </Typography>
-          <Grid container spacing={2}>
+        {/* Product Filter Tabs */}
+        <Box sx={{ mb: 3 }}>
+          <Tabs
+            value={selectedProduct}
+            onChange={(_, v) => setSelectedProduct(v)}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            <Tab label="All Products" value="all" />
             {products.map((p: any) => (
-              <Grid item xs={12} sm={6} md={4} key={p.id}>
-                <ProductCard product={p} marketStats={latestMarketStats[p.id]} />
-              </Grid>
+              <Tab key={p.id} label={p.name} value={p.id} />
             ))}
-          </Grid>
+          </Tabs>
         </Box>
-      )}
 
-      {/* Product Filter Tabs */}
-      <Box sx={{ mb: 3 }}>
-        <Tabs
-          value={selectedProduct}
-          onChange={(_, v) => setSelectedProduct(v)}
-          variant="scrollable"
-          scrollButtons="auto"
-        >
-          <Tab label="All Products" value="all" />
-          {products.map((p: any) => (
-            <Tab key={p.id} label={p.name} value={p.id} />
-          ))}
-        </Tabs>
-      </Box>
+        {/* Stats Grid */}
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title="Last Run"
+              value={last ? formatTime(last.runAt, true) : '—'}
+              icon={<Schedule />}
+              color="#6366f1"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title="Items Scanned (20 runs)"
+              value={totalScanned.toLocaleString()}
+              icon={<Search />}
+              color="#0ea5e9"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title="Alerts Sent (20 runs)"
+              value={totalAlerts}
+              icon={<Notifications />}
+              color="#22c55e"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <StatCard
+              title="Errors (20 runs)"
+              value={totalErrors}
+              icon={<ErrorIcon />}
+              color={totalErrors > 0 ? '#ef4444' : '#94a3b8'}
+            />
+          </Grid>
+        </Grid>
 
-      {/* Stats Grid */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Last Run"
-            value={last ? formatTime(last.runAt, true) : '—'}
-            icon={<Schedule />}
-            color="#6366f1"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Items Scanned (20 runs)"
-            value={totalScanned.toLocaleString()}
-            icon={<Search />}
-            color="#0ea5e9"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Alerts Sent (20 runs)"
-            value={totalAlerts}
-            icon={<Notifications />}
-            color="#22c55e"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard
-            title="Errors (20 runs)"
-            value={totalErrors}
-            icon={<ErrorIcon />}
-            color={totalErrors > 0 ? '#ef4444' : '#94a3b8'}
-          />
-        </Grid>
-      </Grid>
+        {/* Market Pricing Section */}
+        {currentMarketStats && currentMarketStats.count > 0 && (
+          <Accordion
+            expanded={marketExpanded}
+            onChange={(_, expanded) => setMarketExpanded(expanded)}
+            sx={{ mb: 4 }}
+          >
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <ShowChart color="primary" />
+                <Typography variant="h6">
+                  Market Pricing ({currentMarketStats.count} listings scanned)
+                </Typography>
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                {currentMarketStats.minPrice && (
+                  <Grid item xs={6} sm={3}>
+                    <Card variant="outlined">
+                      <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                        <Typography variant="caption" color="text.secondary">
+                          Lowest
+                        </Typography>
+                        <Typography variant="h5" color="success.main" fontWeight={700}>
+                          ${currentMarketStats.minPrice}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
+                {currentMarketStats.medianPrice && (
+                  <Grid item xs={6} sm={3}>
+                    <Card variant="outlined">
+                      <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                        <Typography variant="caption" color="text.secondary">
+                          Median
+                        </Typography>
+                        <Typography variant="h5" fontWeight={700}>
+                          ${currentMarketStats.medianPrice}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
+                {currentMarketStats.avgPrice && (
+                  <Grid item xs={6} sm={3}>
+                    <Card variant="outlined">
+                      <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                        <Typography variant="caption" color="text.secondary">
+                          Average
+                        </Typography>
+                        <Typography variant="h5" fontWeight={700}>
+                          ${currentMarketStats.avgPrice}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
+                {currentMarketStats.maxPrice && (
+                  <Grid item xs={6} sm={3}>
+                    <Card variant="outlined">
+                      <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+                        <Typography variant="caption" color="text.secondary">
+                          Highest
+                        </Typography>
+                        <Typography variant="h5" color="error.main" fontWeight={700}>
+                          ${currentMarketStats.maxPrice}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
+              </Grid>
+              <MarketSamplesList samples={currentMarketStats.samples} />
+            </AccordionDetails>
+          </Accordion>
+        )}
 
-      {/* Market Pricing Section */}
-      {currentMarketStats && currentMarketStats.count > 0 && (
+        {/* Hits Section - Collapsible */}
         <Accordion
-          expanded={marketExpanded}
-          onChange={(_, expanded) => setMarketExpanded(expanded)}
+          expanded={hitsExpanded}
+          onChange={(_, expanded) => setHitsExpanded(expanded)}
           sx={{ mb: 4 }}
         >
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <ShowChart color="primary" />
-              <Typography variant="h6">
-                Market Pricing ({currentMarketStats.count} listings scanned)
-              </Typography>
+              <Notifications color="success" />
+              <Typography variant="h6">Hits ({allMatches.length})</Typography>
+              {allMatches.length > 0 && (
+                <Chip label="Under threshold" size="small" color="success" sx={{ ml: 1 }} />
+              )}
             </Box>
           </AccordionSummary>
           <AccordionDetails>
-            <Grid container spacing={2} sx={{ mb: 2 }}>
-              {currentMarketStats.minPrice && (
-                <Grid item xs={6} sm={3}>
-                  <Card variant="outlined">
-                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
-                      <Typography variant="caption" color="text.secondary">Lowest</Typography>
-                      <Typography variant="h5" color="success.main" fontWeight={700}>
-                        ${currentMarketStats.minPrice}
-                      </Typography>
-                    </CardContent>
-                  </Card>
+            {allMatches.length === 0 ? (
+              <Alert severity="info">
+                No matches found yet{selectedProduct !== 'all' ? ' for this product' : ''}. The bot
+                will alert you when listings match your criteria.
+              </Alert>
+            ) : (
+              <>
+                <Grid container spacing={2}>
+                  {allMatches.slice(0, 12).map((m, i) => (
+                    <Grid
+                      item
+                      xs={12}
+                      md={6}
+                      key={`${m.listing.source}-${m.listing.sourceId}-${i}`}
+                    >
+                      <HitCard match={m} />
+                    </Grid>
+                  ))}
                 </Grid>
-              )}
-              {currentMarketStats.medianPrice && (
-                <Grid item xs={6} sm={3}>
-                  <Card variant="outlined">
-                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
-                      <Typography variant="caption" color="text.secondary">Median</Typography>
-                      <Typography variant="h5" fontWeight={700}>
-                        ${currentMarketStats.medianPrice}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              )}
-              {currentMarketStats.avgPrice && (
-                <Grid item xs={6} sm={3}>
-                  <Card variant="outlined">
-                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
-                      <Typography variant="caption" color="text.secondary">Average</Typography>
-                      <Typography variant="h5" fontWeight={700}>
-                        ${currentMarketStats.avgPrice}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              )}
-              {currentMarketStats.maxPrice && (
-                <Grid item xs={6} sm={3}>
-                  <Card variant="outlined">
-                    <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
-                      <Typography variant="caption" color="text.secondary">Highest</Typography>
-                      <Typography variant="h5" color="error.main" fontWeight={700}>
-                        ${currentMarketStats.maxPrice}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              )}
-            </Grid>
-            <MarketSamplesList samples={currentMarketStats.samples} />
+                {allMatches.length > 12 && (
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 2, textAlign: 'center' }}
+                  >
+                    Showing 12 of {allMatches.length} matches
+                  </Typography>
+                )}
+              </>
+            )}
           </AccordionDetails>
         </Accordion>
-      )}
 
-      {/* Hits Section - Collapsible */}
-      <Accordion
-        expanded={hitsExpanded}
-        onChange={(_, expanded) => setHitsExpanded(expanded)}
-        sx={{ mb: 4 }}
-      >
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Notifications color="success" />
-            <Typography variant="h6">
-              Hits ({allMatches.length})
-            </Typography>
-            {allMatches.length > 0 && (
-              <Chip label="Under threshold" size="small" color="success" sx={{ ml: 1 }} />
-            )}
-          </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          {allMatches.length === 0 ? (
-            <Alert severity="info">
-              No matches found yet{selectedProduct !== 'all' ? ' for this product' : ''}. The bot will alert you when listings match your criteria.
-            </Alert>
-          ) : (
-            <>
-              <Grid container spacing={2}>
-                {allMatches.slice(0, 12).map((m, i) => (
-                  <Grid item xs={12} md={6} key={`${m.listing.source}-${m.listing.sourceId}-${i}`}>
-                    <HitCard match={m} />
-                  </Grid>
+        {/* Charts */}
+        {history.length > 0 && (
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid item xs={12} md={8}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Scan Activity
+                  </Typography>
+                  <ActivityChart data={history} />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Alerts & Errors
+                  </Typography>
+                  <AlertsBarChart data={history} />
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        )}
+
+        {/* Tracked Items */}
+        {seenCounts.length > 0 && (
+          <Card sx={{ mb: 4 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Tracked Listings
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                {seenCounts.map((s, i) => (
+                  <Chip
+                    key={i}
+                    label={`${s.marketplace}/${s.product}: ${s.count}`}
+                    variant="outlined"
+                    size="small"
+                  />
                 ))}
-              </Grid>
-              {allMatches.length > 12 && (
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
-                  Showing 12 of {allMatches.length} matches
-                </Typography>
-              )}
-            </>
-          )}
-        </AccordionDetails>
-      </Accordion>
+              </Box>
+            </CardContent>
+          </Card>
+        )}
 
-      {/* Charts */}
-      {history.length > 0 && (
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} md={8}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Scan Activity
-                </Typography>
-                <ActivityChart data={history} />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Alerts & Errors
-                </Typography>
-                <AlertsBarChart data={history} />
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      )}
-
-      {/* Tracked Items */}
-      {seenCounts.length > 0 && (
-        <Card sx={{ mb: 4 }}>
+        {/* Recent Runs Table */}
+        <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Tracked Listings
+              Recent Runs
             </Typography>
-            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-              {seenCounts.map((s, i) => (
-                <Chip
-                  key={i}
-                  label={`${s.marketplace}/${s.product}: ${s.count}`}
-                  variant="outlined"
-                  size="small"
-                />
-              ))}
-            </Box>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Recent Runs Table */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Recent Runs
-          </Typography>
-          {filteredRecent.length === 0 ? (
-            <Alert severity="info">No runs recorded yet.</Alert>
-          ) : (
-            <TableContainer component={Paper} variant="outlined">
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Time</TableCell>
-                    <TableCell align="right">Duration</TableCell>
-                    <TableCell align="right">Scanned</TableCell>
-                    <TableCell align="right">Matches</TableCell>
-                    <TableCell align="right">Alerts</TableCell>
-                    <TableCell align="right">Errors</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredRecent.map((r, idx) => (
-                    <TableRow key={idx} hover>
-                      <TableCell>{formatTime(r.runAt)}</TableCell>
-                      <TableCell align="right">{formatDuration(r.durationMs)}</TableCell>
-                      <TableCell align="right">{r.scanned}</TableCell>
-                      <TableCell align="right">{r.matches}</TableCell>
-                      <TableCell align="right">
-                        {r.alerts > 0 ? (
-                          <Tooltip
-                            title={
-                              <Box sx={{ p: 0.5 }}>
-                                {r.byProduct.flatMap((p) =>
-                                  p.matches.slice(0, 5).map((m, i) => (
-                                    <Box key={`${p.productId}-${i}`} sx={{ mb: 0.5 }}>
-                                      <Typography variant="caption" display="block" sx={{ fontWeight: 600 }}>
-                                        ${m.effectivePriceUsd.toFixed(0)} - {m.productName}
+            {filteredRecent.length === 0 ? (
+              <Alert severity="info">No runs recorded yet.</Alert>
+            ) : (
+              <TableContainer component={Paper} variant="outlined">
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Time</TableCell>
+                      <TableCell align="right">Duration</TableCell>
+                      <TableCell align="right">Scanned</TableCell>
+                      <TableCell align="right">Matches</TableCell>
+                      <TableCell align="right">Alerts</TableCell>
+                      <TableCell align="right">Errors</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filteredRecent.map((r, idx) => (
+                      <TableRow key={idx} hover>
+                        <TableCell>{formatTime(r.runAt)}</TableCell>
+                        <TableCell align="right">{formatDuration(r.durationMs)}</TableCell>
+                        <TableCell align="right">{r.scanned}</TableCell>
+                        <TableCell align="right">{r.matches}</TableCell>
+                        <TableCell align="right">
+                          {r.alerts > 0 ? (
+                            <Tooltip
+                              title={
+                                <Box sx={{ p: 0.5 }}>
+                                  {r.byProduct.flatMap((p) =>
+                                    p.matches.slice(0, 5).map((m, i) => (
+                                      <Box key={`${p.productId}-${i}`} sx={{ mb: 0.5 }}>
+                                        <Typography
+                                          variant="caption"
+                                          display="block"
+                                          sx={{ fontWeight: 600 }}
+                                        >
+                                          ${m.effectivePriceUsd.toFixed(0)} - {m.productName}
+                                        </Typography>
+                                        <Typography
+                                          variant="caption"
+                                          display="block"
+                                          sx={{
+                                            opacity: 0.9,
+                                            maxWidth: 250,
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                          }}
+                                        >
+                                          {m.listing.title.slice(0, 50)}
+                                          {m.listing.title.length > 50 ? '...' : ''}
+                                        </Typography>
+                                      </Box>
+                                    )),
+                                  )}
+                                  {r.byProduct.reduce((sum, p) => sum + p.matches.length, 0) >
+                                    5 && (
+                                    <Typography variant="caption" sx={{ opacity: 0.7 }}>
+                                      +
+                                      {r.byProduct.reduce((sum, p) => sum + p.matches.length, 0) -
+                                        5}{' '}
+                                      more
+                                    </Typography>
+                                  )}
+                                </Box>
+                              }
+                              arrow
+                              placement="left"
+                            >
+                              <Chip
+                                label={r.alerts}
+                                color="success"
+                                size="small"
+                                sx={{ cursor: 'help' }}
+                              />
+                            </Tooltip>
+                          ) : (
+                            r.alerts
+                          )}
+                        </TableCell>
+                        <TableCell align="right">
+                          {(r.errors?.length || 0) > 0 ? (
+                            <Tooltip
+                              title={
+                                <Box sx={{ p: 0.5 }}>
+                                  {r.errors?.map((e, i) => (
+                                    <Box
+                                      key={i}
+                                      sx={{ mb: i < (r.errors?.length || 0) - 1 ? 1 : 0 }}
+                                    >
+                                      <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                                        {e.marketplace}/{e.productId}
                                       </Typography>
-                                      <Typography variant="caption" display="block" sx={{ opacity: 0.9, maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                        {m.listing.title.slice(0, 50)}{m.listing.title.length > 50 ? '...' : ''}
+                                      <Typography
+                                        variant="caption"
+                                        display="block"
+                                        sx={{ opacity: 0.9 }}
+                                      >
+                                        {e.message}
                                       </Typography>
                                     </Box>
-                                  ))
-                                )}
-                                {r.byProduct.reduce((sum, p) => sum + p.matches.length, 0) > 5 && (
-                                  <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                                    +{r.byProduct.reduce((sum, p) => sum + p.matches.length, 0) - 5} more
-                                  </Typography>
-                                )}
-                              </Box>
-                            }
-                            arrow
-                            placement="left"
-                          >
-                            <Chip label={r.alerts} color="success" size="small" sx={{ cursor: 'help' }} />
-                          </Tooltip>
-                        ) : (
-                          r.alerts
-                        )}
-                      </TableCell>
-                      <TableCell align="right">
-                        {(r.errors?.length || 0) > 0 ? (
-                          <Tooltip
-                            title={
-                              <Box sx={{ p: 0.5 }}>
-                                {r.errors?.map((e, i) => (
-                                  <Box key={i} sx={{ mb: i < (r.errors?.length || 0) - 1 ? 1 : 0 }}>
-                                    <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                                      {e.marketplace}/{e.productId}
-                                    </Typography>
-                                    <Typography variant="caption" display="block" sx={{ opacity: 0.9 }}>
-                                      {e.message}
-                                    </Typography>
-                                  </Box>
-                                ))}
-                              </Box>
-                            }
-                            arrow
-                            placement="left"
-                          >
-                            <Chip label={r.errors?.length} color="error" size="small" sx={{ cursor: 'help' }} />
-                          </Tooltip>
-                        ) : (
-                          0
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </CardContent>
-      </Card>
-
-    </Container>
+                                  ))}
+                                </Box>
+                              }
+                              arrow
+                              placement="left"
+                            >
+                              <Chip
+                                label={r.errors?.length}
+                                color="error"
+                                size="small"
+                                sx={{ cursor: 'help' }}
+                              />
+                            </Tooltip>
+                          ) : (
+                            0
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </CardContent>
+        </Card>
+      </Container>
     </>
   );
 }

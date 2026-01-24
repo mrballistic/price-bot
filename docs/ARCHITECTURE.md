@@ -39,6 +39,7 @@ All adapters filter to US-based sellers only.
 ## Dashboard
 
 Next.js app in `apps/dashboard/`:
+
 - Reads `data/history.json` and `data/state.json`
 - MUI components with glassmorphism styling
 - Charts via Recharts

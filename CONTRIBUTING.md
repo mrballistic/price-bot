@@ -57,6 +57,7 @@ cd apps/dashboard && npm run dev
 ### Commit Messages
 
 Use clear, descriptive commit messages:
+
 - `feat: add support for new marketplace`
 - `fix: handle missing shipping data`
 - `docs: update API setup instructions`
@@ -109,6 +110,7 @@ npm run test:coverage
 ```
 
 When adding features or fixing bugs:
+
 - Add tests for new functionality
 - Ensure existing tests pass
 - Aim for good coverage of edge cases

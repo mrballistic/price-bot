@@ -1,6 +1,7 @@
 # <img src="apps/dashboard/app/icon.svg" width="32" height="32" alt="icon" style="vertical-align: middle;"> price-bot (Used Gear Price Watcher)
 
 [![CI](https://github.com/mrballistic/price-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/mrballistic/price-bot/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-97%25-brightgreen.svg)](https://github.com/mrballistic/price-bot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
@@ -40,14 +41,17 @@ Headless price watcher for used music gear across marketplaces (**Reverb**, **eB
 ## Environment variables
 
 Required:
+
 - `DISCORD_WEBHOOK_URL` - Discord webhook for alerts
 - `REVERB_TOKEN` - Reverb API token
 
 Optional (enable additional marketplaces):
+
 - `EBAY_CLIENT_ID` / `EBAY_CLIENT_SECRET` - eBay Buy Browse API credentials
 - `AMAZON_ACCESS_KEY` / `AMAZON_SECRET_KEY` / `AMAZON_PARTNER_TAG` - Amazon PA-API 5.0 (requires Associate account)
 
 Optional settings:
+
 - `EBAY_ENV` - `production` (default) or `sandbox`
 - `LOG_LEVEL` - `debug`, `info` (default), `warn`, or `error`
 
@@ -84,18 +88,18 @@ Products are configured in `config/watchlist.yml`:
 products:
   - id: my-product
     name: 'Product Name'
-    minPriceUsd: 100      # Skip listings below this (filters accessories)
-    maxPriceUsd: 500      # Alert threshold
+    minPriceUsd: 100 # Skip listings below this (filters accessories)
+    maxPriceUsd: 500 # Alert threshold
     marketplaces: ['reverb', 'ebay', 'amazon']
-    includeTerms:         # At least one must match
+    includeTerms: # At least one must match
       - 'product name'
       - 'alternate name'
-      - '/product\s*v\d+/i'  # Regex pattern (wrapped in /.../)
-    excludeTerms:         # None can match
+      - '/product\s*v\d+/i' # Regex pattern (wrapped in /.../)
+    excludeTerms: # None can match
       - 'case'
       - 'cover'
       - 'parts'
-      - '/\bfor\s+parts\b/'  # Regex pattern
+      - '/\bfor\s+parts\b/' # Regex pattern
 ```
 
 **Regex support:** Terms wrapped in `/pattern/` are treated as regular expressions. Flags can be added after the closing slash (e.g., `/pattern/i` for case-insensitive). By default, all regex patterns are case-insensitive.
@@ -111,12 +115,14 @@ All adapters filter to US-based sellers only. If a marketplace fails, the run co
 ## Discord alerts
 
 Alerts are sent as rich embeds with:
+
 - Listing title, image, and link
 - Price, shipping, and effective total
 - Marketplace and condition
 - Threshold comparison
 
 **Price-drop alerts** are highlighted with:
+
 - Green color and 📉 emoji
 - Previous price → new price with savings amount
 - "PRICE DROP" label in footer
@@ -126,6 +132,7 @@ Alerts are sent as rich embeds with:
 ## Dashboard
 
 The Next.js dashboard in `apps/dashboard` provides:
+
 - **Stats overview**: Last run time, items scanned, alerts sent, errors
 - **Product cards**: Each watched product with alert thresholds and market stats
 - **Market pricing**: Live min/max/avg/median prices with sample listings
@@ -137,6 +144,7 @@ The Next.js dashboard in `apps/dashboard` provides:
 Built with MUI (Material UI) and deployed as a static site.
 
 **Run locally:**
+
 ```bash
 cd apps/dashboard
 npm install
@@ -144,6 +152,28 @@ npm run dev
 ```
 
 **GitHub Pages:** The dashboard auto-deploys to GitHub Pages on each watcher run.
+
+## Testing
+
+The project has comprehensive test coverage using [Vitest](https://vitest.dev/):
+
+- **115 tests** across 11 test files
+- **97%+ code coverage** (statements, branches, functions, lines)
+
+Run tests:
+
+```bash
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:coverage # Coverage report
+```
+
+Test coverage includes:
+
+- All marketplace adapters (eBay, Reverb, Amazon)
+- Core modules (state management, config parsing, logging, matching)
+- Discord notification delivery
+- Retry logic and rate limiting
 
 ## Docs
 

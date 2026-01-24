@@ -66,10 +66,7 @@ interface RetryOptions {
  *   { retries: 3, baseDelayMs: 1000, label: 'marketplace.search' }
  * );
  */
-export async function retry<T>(
-  fn: () => Promise<T>,
-  opts: RetryOptions,
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, opts: RetryOptions): Promise<T> {
   let lastErr: unknown;
   for (let attempt = 0; attempt <= opts.retries; attempt++) {
     try {

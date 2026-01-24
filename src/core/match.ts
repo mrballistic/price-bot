@@ -93,7 +93,7 @@ function parseRegex(pattern: string): RegExp | null {
     // Always add 'i' flag for case-insensitive matching unless already specified
     const flags = match[2].includes('i') ? match[2] : match[2] + 'i';
     return new RegExp(match[1], flags);
-  } catch (e) {
+  } catch {
     logger.warn(`Invalid regex pattern: ${pattern}`);
     return null;
   }

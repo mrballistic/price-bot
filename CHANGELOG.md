@@ -5,9 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-01-24
+
+### Added
+
+- **Comprehensive test suite**: 115 tests with 97%+ code coverage using Vitest
+  - Unit tests for all marketplace adapters (eBay, Reverb, Amazon)
+  - Tests for core modules (state, config, logger, match, retry, sleep)
+  - Discord notification tests
+- **Pre-commit hooks**: Husky + lint-staged for automated linting and formatting
+- **ESLint configuration**: Strict TypeScript linting with Prettier integration
+
+### Changed
+
+- Replaced all `any` types with proper `unknown` types and type assertions
+- Improved type safety throughout the codebase
+
 ## [0.1.1] - 2026-01-24
 
 ### Added
+
 - **Sold tracking**: Listings marked as sold after 3 consecutive missed runs
   - SOLD badge displayed in dashboard with dimmed styling
   - Automatic cleanup of sold items after 5 days
@@ -18,17 +35,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   verbose JSDoc comments using inline TypeScript types
 
 ### Changed
+
 - Replaced Roland S-1 with Elektron Analog Heat +FX in watchlist
 - Updated README with Pipedream setup instructions and sold tracking docs
 - Added icon to README title
 
 ### Fixed
+
 - eBay adapter now uses plain text search terms for API queries (regex patterns
   were being sent directly to the API, causing zero results)
 
 ## [0.1.0] - 2026-01-22
 
 ### Added
+
 - Initial release
 - **Marketplace adapters**: Reverb, eBay, Amazon (PA-API 5.0)
 - **Discord notifications**: Rich embeds with listing details

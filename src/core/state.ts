@@ -43,7 +43,7 @@ export function readState(): StateFile {
   const state = JSON.parse(raw) as StateFile;
   // Initialize missing marketplace buckets
   if (!state.seen) {
-    state.seen = { ebay: {}, reverb: {} } as any;
+    state.seen = { ebay: {}, reverb: {} } as StateFile['seen'];
   }
   if (!state.seen.ebay) state.seen.ebay = {};
   if (!state.seen.reverb) state.seen.reverb = {};
@@ -116,7 +116,7 @@ export function ensureStateBuckets(
   market: MarketplaceId,
   productId: string,
 ): void {
-  state.seen[market] = state.seen[market] || ({} as any);
+  state.seen[market] = state.seen[market] || ({} as Record<string, Record<string, SeenEntry>>);
   state.seen[market][productId] = state.seen[market][productId] || {};
 }
 
