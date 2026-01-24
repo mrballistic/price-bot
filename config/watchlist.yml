@@ -93,23 +93,25 @@ products:
       - 'speakers'
       - 'studio monitor'
 
-  - id: roland-s-1
-    name: 'Roland S-1'
-    minPriceUsd: 100
-    maxPriceUsd: 220
+  - id: elektron-analog-heat-plus-fx
+    name: 'Elektron Analog Heat +FX'
+    minPriceUsd: 400
+    maxPriceUsd: 900
     marketplaces: ['reverb', 'ebay']
     includeTerms:
-      - 'roland s-1'
-      - 'roland s1'
-      - 'aira s-1'
-      - 'aira s1'
-      - 's-1 aira'
-      - 's-1 tweak'
-      - 's1 tweak'
-      - 's-1 compact'
-      - 'aira compact s-1'
-      - 'tweak synthesizer'
+      - '/analog\s*heat\s*\+\s*fx/i'
+      - '/analog\s*heat\s*plus\s*fx/i'
+      - '/heat\s*\+\s*fx/i'
+      - '/heat\s*plus\s*fx/i'
     excludeTerms:
+      # Other versions
+      - 'mkii'
+      - 'mk2'
+      - 'mk ii'
+      - 'mk 2'
+      - 'mark ii'
+      - 'mark 2'
+      # Accessories
       - 'case'
       - 'deck saver'
       - 'decksaver'
@@ -120,13 +122,6 @@ products:
       - 'stand'
       - 'power supply'
       - 'adapter'
-      - 'parts'
-      - 'repair'
-      - 'broken'
-      - 'for parts'
-      - 'bundle'
-      - 'lot'
-      # Accessories
       - 'dust cover'
       - 'cover'
       - 'bag'
@@ -135,33 +130,20 @@ products:
       - 'skin'
       - 'sticker'
       # Parts/Repairs
+      - 'parts'
+      - 'repair'
+      - 'broken'
+      - 'for parts'
       - 'replacement'
       - 'spare'
       - 'button'
       - 'not working'
       - 'faulty'
       - 'damaged'
-      # Other Roland products
-      - 'cable'
-      - 'cd'
-      - 'cd-rom'
-      - 'cdrom'
-      - 'disk'
-      - 'stage unit'
-      - 's-1608'
-      - 's-330'
-      - 's-550'
-      - 's-760'
-      - 'drum'
-      - 'v-drum'
-      - 'td-'
-      - 'dial'
+      - 'pcb'
+      - 'board'
+      - 'knob'
       - 'encoder'
-      - 'juno'
-      - 'jupiter'
-      - 'section'
-      - 'orchestral'
-      - 'vol '
 
 settings:
   currency: 'USD'
