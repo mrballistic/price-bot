@@ -11,6 +11,7 @@ Headless price watcher for used music gear across marketplaces (**Reverb**, **eB
 - Calculates market stats (min/max/avg/median) for price tracking outside thresholds
 - De-duplicates alerts using `data/state.json`
 - **Price-drop alerts**: Re-alerts when a previously-seen listing drops below threshold
+- **Sold tracking**: Detects when listings disappear and marks them as sold in the dashboard
 - Writes run history to `data/history.json`
 - Sends Discord webhook alerts for new matches and price drops
 - Runs on a schedule via **Pipedream** triggering GitHub Actions
@@ -115,13 +116,15 @@ Alerts are sent as rich embeds with:
 - Previous price → new price with savings amount
 - "PRICE DROP" label in footer
 
+**Sold tracking:** When a previously-matched listing is no longer found in search results for 3 consecutive runs, it's marked as sold. Sold items display with a "SOLD" badge in the dashboard and are automatically cleaned up after 5 days.
+
 ## Dashboard
 
 The Next.js dashboard in `apps/dashboard` provides:
 - **Stats overview**: Last run time, items scanned, alerts sent, errors
 - **Product cards**: Each watched product with alert thresholds and market stats
 - **Market pricing**: Live min/max/avg/median prices with sample listings
-- **Hits section**: All matches under threshold, sorted by price
+- **Hits section**: All matches under threshold, sorted by price (with SOLD badges for items no longer available)
 - **Activity charts**: Scan activity and alerts over time (Recharts)
 - **Product filtering**: Filter all views by product
 - **Dark mode**: Automatic via system preference (no toggle needed)

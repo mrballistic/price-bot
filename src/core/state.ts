@@ -60,3 +60,28 @@ export function markSeen(
 export function nowIso(): string {
   return new Date().toISOString();
 }
+
+const SOLD_RETENTION_DAYS = 5;
+
+/**
+ * Remove sold items older than SOLD_RETENTION_DAYS from state
+ */
+export function cleanupOldSoldItems(state: StateFile): number {
+  const cutoff = Date.now() - SOLD_RETENTION_DAYS * 24 * 60 * 60 * 1000;
+  let removed = 0;
+
+  for (const market of Object.keys(state.seen) as MarketplaceId[]) {
+    for (const productId of Object.keys(state.seen[market] || {})) {
+      const listings = state.seen[market][productId];
+      for (const listingId of Object.keys(listings || {})) {
+        const entry = listings[listingId];
+        if (entry.soldAt && new Date(entry.soldAt).getTime() < cutoff) {
+          delete listings[listingId];
+          removed++;
+        }
+      }
+    }
+  }
+
+  return removed;
+}

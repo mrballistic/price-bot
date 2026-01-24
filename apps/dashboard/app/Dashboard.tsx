@@ -63,6 +63,8 @@ interface Match {
   listing: Listing;
   effectivePriceUsd: number;
   shippingNote?: string;
+  sold?: boolean;
+  soldAt?: string;
 }
 
 interface MarketStats {
@@ -224,7 +226,12 @@ function ProductCard({ product, marketStats }: { product: ProductConfig; marketS
 function HitCard({ match }: { match: Match }) {
   const { listing } = match;
   return (
-    <Card sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, overflow: 'hidden' }}>
+    <Card sx={{
+      display: 'flex',
+      flexDirection: { xs: 'column', sm: 'row' },
+      overflow: 'hidden',
+      opacity: match.sold ? 0.7 : 1,
+    }}>
       {listing.imageUrl && (
         <CardMedia
           component="img"
@@ -238,21 +245,31 @@ function HitCard({ match }: { match: Match }) {
           <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.3 }}>
             {listing.title.length > 80 ? listing.title.slice(0, 80) + '...' : listing.title}
           </Typography>
-          <Chip
-            label={listing.source}
-            size="small"
-            color={listing.source === 'reverb' ? 'secondary' : 'primary'}
-          />
+          <Box sx={{ display: 'flex', gap: 0.5, flexShrink: 0 }}>
+            {match.sold && (
+              <Chip
+                label="SOLD"
+                size="small"
+                color="error"
+                sx={{ fontWeight: 600 }}
+              />
+            )}
+            <Chip
+              label={listing.source}
+              size="small"
+              color={listing.source === 'reverb' ? 'secondary' : 'primary'}
+            />
+          </Box>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 1 }}>
-          <Typography variant="h6" color="success.main" fontWeight={700}>
+          <Typography
+            variant="h6"
+            color={match.sold ? 'text.secondary' : 'success.main'}
+            fontWeight={700}
+            sx={{ textDecoration: match.sold ? 'line-through' : 'none' }}
+          >
             ${match.effectivePriceUsd.toFixed(2)}
           </Typography>
-          {match.shippingNote && (
-            <Typography variant="caption" color="warning.main">
-              {match.shippingNote}
-            </Typography>
-          )}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
           <Typography variant="caption" color="text.secondary">
@@ -274,8 +291,9 @@ function HitCard({ match }: { match: Match }) {
           rel="noopener noreferrer"
           endIcon={<OpenInNew fontSize="small" />}
           sx={{ mt: 1, textTransform: 'none' }}
+          disabled={match.sold}
         >
-          View Listing
+          {match.sold ? 'Sold' : 'View Listing'}
         </Button>
       </CardContent>
     </Card>
@@ -388,15 +406,30 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
       }
     }
     // Dedupe by sourceId, keeping most recent
-    const seen = new Map<string, Match & { runAt: string }>();
+    const seenMap = new Map<string, Match & { runAt: string }>();
     for (const m of matches) {
       const key = `${m.listing.source}-${m.listing.sourceId}`;
-      if (!seen.has(key) || new Date(m.runAt) > new Date(seen.get(key)!.runAt)) {
-        seen.set(key, m);
+      if (!seenMap.has(key) || new Date(m.runAt) > new Date(seenMap.get(key)!.runAt)) {
+        seenMap.set(key, m);
       }
     }
-    return Array.from(seen.values()).sort((a, b) => a.effectivePriceUsd - b.effectivePriceUsd);
-  }, [history, selectedProduct]);
+
+    // Cross-reference with state to check sold status
+    const result = Array.from(seenMap.values()).map((m) => {
+      const stateEntry = state.seen?.[m.listing.source]?.[m.productId]?.[m.listing.sourceId];
+      if (stateEntry?.soldAt) {
+        return { ...m, sold: true, soldAt: stateEntry.soldAt };
+      }
+      return m;
+    });
+
+    // Sort: active listings first (by price), then sold listings (by price)
+    return result.sort((a, b) => {
+      if (a.sold && !b.sold) return 1;
+      if (!a.sold && b.sold) return -1;
+      return a.effectivePriceUsd - b.effectivePriceUsd;
+    });
+  }, [history, selectedProduct, state.seen]);
 
   // Filter history stats by product
   const filteredRecent = useMemo(() => {

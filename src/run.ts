@@ -10,6 +10,7 @@ import {
   writeState,
   isSeen,
   ensureStateBuckets,
+  cleanupOldSoldItems,
 } from './core/state';
 import { sendDiscordAlerts } from './notify/discord';
 import { Listing, MarketplaceId, MarketStats, Match, RunRecord, SeenEntry } from './types';
@@ -170,11 +171,42 @@ async function main(): Promise<void> {
         lastEffectivePrice: m.effectivePriceUsd,
         url: m.listing.url,
         title: m.listing.title,
+        missedRuns: 0, // Reset since we saw it this run
       };
       // If we already saw it, preserve firstSeenAt if present.
       const existing = state.seen?.[m.listing.source]?.[product.id]?.[m.listing.sourceId];
       if (existing?.firstSeenAt) entry.firstSeenAt = existing.firstSeenAt;
       markSeen(state, m.listing.source, product.id, m.listing.sourceId, entry);
+    }
+
+    // Track sold items: check previously-seen listings that weren't found this run
+    const seenThisRunByMarket: Record<string, Set<string>> = {};
+    for (const l of rawListings) {
+      if (!seenThisRunByMarket[l.source]) seenThisRunByMarket[l.source] = new Set();
+      seenThisRunByMarket[l.source].add(l.sourceId);
+    }
+
+    for (const market of product.marketplaces) {
+      const productListings = state.seen?.[market]?.[product.id];
+      if (!productListings) continue;
+
+      const seenThisRun = seenThisRunByMarket[market] || new Set();
+
+      for (const [listingId, entry] of Object.entries(productListings)) {
+        // Skip already-sold items
+        if (entry.soldAt) continue;
+
+        if (!seenThisRun.has(listingId)) {
+          // Listing not found this run - increment missed count
+          entry.missedRuns = (entry.missedRuns || 0) + 1;
+
+          if (entry.missedRuns >= 3) {
+            // Mark as sold after 3 consecutive missed runs
+            entry.soldAt = runAt;
+            logger.info(`Marked as sold: ${entry.title} (missed ${entry.missedRuns} runs)`);
+          }
+        }
+      }
     }
 
     // Send alerts (batched) for this product
@@ -198,6 +230,12 @@ async function main(): Promise<void> {
       matches: matches.slice(0, 50),
       marketStats,
     });
+  }
+
+  // Clean up sold items older than 5 days
+  const removedSold = cleanupOldSoldItems(state);
+  if (removedSold > 0) {
+    logger.info(`Cleaned up ${removedSold} sold item(s) older than 5 days`);
   }
 
   state.updatedAt = runAt;

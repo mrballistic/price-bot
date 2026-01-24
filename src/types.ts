@@ -48,6 +48,9 @@ export type SeenEntry = {
   lastEffectivePrice: number;
   url: string;
   title: string;
+  // Sold tracking
+  missedRuns?: number; // consecutive runs where listing wasn't found
+  soldAt?: string; // ISO timestamp when marked as sold (after 3 missed runs)
 };
 
 export type StateFile = {
