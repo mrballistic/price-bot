@@ -1,3 +1,22 @@
+/**
+ * @fileoverview Main entry point for the price bot.
+ *
+ * This module orchestrates the complete price monitoring workflow:
+ * 1. Loads configuration from the watchlist YAML file
+ * 2. Initializes marketplace adapters (eBay, Reverb, Amazon)
+ * 3. Searches each marketplace for configured products
+ * 4. Filters listings that match price thresholds
+ * 5. Detects price drops on previously seen listings
+ * 6. Sends Discord alerts for new matches and price drops
+ * 7. Tracks sold items (listings that disappear)
+ * 8. Persists state and appends run history
+ *
+ * The bot is designed to run on a schedule (e.g., via GitHub Actions or
+ * Pipedream) and will only alert once per listing unless the price drops.
+ *
+ * @module run
+ */
+
 import { loadConfig } from './config';
 import { getAdapters } from './adapters';
 import { logger } from './core/logger';
@@ -15,6 +34,13 @@ import {
 import { sendDiscordAlerts } from './notify/discord';
 import { Listing, MarketplaceId, MarketStats, Match, RunRecord, SeenEntry } from './types';
 
+/**
+ * Groups matches by their product ID and sorts each group by effective price.
+ *
+ * @param matches - Array of matches to group
+ * @returns Record mapping product IDs to sorted arrays of matches
+ * @private
+ */
 function groupMatchesByProduct(matches: Match[]): Record<string, Match[]> {
   const m: Record<string, Match[]> = {};
   for (const x of matches) {
@@ -27,11 +53,30 @@ function groupMatchesByProduct(matches: Match[]): Record<string, Match[]> {
   return m;
 }
 
+/**
+ * Converts an unknown error value to a string message.
+ *
+ * @param err - The error value to stringify
+ * @returns Error message string
+ * @private
+ */
 function stringifyError(err: unknown): string {
   if (err instanceof Error) return err.message;
   return String(err);
 }
 
+/**
+ * Calculates market statistics from a set of listings.
+ *
+ * Computes min, max, average, and median effective prices for USD listings.
+ * Also selects representative samples at key percentiles (lowest, 25th, median,
+ * 75th, and highest) for display in the dashboard.
+ *
+ * @param listings - Array of listings to analyze (all price points, not filtered by threshold)
+ * @param cfg - Configuration object with shipping inclusion setting
+ * @returns Market statistics including price range, averages, and sample listings
+ * @private
+ */
 function calculateMarketStats(listings: Listing[], cfg: { settings: { includeShippingInThreshold: boolean } }): MarketStats {
   if (listings.length === 0) {
     return { count: 0, minPrice: null, maxPrice: null, avgPrice: null, medianPrice: null, samples: [] };
@@ -90,6 +135,33 @@ function calculateMarketStats(listings: Listing[], cfg: { settings: { includeShi
   };
 }
 
+/**
+ * Main execution function for the price bot.
+ *
+ * Orchestrates the complete monitoring workflow:
+ *
+ * 1. **Initialization**: Loads configuration and state, creates marketplace adapters
+ * 2. **Search Phase**: For each product, searches configured marketplaces
+ * 3. **Match Filtering**: Applies price thresholds and term filters
+ * 4. **De-duplication**: Identifies new listings vs. previously seen
+ * 5. **Price Drop Detection**: Compares current prices to stored prices
+ * 6. **Sold Tracking**: Marks listings as sold after 3 consecutive missed runs
+ * 7. **Alerting**: Sends Discord notifications for new listings and price drops
+ * 8. **State Persistence**: Updates seen listings and cleans up old sold items
+ * 9. **History Recording**: Appends run statistics to history file
+ *
+ * @returns Promise that resolves when the run completes
+ * @throws Error if critical failures occur (Discord webhook fails, etc.)
+ *
+ * @example
+ * ```bash
+ * # Run via npm script
+ * npm run watch
+ *
+ * # Or directly with tsx
+ * npx tsx src/run.ts
+ * ```
+ */
 async function main(): Promise<void> {
   const started = Date.now();
   const runAt = nowIso();

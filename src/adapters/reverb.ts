@@ -1,9 +1,32 @@
+/**
+ * @fileoverview Reverb marketplace adapter using the Reverb API.
+ *
+ * This adapter searches Reverb's marketplace for listings using their
+ * REST API with Bearer token authentication. Supports both keyword
+ * search and CSP (Canonical Standard Product) slug-based queries.
+ * Results are normalized to the common Listing format.
+ *
+ * Required environment variables:
+ * - REVERB_TOKEN: Reverb API bearer token
+ *
+ * @module adapters/reverb
+ */
+
 import { Listing } from '../types';
 import { logger } from '../core/logger';
 import { sleep } from '../core/sleep';
 import { retry } from '../core/retry';
 import { MarketplaceAdapter, SearchParams } from './types';
 
+/**
+ * Parses a money value from Reverb's various price formats.
+ *
+ * Handles { amount, currency }, { value, currency_code }, and similar variations.
+ *
+ * @param val - The raw money value from Reverb API
+ * @returns Parsed money object or null if invalid
+ * @private
+ */
 function parseMoney(val: any): { amount: number; currency: string } | null {
   const v = val?.amount ?? val?.value ?? val;
   const c = val?.currency ?? val?.currency_code ?? val?.currencyCode;
@@ -12,6 +35,15 @@ function parseMoney(val: any): { amount: number; currency: string } | null {
   return { amount: num, currency: String(c) };
 }
 
+/**
+ * Extracts the web URL from a Reverb listing's _links object.
+ *
+ * Tries multiple possible locations for the URL field.
+ *
+ * @param listing - Raw listing object from Reverb API
+ * @returns The listing's web URL or null if not found
+ * @private
+ */
 function pickWebUrl(listing: any): string | null {
   const href = listing?._links?.web?.href || listing?._links?.web?.url;
   if (href) return String(href);
@@ -20,6 +52,16 @@ function pickWebUrl(listing: any): string | null {
   return null;
 }
 
+/**
+ * Converts a Reverb listing to a normalized Listing object.
+ *
+ * Extracts relevant fields from Reverb's listing format and
+ * normalizes them to the common Listing structure.
+ *
+ * @param item - Raw listing object from Reverb API
+ * @returns Normalized listing or null if required fields missing
+ * @private
+ */
 function toListing(item: any): Listing | null {
   const id = item?.id;
   const title = item?.title;
@@ -53,6 +95,17 @@ function toListing(item: any): Listing | null {
   };
 }
 
+/**
+ * Performs a keyword search on Reverb's listings API.
+ *
+ * Searches for items matching the query, filtered to US sellers only.
+ *
+ * @param q - Search query string
+ * @param limit - Maximum number of results to return (max 50 per request)
+ * @returns Array of normalized listings
+ * @throws Error if the API request fails
+ * @private
+ */
 async function searchReverbOnce(q: string, limit: number): Promise<Listing[]> {
   const token = process.env.REVERB_TOKEN;
   if (!token) throw new Error('Missing REVERB_TOKEN');
@@ -88,6 +141,19 @@ async function searchReverbOnce(q: string, limit: number): Promise<Listing[]> {
   return listings;
 }
 
+/**
+ * Searches Reverb using a CSP (Canonical Standard Product) slug.
+ *
+ * CSP queries are more accurate than keyword searches as they target
+ * a specific product type directly. Useful for well-known products
+ * with established Reverb product pages.
+ *
+ * @param slug - The Reverb CSP slug (e.g., "roland-system-8")
+ * @param limit - Maximum number of results to return (max 50 per request)
+ * @returns Array of normalized listings
+ * @throws Error if the API request fails
+ * @private
+ */
 async function searchReverbByProductSlug(slug: string, limit: number): Promise<Listing[]> {
   const token = process.env.REVERB_TOKEN;
   if (!token) throw new Error('Missing REVERB_TOKEN');
@@ -122,6 +188,21 @@ async function searchReverbByProductSlug(slug: string, limit: number): Promise<L
   return listings;
 }
 
+/**
+ * Creates a Reverb marketplace adapter instance.
+ *
+ * The adapter first searches by CSP slugs (if provided in product config),
+ * then performs keyword searches using include terms. Results are deduplicated
+ * and limited to the configured maximum.
+ *
+ * @returns Configured Reverb adapter
+ *
+ * @example
+ * ```typescript
+ * const reverbAdapter = createReverbAdapter();
+ * const listings = await reverbAdapter.search({ product, cfg });
+ * ```
+ */
 export function createReverbAdapter(): MarketplaceAdapter {
   return {
     id: 'reverb',

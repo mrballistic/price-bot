@@ -1,26 +1,89 @@
+/**
+ * @fileoverview Discord webhook notification sender.
+ *
+ * This module handles sending deal alerts to Discord via webhooks.
+ * It formats matching listings as rich embeds with images, pricing
+ * information, and marketplace details. Supports both new listing
+ * alerts and price drop notifications.
+ *
+ * @module notify/discord
+ */
+
 import { Match, WatchlistConfig } from '../types';
 import { logger } from '../core/logger';
 
+/**
+ * Discord embed object structure.
+ * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
+ */
 type DiscordEmbed = {
+  /** Embed title (listing title) */
   title?: string;
+  /** URL the title links to */
   url?: string;
+  /** Embed description text */
   description?: string;
+  /** ISO 8601 timestamp */
   timestamp?: string;
+  /** Embed color as decimal (e.g., 0x00ff00 for green) */
   color?: number;
+  /** Array of field objects */
   fields?: Array<{ name: string; value: string; inline?: boolean }>;
+  /** Image object with url property */
   image?: { url: string };
+  /** Footer object with text property */
   footer?: { text: string };
 };
 
+/**
+ * Discord webhook payload structure.
+ */
 type DiscordPayload = {
+  /** Plain text message content */
   content?: string;
+  /** Array of embed objects (max 10) */
   embeds?: DiscordEmbed[];
 };
 
+/**
+ * Formats a number as USD currency string.
+ *
+ * @param n - The number to format
+ * @returns Formatted string like "$199.99"
+ * @private
+ */
 function fmtUsd(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
+/**
+ * Sends Discord webhook alerts for matching listings.
+ *
+ * Creates rich embed messages for each match, including:
+ * - Listing title with link to marketplace
+ * - Price, shipping, and effective price fields
+ * - Marketplace and condition information
+ * - Product image if available
+ * - Price drop highlighting (green color, special emoji)
+ *
+ * Messages are chunked to respect Discord's 10 embed per message limit.
+ * The DISCORD_WEBHOOK_URL environment variable must be set.
+ *
+ * @param matches - Array of matches to send alerts for
+ * @param cfg - Configuration with embed settings
+ * @param runAtIso - ISO 8601 timestamp of the run (for embed timestamps)
+ * @returns Number of alerts successfully sent
+ * @throws If DISCORD_WEBHOOK_URL is not set or webhook request fails
+ *
+ * @example
+ * ```typescript
+ * const matches = filterMatches(product, listings, config);
+ * const freshMatches = matches.filter(m => !isSeen(...));
+ *
+ * const sent = await sendDiscordAlerts(freshMatches, config, new Date().toISOString());
+ * console.log(`Sent ${sent} Discord alerts`);
+ * ```
+ */
 export async function sendDiscordAlerts(
   matches: Match[],
   cfg: WatchlistConfig,

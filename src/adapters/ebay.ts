@@ -1,18 +1,61 @@
+/**
+ * @fileoverview eBay marketplace adapter using the Buy Browse API.
+ *
+ * This adapter searches eBay's marketplace for listings using the
+ * Buy Browse API with OAuth2 client credentials authentication.
+ * Results are normalized to the common Listing format.
+ *
+ * Required environment variables:
+ * - EBAY_CLIENT_ID: eBay application client ID
+ * - EBAY_CLIENT_SECRET: eBay application client secret
+ * - EBAY_ENV (optional): 'production' (default) or 'sandbox'
+ * - EBAY_MARKETPLACE_ID (optional): defaults to 'EBAY_US'
+ *
+ * @module adapters/ebay
+ */
+
 import { Listing } from '../types';
 import { logger } from '../core/logger';
 import { sleep } from '../core/sleep';
 import { retry } from '../core/retry';
 import { MarketplaceAdapter, SearchParams } from './types';
 
-type EbayToken = { access_token: string; expires_in: number; token_type: string };
+/**
+ * eBay OAuth2 token response structure.
+ */
+interface EbayToken {
+  /** The bearer token for API requests */
+  access_token: string;
+  /** Token lifetime in seconds */
+  expires_in: number;
+  /** Token type (usually "Application Access Token") */
+  token_type: string;
+}
 
+/** Cached OAuth token to avoid re-authentication on every request. */
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
+/**
+ * Returns the appropriate eBay API base URL based on environment.
+ *
+ * @returns The base URL for eBay API requests
+ * @private
+ */
 function getEbayBaseUrl(): string {
   const env = (process.env.EBAY_ENV || 'production').toLowerCase();
   return env === 'sandbox' ? 'https://api.sandbox.ebay.com' : 'https://api.ebay.com';
 }
 
+/**
+ * Obtains an OAuth2 access token from eBay using client credentials.
+ *
+ * Tokens are cached and reused until they expire (with a 60-second buffer).
+ * Uses the client credentials grant type for application-level access.
+ *
+ * @returns The access token for API requests
+ * @throws If credentials are missing or token request fails
+ * @private
+ */
 async function getAccessToken(): Promise<string> {
   const now = Date.now();
   if (cachedToken && cachedToken.expiresAt - now > 60_000) return cachedToken.token;
@@ -52,6 +95,15 @@ async function getAccessToken(): Promise<string> {
   return cachedToken.token;
 }
 
+/**
+ * Parses a money value from eBay's various price formats.
+ *
+ * Handles both { value, currency } and { amount, currencyCode } formats.
+ *
+ * @param val - The raw money value from eBay API
+ * @returns Parsed money or null if invalid
+ * @private
+ */
 function parseMoney(val: any): { amount: number; currency: string } | null {
   const v = val?.value ?? val?.amount ?? val;
   const c = val?.currency ?? val?.currencyCode;
@@ -60,6 +112,16 @@ function parseMoney(val: any): { amount: number; currency: string } | null {
   return { amount: num, currency: String(c) };
 }
 
+/**
+ * Converts an eBay item summary to a normalized Listing.
+ *
+ * Extracts relevant fields from eBay's item summary format and
+ * normalizes them to the common Listing structure.
+ *
+ * @param item - Raw item summary from eBay API
+ * @returns Normalized listing or null if required fields missing
+ * @private
+ */
 function toListing(item: any): Listing | null {
   const id = item?.itemId || item?.legacyItemId;
   const title = item?.title;
@@ -89,6 +151,17 @@ function toListing(item: any): Listing | null {
   };
 }
 
+/**
+ * Performs a single search request to eBay's Browse API.
+ *
+ * Searches for items matching the query, filtered to US sellers only.
+ *
+ * @param q - Search query string
+ * @param limit - Maximum number of results to return
+ * @returns Array of normalized listings
+ * @throws If the API request fails
+ * @private
+ */
 async function searchEbayOnce(q: string, limit: number): Promise<Listing[]> {
   const token = await getAccessToken();
   const marketplaceId = process.env.EBAY_MARKETPLACE_ID || 'EBAY_US';
@@ -122,6 +195,21 @@ async function searchEbayOnce(q: string, limit: number): Promise<Listing[]> {
   return listings;
 }
 
+/**
+ * Creates an eBay marketplace adapter instance.
+ *
+ * The adapter searches eBay using the product's include terms (or name if
+ * no terms specified). Multiple queries are executed with deduplication,
+ * and results are limited to the configured maximum.
+ *
+ * @returns Configured eBay adapter
+ *
+ * @example
+ * ```typescript
+ * const ebayAdapter = createEbayAdapter();
+ * const listings = await ebayAdapter.search({ product, cfg });
+ * ```
+ */
 export function createEbayAdapter(): MarketplaceAdapter {
   return {
     id: 'ebay',
@@ -129,6 +217,7 @@ export function createEbayAdapter(): MarketplaceAdapter {
       const max = cfg.settings.maxResultsPerMarketplace;
       const delayMs = cfg.settings.requestDelayMs;
 
+      // Use first 4 include terms as search queries
       const queries = (
         product.includeTerms && product.includeTerms.length > 0
           ? product.includeTerms
@@ -146,6 +235,7 @@ export function createEbayAdapter(): MarketplaceAdapter {
           label: `ebay.search(${q})`,
         });
 
+        // Deduplicate by sourceId
         for (const l of listings) {
           if (seen.has(l.sourceId)) continue;
           seen.add(l.sourceId);

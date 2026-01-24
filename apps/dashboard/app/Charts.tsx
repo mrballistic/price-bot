@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Chart components for the price bot dashboard.
+ *
+ * Provides visualization of scan activity and alert/error trends over time
+ * using the Recharts library. Charts automatically adapt to light/dark mode.
+ *
+ * @module dashboard/Charts
+ */
+
 'use client';
 
 import { useTheme } from '@mui/material';
@@ -14,6 +23,9 @@ import {
   Legend,
 } from 'recharts';
 
+/**
+ * Simplified run record for chart data.
+ */
 interface RunRecord {
   runAt: string;
   scanned: number;
@@ -22,6 +34,19 @@ interface RunRecord {
   errors?: { message: string }[];
 }
 
+/**
+ * Renders an area chart showing scan activity over time.
+ *
+ * Displays two overlapping area series:
+ * - Scanned: Total items scanned per run (indigo)
+ * - Matches: Items matching criteria per run (green)
+ *
+ * Shows the last 30 runs and adapts colors for light/dark mode.
+ *
+ * @param props - Component props
+ * @param props.data - Array of run records to visualize
+ * @returns Rendered area chart
+ */
 export function ActivityChart({ data }: { data: RunRecord[] }) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
@@ -84,6 +109,19 @@ export function ActivityChart({ data }: { data: RunRecord[] }) {
   );
 }
 
+/**
+ * Renders a bar chart showing alerts and errors per run.
+ *
+ * Displays two bar series:
+ * - Alerts: Discord notifications sent (green)
+ * - Errors: Marketplace or API errors (red)
+ *
+ * Shows the last 20 runs and adapts colors for light/dark mode.
+ *
+ * @param props - Component props
+ * @param props.data - Array of run records to visualize
+ * @returns Rendered bar chart
+ */
 export function AlertsBarChart({ data }: { data: RunRecord[] }) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';

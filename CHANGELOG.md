@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-01-24
+
+### Added
+- **Sold tracking**: Listings marked as sold after 3 consecutive missed runs
+  - SOLD badge displayed in dashboard with dimmed styling
+  - Automatic cleanup of sold items after 5 days
+- **Days on marketplace**: "Listed" column in market samples table shows listing age
+- **Pipedream scheduling**: Documentation for using Pipedream to trigger workflow
+  (workaround for unreliable GitHub Actions cron)
+- **Comprehensive JSDoc documentation**: All TypeScript files now documented with
+  verbose JSDoc comments using inline TypeScript types
+
+### Changed
+- Replaced Roland S-1 with Elektron Analog Heat +FX in watchlist
+- Updated README with Pipedream setup instructions and sold tracking docs
+- Added icon to README title
+
+### Fixed
+- eBay adapter now uses plain text search terms for API queries (regex patterns
+  were being sent directly to the API, causing zero results)
+
 ## [0.1.0] - 2026-01-22
 
 ### Added

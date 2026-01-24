@@ -1,9 +1,43 @@
+/**
+ * @fileoverview MUI theme provider with automatic dark mode detection.
+ *
+ * This client component sets up the Material-UI theme for the dashboard,
+ * including:
+ * - Automatic light/dark mode based on system preference
+ * - Custom color palette (indigo primary, pink secondary)
+ * - Glassmorphism styling for cards, papers, and app bar
+ * - Background image with overlay
+ *
+ * @module dashboard/ThemeRegistry
+ */
+
 'use client';
 
 import { ThemeProvider, createTheme, CssBaseline, GlobalStyles } from '@mui/material';
 import { ReactNode, useMemo } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+/**
+ * Theme provider component with automatic dark mode detection.
+ *
+ * Creates and applies a MUI theme that:
+ * - Detects user's color scheme preference via media query
+ * - Applies glassmorphism effects (backdrop-filter blur, semi-transparent backgrounds)
+ * - Sets up custom component styling for Cards, AppBar, Paper, and Accordions
+ * - Adds a background image with appropriate overlay based on theme mode
+ *
+ * @param props - Component props
+ * @param props.children - App content to wrap with theme
+ * @returns Themed application wrapper
+ *
+ * @example
+ * ```tsx
+ * // In layout.tsx
+ * <ThemeRegistry>
+ *   {children}
+ * </ThemeRegistry>
+ * ```
+ */
 export default function ThemeRegistry({ children }: { children: ReactNode }) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 

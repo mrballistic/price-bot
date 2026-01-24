@@ -1,6 +1,6 @@
 {
   "name": "price-bot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless price watcher for used music gear across marketplaces with Discord alerts",
   "author": "Todd Greco",
   "license": "MIT",

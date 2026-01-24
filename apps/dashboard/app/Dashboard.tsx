@@ -1,3 +1,20 @@
+/**
+ * @fileoverview Main dashboard component for the price bot.
+ *
+ * This client-side React component renders the complete monitoring dashboard:
+ * - Summary statistics (last run time, items scanned, alerts, errors)
+ * - Product cards showing configured watches and market stats
+ * - Hits section with listings that matched price thresholds
+ * - Market pricing section with price distribution data
+ * - Activity charts showing scan history over time
+ * - Recent runs table with detailed per-run information
+ *
+ * The dashboard supports filtering by product and displays sold items
+ * with visual indicators (SOLD badge, dimmed styling, strikethrough price).
+ *
+ * @module dashboard/Dashboard
+ */
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -44,6 +61,9 @@ import {
 } from '@mui/icons-material';
 import { ActivityChart, AlertsBarChart } from './Charts';
 
+/**
+ * Marketplace listing data structure for dashboard display.
+ */
 interface Listing {
   source: string;
   sourceId: string;
@@ -56,6 +76,10 @@ interface Listing {
   listedAt?: string;
 }
 
+/**
+ * Match result representing a listing that met price criteria.
+ * Extended with sold status for dashboard display.
+ */
 interface Match {
   productId: string;
   productName: string;
@@ -63,10 +87,15 @@ interface Match {
   listing: Listing;
   effectivePriceUsd: number;
   shippingNote?: string;
+  /** Whether the listing has been marked as sold */
   sold?: boolean;
+  /** ISO timestamp when the listing was marked as sold */
   soldAt?: string;
 }
 
+/**
+ * Market statistics for a product showing price distribution.
+ */
 interface MarketStats {
   count: number;
   minPrice: number | null;
@@ -82,6 +111,9 @@ interface MarketStats {
   }>;
 }
 
+/**
+ * Per-product data from a single run.
+ */
 interface ProductByRun {
   productId: string;
   productName: string;
@@ -91,6 +123,9 @@ interface ProductByRun {
   marketStats?: MarketStats;
 }
 
+/**
+ * Complete record of a single bot run.
+ */
 interface RunRecord {
   runAt: string;
   durationMs: number;
@@ -101,6 +136,9 @@ interface RunRecord {
   byProduct: ProductByRun[];
 }
 
+/**
+ * Product configuration from the watchlist.
+ */
 interface ProductConfig {
   id: string;
   name: string;
@@ -110,6 +148,9 @@ interface ProductConfig {
   excludeTerms?: string[];
 }
 
+/**
+ * Props for the main Dashboard component.
+ */
 interface DashboardProps {
   history: RunRecord[];
   state: {
@@ -122,6 +163,19 @@ interface DashboardProps {
   };
 }
 
+/**
+ * Renders a summary statistic card with icon.
+ *
+ * Used in the stats grid to display key metrics like last run time,
+ * items scanned, alerts sent, and errors.
+ *
+ * @param props - Component props
+ * @param props.title - Statistic label
+ * @param props.value - Statistic value to display
+ * @param props.icon - MUI icon component
+ * @param props.color - Theme color for the icon background
+ * @returns Rendered stat card
+ */
 function StatCard({
   title,
   value,
@@ -163,6 +217,17 @@ function StatCard({
   );
 }
 
+/**
+ * Renders a card displaying a watched product and its market statistics.
+ *
+ * Shows product name, alert threshold, enabled marketplaces, search terms,
+ * and current market pricing data (min/max/avg/median).
+ *
+ * @param props - Component props
+ * @param props.product - Product configuration from watchlist
+ * @param props.marketStats - Latest market statistics for this product
+ * @returns Rendered product card
+ */
 function ProductCard({ product, marketStats }: { product: ProductConfig; marketStats?: MarketStats }) {
   return (
     <Card>
@@ -224,6 +289,17 @@ function ProductCard({ product, marketStats }: { product: ProductConfig; marketS
   );
 }
 
+/**
+ * Renders a card for a listing that matched price criteria.
+ *
+ * Displays listing image, title, effective price, marketplace source,
+ * condition, and a link to view the listing. Sold items are shown with
+ * reduced opacity, SOLD badge, and strikethrough pricing.
+ *
+ * @param props - Component props
+ * @param props.match - Match object containing listing and price data
+ * @returns Rendered hit card
+ */
 function HitCard({ match }: { match: Match }) {
   const { listing } = match;
   return (
@@ -301,6 +377,12 @@ function HitCard({ match }: { match: Match }) {
   );
 }
 
+/**
+ * Calculates how long ago a date was in human-readable format.
+ *
+ * @param isoDate - ISO 8601 date string
+ * @returns Human-readable string like "Today", "1 day", or "5 days"
+ */
 function daysAgo(isoDate?: string): string {
   if (!isoDate) return '—';
   const listed = new Date(isoDate);
@@ -312,6 +394,17 @@ function daysAgo(isoDate?: string): string {
   return `${days} days`;
 }
 
+/**
+ * Renders a table of sample listings sorted by price.
+ *
+ * Displays representative listings at different price points to give
+ * users a sense of the market. Each row shows title (linked), price,
+ * days listed, and marketplace source.
+ *
+ * @param props - Component props
+ * @param props.samples - Array of sample listings from market stats
+ * @returns Rendered table or null if no samples
+ */
 function MarketSamplesList({ samples }: { samples: MarketStats['samples'] }) {
   if (!samples || samples.length === 0) return null;
   return (
@@ -351,6 +444,13 @@ function MarketSamplesList({ samples }: { samples: MarketStats['samples'] }) {
   );
 }
 
+/**
+ * Formats an ISO timestamp for display.
+ *
+ * @param iso - ISO 8601 timestamp string
+ * @param short - If true, uses compact format "Jan 22, 3:07p"; otherwise "Jan 22, 3:07 PM"
+ * @returns Formatted date/time string
+ */
 function formatTime(iso: string, short = false) {
   const d = new Date(iso);
   if (short) {
@@ -372,11 +472,45 @@ function formatTime(iso: string, short = false) {
   });
 }
 
+/**
+ * Formats a duration in milliseconds for display.
+ *
+ * @param ms - Duration in milliseconds
+ * @returns Formatted string like "500ms" or "2.3s"
+ */
 function formatDuration(ms: number) {
   if (ms < 1000) return ms + 'ms';
   return (ms / 1000).toFixed(1) + 's';
 }
 
+/**
+ * Main dashboard component for the price bot.
+ *
+ * Renders a comprehensive monitoring interface including:
+ * - Products Being Watched: Cards for each configured product with market stats
+ * - Product Filter Tabs: Filter all data by specific product
+ * - Stats Grid: Key metrics from recent runs
+ * - Market Pricing: Price distribution and sample listings
+ * - Hits: Listings that matched price thresholds (with sold indicators)
+ * - Charts: Activity over time and alerts/errors visualization
+ * - Tracked Listings: Count of listings being monitored
+ * - Recent Runs: Table of recent run details with tooltips
+ *
+ * @param props - Component props
+ * @param props.history - Array of run records from history.json
+ * @param props.state - Current state including seen listings
+ * @param props.config - Watchlist configuration
+ * @returns Rendered dashboard
+ *
+ * @example
+ * ```tsx
+ * <Dashboard
+ *   history={runHistory}
+ *   state={currentState}
+ *   config={watchlistConfig}
+ * />
+ * ```
+ */
 export default function Dashboard({ history, state, config }: DashboardProps) {
   const [selectedProduct, setSelectedProduct] = useState<string>('all');
   const [hitsExpanded, setHitsExpanded] = useState(true);

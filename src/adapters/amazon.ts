@@ -1,3 +1,19 @@
+/**
+ * @fileoverview Amazon marketplace adapter using the Product Advertising API 5.0.
+ *
+ * This adapter searches Amazon's marketplace for listings using the PA-API
+ * with AWS Signature Version 4 authentication. Focuses on used items in the
+ * Musical Instruments category. Results are normalized to the common Listing format.
+ *
+ * Required environment variables:
+ * - AMAZON_ACCESS_KEY: AWS access key ID
+ * - AMAZON_SECRET_KEY: AWS secret access key
+ * - AMAZON_PARTNER_TAG: Amazon Associates partner tag
+ *
+ * @module adapters/amazon
+ * @see https://webservices.amazon.com/paapi5/documentation/
+ */
+
 import { createHmac, createHash } from 'crypto';
 import { Listing } from '../types';
 import { logger } from '../core/logger';
@@ -5,19 +21,51 @@ import { sleep } from '../core/sleep';
 import { retry } from '../core/retry';
 import { MarketplaceAdapter, SearchParams } from './types';
 
+/** AWS service name for PA-API */
 const SERVICE = 'ProductAdvertisingAPI';
+
+/** AWS region for PA-API (always us-east-1 for Amazon.com) */
 const REGION = 'us-east-1';
+
+/** API endpoint host */
 const HOST = 'webservices.amazon.com';
+
+/** Full endpoint URL for SearchItems operation */
 const ENDPOINT = `https://${HOST}/paapi5/searchitems`;
 
+/**
+ * Computes SHA-256 hash of a string.
+ *
+ * @param data - String to hash
+ * @returns Hex-encoded hash
+ * @private
+ */
 function sha256(data: string): string {
   return createHash('sha256').update(data, 'utf8').digest('hex');
 }
 
+/**
+ * Computes HMAC-SHA256 of data using a key.
+ *
+ * @param key - HMAC key (string or Buffer)
+ * @param data - Data to sign
+ * @returns HMAC digest as Buffer
+ * @private
+ */
 function hmacSha256(key: Buffer | string, data: string): Buffer {
   return createHmac('sha256', key).update(data, 'utf8').digest();
 }
 
+/**
+ * Derives the AWS Signature Version 4 signing key.
+ *
+ * @param secretKey - AWS secret access key
+ * @param dateStamp - Date in YYYYMMDD format
+ * @param region - AWS region
+ * @param service - AWS service name
+ * @returns Signing key as Buffer
+ * @private
+ */
 function getSignatureKey(secretKey: string, dateStamp: string, region: string, service: string): Buffer {
   const kDate = hmacSha256(`AWS4${secretKey}`, dateStamp);
   const kRegion = hmacSha256(kDate, region);
@@ -26,6 +74,18 @@ function getSignatureKey(secretKey: string, dateStamp: string, region: string, s
   return kSigning;
 }
 
+/**
+ * Signs a request payload using AWS Signature Version 4.
+ *
+ * Creates the necessary headers for authenticated PA-API requests,
+ * including the Authorization header with the computed signature.
+ *
+ * @param accessKey - AWS access key ID
+ * @param secretKey - AWS secret access key
+ * @param payload - JSON payload to sign
+ * @returns Object containing the signed headers
+ * @private
+ */
 function signRequest(
   accessKey: string,
   secretKey: string,
@@ -74,6 +134,13 @@ function signRequest(
   };
 }
 
+/**
+ * Parses a money value from Amazon's offer structure.
+ *
+ * @param offer - Raw offer object from PA-API
+ * @returns Parsed money object or null if invalid
+ * @private
+ */
 function parseMoney(offer: any): { amount: number; currency: string } | null {
   const price = offer?.Price?.Amount ?? offer?.SavingBasis?.Amount;
   const currency = offer?.Price?.Currency ?? offer?.SavingBasis?.Currency ?? 'USD';
@@ -81,6 +148,16 @@ function parseMoney(offer: any): { amount: number; currency: string } | null {
   return { amount: price, currency };
 }
 
+/**
+ * Converts an Amazon item to a normalized Listing object.
+ *
+ * Extracts relevant fields from PA-API's item format and
+ * normalizes them to the common Listing structure.
+ *
+ * @param item - Raw item object from PA-API
+ * @returns Normalized listing or null if required fields missing
+ * @private
+ */
 function toListing(item: any): Listing | null {
   const asin = item?.ASIN;
   const title = item?.ItemInfo?.Title?.DisplayValue;
@@ -114,6 +191,18 @@ function toListing(item: any): Listing | null {
   };
 }
 
+/**
+ * Performs a single search request to Amazon's PA-API.
+ *
+ * Searches the Musical Instruments category for used items matching the query.
+ *
+ * @param q - Search query string
+ * @param limit - Maximum number of results (PA-API max is 10 per request)
+ * @param partnerTag - Amazon Associates partner tag
+ * @returns Array of normalized listings
+ * @throws Error if credentials are missing or API request fails
+ * @private
+ */
 async function searchAmazonOnce(q: string, limit: number, partnerTag: string): Promise<Listing[]> {
   const accessKey = process.env.AMAZON_ACCESS_KEY;
   const secretKey = process.env.AMAZON_SECRET_KEY;
@@ -172,6 +261,23 @@ async function searchAmazonOnce(q: string, limit: number, partnerTag: string): P
   return listings;
 }
 
+/**
+ * Creates an Amazon marketplace adapter instance.
+ *
+ * The adapter searches Amazon using the product's include terms (or name if
+ * no terms specified). Multiple queries are executed with deduplication,
+ * and results are limited to the configured maximum.
+ *
+ * Requires an Amazon Associates account with PA-API access.
+ *
+ * @returns Configured Amazon adapter
+ *
+ * @example
+ * ```typescript
+ * const amazonAdapter = createAmazonAdapter();
+ * const listings = await amazonAdapter.search({ product, cfg });
+ * ```
+ */
 export function createAmazonAdapter(): MarketplaceAdapter {
   return {
     id: 'amazon',
