@@ -22,10 +22,12 @@ describe('readState', () => {
 
   it('should read and parse state file', () => {
     const stateData: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
       seen: {
         ebay: { 'product-1': {} },
         reverb: {},
+        amazon: {},
       },
     };
 
@@ -72,8 +74,9 @@ describe('writeState', () => {
 
   it('should write state to file as JSON', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
-      seen: { ebay: {}, reverb: {} },
+      seen: { ebay: {}, reverb: {}, amazon: {} },
     };
 
     writeState(state);
@@ -86,8 +89,9 @@ describe('writeState', () => {
 
   it('should format JSON with 2-space indentation', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
-      seen: { ebay: {}, reverb: {} },
+      seen: { ebay: {}, reverb: {}, amazon: {} },
     };
 
     writeState(state);
@@ -133,6 +137,7 @@ describe('appendHistory', () => {
 describe('ensureStateBuckets', () => {
   it('should create market bucket if missing', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
       seen: {} as StateFile['seen'],
     };
@@ -145,8 +150,9 @@ describe('ensureStateBuckets', () => {
 
   it('should create product bucket if missing', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
-      seen: { ebay: {}, reverb: {} },
+      seen: { ebay: {}, reverb: {}, amazon: {} },
     };
 
     ensureStateBuckets(state, 'ebay', 'product-1');
@@ -165,10 +171,12 @@ describe('ensureStateBuckets', () => {
     };
 
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
       seen: {
         ebay: { 'product-1': { 'listing-1': existingEntry } },
         reverb: {},
+        amazon: {},
       },
     };
 
@@ -190,10 +198,12 @@ describe('isSeen', () => {
 
   it('should return true for existing listing', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
       seen: {
         ebay: { 'product-1': { 'listing-1': baseEntry } },
         reverb: {},
+        amazon: {},
       },
     };
 
@@ -202,10 +212,12 @@ describe('isSeen', () => {
 
   it('should return false for non-existent listing', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
       seen: {
         ebay: { 'product-1': { 'listing-1': baseEntry } },
         reverb: {},
+        amazon: {},
       },
     };
 
@@ -214,8 +226,9 @@ describe('isSeen', () => {
 
   it('should return false for non-existent product', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
-      seen: { ebay: {}, reverb: {} },
+      seen: { ebay: {}, reverb: {}, amazon: {} },
     };
 
     expect(isSeen(state, 'ebay', 'product-1', 'listing-1')).toBe(false);
@@ -223,6 +236,7 @@ describe('isSeen', () => {
 
   it('should return false for non-existent marketplace', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
       seen: {} as StateFile['seen'],
     };
@@ -234,8 +248,9 @@ describe('isSeen', () => {
 describe('markSeen', () => {
   it('should add entry to state', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
-      seen: { ebay: {}, reverb: {} },
+      seen: { ebay: {}, reverb: {}, amazon: {} },
     };
 
     const entry: SeenEntry = {
@@ -254,6 +269,7 @@ describe('markSeen', () => {
 
   it('should create buckets if needed', () => {
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-01T00:00:00.000Z',
       seen: {} as StateFile['seen'],
     };
@@ -303,6 +319,7 @@ describe('cleanupOldSoldItems', () => {
     vi.setSystemTime(new Date('2024-01-10T00:00:00.000Z'));
 
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-10T00:00:00.000Z',
       seen: {
         ebay: {
@@ -319,6 +336,7 @@ describe('cleanupOldSoldItems', () => {
           },
         },
         reverb: {},
+        amazon: {},
       },
     };
 
@@ -342,6 +360,7 @@ describe('cleanupOldSoldItems', () => {
     };
 
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-10T00:00:00.000Z',
       seen: {
         ebay: {
@@ -350,6 +369,7 @@ describe('cleanupOldSoldItems', () => {
           },
         },
         reverb: {},
+        amazon: {},
       },
     };
 
@@ -372,6 +392,7 @@ describe('cleanupOldSoldItems', () => {
     };
 
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-10T00:00:00.000Z',
       seen: {
         ebay: {
@@ -380,6 +401,7 @@ describe('cleanupOldSoldItems', () => {
           },
         },
         reverb: {},
+        amazon: {},
       },
     };
 
@@ -393,6 +415,7 @@ describe('cleanupOldSoldItems', () => {
     vi.setSystemTime(new Date('2024-01-10T00:00:00.000Z'));
 
     const state: StateFile = {
+      version: 1,
       updatedAt: '2024-01-10T00:00:00.000Z',
       seen: {
         ebay: {
@@ -432,6 +455,7 @@ describe('cleanupOldSoldItems', () => {
             },
           },
         },
+        amazon: {},
       },
     };
 
