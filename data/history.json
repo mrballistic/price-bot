@@ -1169,5 +1169,64 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-01-24T22:17:27.676Z",
+    "durationMs": 20211,
+    "scanned": 50,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 3,
+          "minPrice": 1835.99,
+          "maxPrice": 1900,
+          "avgPrice": 1862,
+          "medianPrice": 1850,
+          "samples": [
+            {
+              "title": "Roland System-8 Plug-Out Synthesizer",
+              "price": 1835.99,
+              "url": "https://www.ebay.com/itm/177801719873?_skw=roland+system-8&hash=item2965cef041:i:177801719873",
+              "source": "ebay"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1850,
+              "url": "https://reverb.com/item/93245757-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1900,
+              "url": "https://reverb.com/item/92933667-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "elektron-analog-heat-plus-fx",
+        "productName": "Elektron Analog Heat +FX",
+        "thresholdUsd": 900,
+        "scanned": 0,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      }
+    ]
   }
 ]
