@@ -54,11 +54,14 @@
     "vitest": "^4.0.18"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "src/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
     "*.{js,json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.config.ts": [
       "prettier --write"
     ]
   }

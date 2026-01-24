@@ -20,6 +20,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', 'apps/', 'coverage/', '*.js'],
+    ignores: ['dist/', 'node_modules/', 'apps/', 'coverage/', '*.js', '*.config.ts'],
   },
 );
