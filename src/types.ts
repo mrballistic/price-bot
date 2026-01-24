@@ -84,6 +84,7 @@ export type MarketStats = {
     price: number;
     url: string;
     source: MarketplaceId;
+    listedAt?: string; // ISO timestamp if available
   }>;
 };
 

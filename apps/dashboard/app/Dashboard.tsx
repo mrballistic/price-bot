@@ -78,6 +78,7 @@ interface MarketStats {
     price: number;
     url: string;
     source: string;
+    listedAt?: string;
   }>;
 }
 
@@ -300,6 +301,17 @@ function HitCard({ match }: { match: Match }) {
   );
 }
 
+function daysAgo(isoDate?: string): string {
+  if (!isoDate) return '—';
+  const listed = new Date(isoDate);
+  const now = new Date();
+  const diffMs = now.getTime() - listed.getTime();
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (days === 0) return 'Today';
+  if (days === 1) return '1 day';
+  return `${days} days`;
+}
+
 function MarketSamplesList({ samples }: { samples: MarketStats['samples'] }) {
   if (!samples || samples.length === 0) return null;
   return (
@@ -313,6 +325,7 @@ function MarketSamplesList({ samples }: { samples: MarketStats['samples'] }) {
             <TableRow>
               <TableCell>Title</TableCell>
               <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Listed</TableCell>
               <TableCell>Source</TableCell>
             </TableRow>
           </TableHead>
@@ -325,6 +338,7 @@ function MarketSamplesList({ samples }: { samples: MarketStats['samples'] }) {
                   </MuiLink>
                 </TableCell>
                 <TableCell align="right">${s.price.toFixed(2)}</TableCell>
+                <TableCell align="right">{daysAgo(s.listedAt)}</TableCell>
                 <TableCell>
                   <Chip label={s.source} size="small" variant="outlined" />
                 </TableCell>

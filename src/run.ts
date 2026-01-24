@@ -68,6 +68,7 @@ function calculateMarketStats(listings: Listing[], cfg: { settings: { includeShi
           price: p.price,
           url: p.listing.url,
           source: p.listing.source,
+          listedAt: p.listing.listedAt,
         });
       }
     }
