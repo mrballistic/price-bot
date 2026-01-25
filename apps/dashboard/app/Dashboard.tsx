@@ -485,6 +485,20 @@ function MarketSamplesList({ samples }: { samples: MarketStats['samples'] }) {
  */
 function formatTime(iso: string, short = false) {
   const d = new Date(iso);
+  const now = new Date();
+  const diffMs = now.getTime() - d.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+
+  // Use relative time if less than 24 hours ago
+  if (diffMs >= 0 && diffMs < 24 * 60 * 60 * 1000) {
+    if (diffMins < 1) return 'just now';
+    if (diffMins === 1) return '1 minute ago';
+    if (diffMins < 60) return `${diffMins} minutes ago`;
+    if (diffHours === 1) return '1 hour ago';
+    return `${diffHours} hours ago`;
+  }
+
   if (short) {
     // Compact format for stat cards: "Jan 22, 3:07p"
     const month = d.toLocaleString('en-US', { month: 'short' });
