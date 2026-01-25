@@ -686,22 +686,6 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
   const totalAlerts = filteredRecent.reduce((sum, r) => sum + r.alerts, 0);
   const totalErrors = filteredRecent.reduce((sum, r) => sum + (r.errors?.length || 0), 0);
 
-  // Count tracked items
-  const seenCounts: { marketplace: string; product: string; count: number }[] = [];
-  if (state.seen) {
-    for (const [marketplace, prods] of Object.entries(state.seen)) {
-      for (const [product, items] of Object.entries(prods || {})) {
-        if (selectedProduct === 'all' || product === selectedProduct) {
-          seenCounts.push({
-            marketplace,
-            product,
-            count: Object.keys(items || {}).length,
-          });
-        }
-      }
-    }
-  }
-
   return (
     <>
       <AppBar position="fixed" elevation={1}>
@@ -936,27 +920,6 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
               </Card>
             </Grid>
           </Grid>
-        )}
-
-        {/* Tracked Items */}
-        {seenCounts.length > 0 && (
-          <Card sx={{ mb: 4 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Tracked Listings
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                {seenCounts.map((s, i) => (
-                  <Chip
-                    key={i}
-                    label={`${s.marketplace}/${s.product}: ${s.count}`}
-                    variant="outlined"
-                    size="small"
-                  />
-                ))}
-              </Box>
-            </CardContent>
-          </Card>
         )}
 
         {/* Recent Runs Table */}

@@ -136,7 +136,7 @@ export function AlertsBarChart({ data }: { data: RunRecord[] }) {
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={200}>
+    <ResponsiveContainer width="100%" height={300}>
       <BarChart data={chartData}>
         <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e2e8f0'} />
         <XAxis
