@@ -43,7 +43,7 @@ Monitor multiple marketplaces for specific used products and alert when a listin
    - stats, charts, product filtering, dark mode
    - deployed to GitHub Pages
 8. Scheduling:
-   - Pipedream triggers GitHub Actions workflow (every 30 min)
+   - GitHub Actions cron (every 30 min) + manual dispatch
    - CI workflow for build validation (lint, typecheck, tests)
 
 ## Success criteria

@@ -20,7 +20,7 @@ Headless price watcher for used music gear across marketplaces (**Reverb**, **eB
 - **Sold tracking**: Detects when listings disappear and marks them as sold in the dashboard
 - Writes run history to `data/history.json`
 - Sends Discord webhook alerts for new matches and price drops
-- Runs on a schedule via **Pipedream** triggering GitHub Actions
+- Runs on a schedule via GitHub Actions cron
 
 ## Quick start (local)
 
@@ -55,19 +55,7 @@ Optional settings:
 - `EBAY_ENV` - `production` (default) or `sandbox`
 - `LOG_LEVEL` - `debug`, `info` (default), `warn`, or `error`
 
-## Scheduling setup
-
-GitHub Actions scheduled workflows are notoriously unreliable—they often run late, skip runs entirely, or get deprioritized during high-traffic periods. To ensure consistent twice-hourly runs, this project uses **Pipedream** to trigger the GitHub Actions workflow via `workflow_dispatch`.
-
-### Pipedream setup
-
-1. Create a [Pipedream](https://pipedream.com) workflow with a cron trigger (e.g., every 30 minutes)
-2. Add a step to trigger the GitHub Actions workflow using the GitHub API:
-   - Endpoint: `POST /repos/{owner}/{repo}/actions/workflows/watcher.yml/dispatches`
-   - Body: `{ "ref": "main" }`
-3. Authenticate with a GitHub personal access token (needs `repo` and `workflow` scopes)
-
-### GitHub setup
+## GitHub setup
 
 1. Create a Discord webhook for the channel you want alerts in
 2. Add GitHub repo secrets (Settings > Secrets):
@@ -77,7 +65,7 @@ GitHub Actions scheduled workflows are notoriously unreliable—they often run l
    - `AMAZON_ACCESS_KEY` / `AMAZON_SECRET_KEY` / `AMAZON_PARTNER_TAG` (optional)
 3. Adjust products & thresholds in `config/watchlist.yml`
 4. Workflows:
-   - `.github/workflows/watcher.yml` - Price watching + dashboard deployment (triggered by Pipedream)
+   - `.github/workflows/watcher.yml` - Price watching + dashboard deployment (runs every 30 min via cron)
    - `.github/workflows/ci.yml` - Build validation on push/PR
 
 ## Watchlist configuration

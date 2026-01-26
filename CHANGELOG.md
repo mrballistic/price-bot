@@ -29,15 +29,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - SOLD badge displayed in dashboard with dimmed styling
   - Automatic cleanup of sold items after 5 days
 - **Days on marketplace**: "Listed" column in market samples table shows listing age
-- **Pipedream scheduling**: Documentation for using Pipedream to trigger workflow
-  (workaround for unreliable GitHub Actions cron)
+- **Scheduling documentation**: GitHub Actions cron setup instructions
 - **Comprehensive JSDoc documentation**: All TypeScript files now documented with
   verbose JSDoc comments using inline TypeScript types
 
 ### Changed
 
 - Replaced Roland S-1 with Elektron Analog Heat +FX in watchlist
-- Updated README with Pipedream setup instructions and sold tracking docs
+- Updated README with GitHub setup instructions and sold tracking docs
 - Added icon to README title
 
 ### Fixed

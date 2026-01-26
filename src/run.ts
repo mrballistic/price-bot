@@ -12,7 +12,7 @@
  * 8. Persists state and appends run history
  *
  * The bot is designed to run on a schedule (e.g., via GitHub Actions or
- * Pipedream) and will only alert once per listing unless the price drops.
+ * GitHub Actions cron) and will only alert once per listing unless the price drops.
  *
  * @module run
  */
