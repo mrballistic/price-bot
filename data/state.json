@@ -1,19 +1,9 @@
 {
   "version": 1,
-  "updatedAt": "2026-01-29T23:28:26.355Z",
+  "updatedAt": "2026-01-29T23:54:30.237Z",
   "seen": {
     "ebay": {
-      "roland-s-1": {
-        "v1|366146356277|0": {
-          "firstSeenAt": "2026-01-24T05:20:38.699Z",
-          "lastSeenAt": "2026-01-24T05:20:38.699Z",
-          "lastEffectivePrice": 200,
-          "url": "https://www.ebay.com/itm/366146356277",
-          "title": "Roland S-1 Tweak Synth Compact Polyphonic Sound Module Synthesizer",
-          "missedRuns": 4,
-          "soldAt": "2026-01-24T23:51:44.082Z"
-        }
-      }
+      "roland-s-1": {}
     },
     "reverb": {},
     "amazon": {}
