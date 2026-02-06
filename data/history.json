@@ -59518,5 +59518,92 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-02-06T21:28:49.419Z",
+    "durationMs": 19707,
+    "scanned": 39,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [
+      {
+        "marketplace": "reverb",
+        "productId": "roland-system-8",
+        "message": "Reverb search error: 503 {}"
+      },
+      {
+        "marketplace": "reverb",
+        "productId": "elektron-analog-heat-plus-fx",
+        "message": "Reverb search error: 503 {}"
+      }
+    ],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      },
+      {
+        "productId": "elektron-analog-heat-plus-fx",
+        "productName": "Elektron Analog Heat +FX",
+        "thresholdUsd": 900,
+        "scanned": 14,
+        "matches": [],
+        "marketStats": {
+          "count": 7,
+          "minPrice": 1109,
+          "maxPrice": 1299,
+          "avgPrice": 1212.49,
+          "medianPrice": 1169.1,
+          "samples": [
+            {
+              "title": "Elektron Analog Heat +FX Dynamic Sound Processor EFFECTS USED PERFECT CIRCUIT",
+              "price": 1109,
+              "url": "https://www.ebay.com/itm/297764886526?_skw=elektron+analog+heat+%2Bfx&hash=item45542b97fe:g:2eEAAeSwal9pdiug",
+              "source": "ebay",
+              "listedAt": "2025-11-16T00:48:17.000Z"
+            },
+            {
+              "title": "Elektron Analog Heat +FX Dynamic Sound Processor (Open Box)",
+              "price": 1143.34,
+              "url": "https://www.ebay.com/itm/366048991424?_skw=elektron+analog+heat+%2Bfx&hash=item553a3858c0:g:O~kAAeSwVfZpOHpN",
+              "source": "ebay",
+              "listedAt": "2025-12-09T19:36:48.000Z"
+            },
+            {
+              "title": "Elektron Analog Heat +FX Dynamic Sound Processor",
+              "price": 1169.1,
+              "url": "https://www.ebay.com/itm/267566951770?_skw=elektron+analog+heat+%2Bfx&hash=item3e4c3bad5a:g:xacAAeSwz0Npgx~M",
+              "source": "ebay",
+              "listedAt": "2026-02-04T09:48:05.000Z"
+            },
+            {
+              "title": "Elektron Analog Heat + FX Dynamic Sound Processor",
+              "price": 1299,
+              "url": "https://www.ebay.com/itm/295705920769?_skw=elektron+analog+heat+%2Bfx&hash=item44d9724501:g:9XcAAeSw0XJpbRx9",
+              "source": "ebay",
+              "listedAt": "2023-05-18T15:24:04.000Z"
+            },
+            {
+              "title": "Elektron Analog Heat +FX Dynamic Sound Processor",
+              "price": 1299,
+              "url": "https://www.ebay.com/itm/146838626657?_skw=elektron+analog+heat+%2Bfx&hash=item223043a161:g:XUIAAeSwVfJoyxp2",
+              "source": "ebay",
+              "listedAt": "2025-09-17T20:30:50.000Z"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
