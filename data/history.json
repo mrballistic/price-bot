@@ -122801,5 +122801,130 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-02-20T23:28:43.908Z",
+    "durationMs": 29533,
+    "scanned": 92,
+    "matches": 1,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 1,
+          "minPrice": 1850,
+          "maxPrice": 1850,
+          "avgPrice": 1850,
+          "medianPrice": 1850,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1850,
+              "url": "https://reverb.com/item/93245757-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2025-11-22T19:09:22-05:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1m",
+        "productName": "Roland System 1m",
+        "thresholdUsd": 300,
+        "scanned": 26,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      },
+      {
+        "productId": "elektron-analog-heat-plus-fx",
+        "productName": "Elektron Analog Heat +FX",
+        "thresholdUsd": 900,
+        "scanned": 16,
+        "matches": [
+          {
+            "productId": "elektron-analog-heat-plus-fx",
+            "productName": "Elektron Analog Heat +FX",
+            "maxPriceUsd": 900,
+            "listing": {
+              "source": "reverb",
+              "sourceId": "94579468",
+              "title": "Elektron Analog Heat +FX 2023 - Present - Black",
+              "url": "https://reverb.com/item/94579468-elektron-analog-heat-fx-2023-present-black",
+              "price": {
+                "amount": 840,
+                "currency": "USD"
+              },
+              "shipping": {
+                "amount": 0,
+                "currency": "USD",
+                "known": false
+              },
+              "imageUrl": "https://rvb-img.reverb.com/i/s--7EVgOK2T--/quality=medium-low,height=800,width=800,fit=contain/b4b8579f-a839-4253-b424-57df19278f0c.png",
+              "condition": "[object Object]",
+              "listedAt": "2026-02-19T17:58:13-06:00"
+            },
+            "effectivePriceUsd": 840,
+            "shippingNote": "Shipping unknown (verify on listing)"
+          }
+        ],
+        "marketStats": {
+          "count": 5,
+          "minPrice": 840,
+          "maxPrice": 1299,
+          "avgPrice": 1207.2,
+          "medianPrice": 1299,
+          "samples": [
+            {
+              "title": "Elektron Analog Heat +FX 2023 - Present - Black",
+              "price": 840,
+              "url": "https://reverb.com/item/94579468-elektron-analog-heat-fx-2023-present-black",
+              "source": "reverb",
+              "listedAt": "2026-02-19T17:58:13-06:00"
+            },
+            {
+              "title": "ELEKTRON ANALOG HEAT +FX : BRAND NEW :  [DETROIT MODULAR]",
+              "price": 1299,
+              "url": "https://reverb.com/item/85619524-elektron-analog-heat-fx-brand-new-detroit-modular",
+              "source": "reverb",
+              "listedAt": "2024-11-07T19:08:58-06:00"
+            },
+            {
+              "title": "Elektron Analog Heat +FX [Three Wave Music]",
+              "price": 1299,
+              "url": "https://reverb.com/item/85881051-elektron-analog-heat-fx-three-wave-music",
+              "source": "reverb",
+              "listedAt": "2024-11-25T12:32:36-06:00"
+            },
+            {
+              "title": "Elektron Analog Heat +FX Dynamic Sound Processor",
+              "price": 1299,
+              "url": "https://www.ebay.com/itm/266447449596?_skw=elektron+analog+heat+%2Bfx&hash=item3e09816dfc:g:CD4AAeSwODlplQzi",
+              "source": "ebay",
+              "listedAt": "2023-10-09T12:34:02.000Z"
+            },
+            {
+              "title": "Elektron Analog Heat + FX Dynamic Sound Processor",
+              "price": 1299,
+              "url": "https://www.ebay.com/itm/295705920769?_skw=elektron+analog+heat+%2Bfx&hash=item44d9724501:g:9XcAAeSw0XJpbRx9",
+              "source": "ebay",
+              "listedAt": "2023-05-18T15:24:04.000Z"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
