@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-02-21T06:01:17.766Z",
+  "updatedAt": "2026-02-21T06:30:31.885Z",
   "seen": {
     "ebay": {
       "roland-s-1": {},
@@ -24,7 +24,8 @@
           "lastEffectivePrice": 840,
           "url": "https://reverb.com/item/94579468-elektron-analog-heat-fx-2023-present-black",
           "title": "Elektron Analog Heat +FX 2023 - Present - Black",
-          "missedRuns": 2
+          "missedRuns": 3,
+          "soldAt": "2026-02-21T06:30:31.885Z"
         }
       }
     },
