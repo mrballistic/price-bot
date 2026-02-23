@@ -622,8 +622,14 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
     // Cross-reference with state to check sold status
     const result = Array.from(seenMap.values()).map((m) => {
       const stateEntry = state.seen?.[m.listing.source]?.[m.productId]?.[m.listing.sourceId];
-      if (stateEntry?.soldAt) {
-        return { ...m, sold: true, soldAt: stateEntry.soldAt };
+      // If it exists but has a soldAt date, it's recently sold
+      // If it doesn't exist in state.seen anymore, it was sold and aged out of the cache
+      if (!stateEntry || stateEntry.soldAt) {
+        return { 
+          ...m, 
+          sold: true, 
+          soldAt: stateEntry?.soldAt || m.runAt 
+        };
       }
       return m;
     });
