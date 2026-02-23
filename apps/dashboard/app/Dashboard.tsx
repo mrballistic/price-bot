@@ -259,7 +259,7 @@ function ProductCard({
               </Typography>
             </Box>
             <Grid container spacing={1}>
-              <Grid item xs={6}>
+              <Grid size={{ xs: 6 }}>
                 <Typography variant="caption" color="text.secondary">
                   Min
                 </Typography>
@@ -267,7 +267,7 @@ function ProductCard({
                   ${marketStats.minPrice}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid size={{ xs: 6 }}>
                 <Typography variant="caption" color="text.secondary">
                   Max
                 </Typography>
@@ -275,7 +275,7 @@ function ProductCard({
                   ${marketStats.maxPrice}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid size={{ xs: 6 }}>
                 <Typography variant="caption" color="text.secondary">
                   Avg
                 </Typography>
@@ -283,7 +283,7 @@ function ProductCard({
                   ${marketStats.avgPrice}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid size={{ xs: 6 }}>
                 <Typography variant="caption" color="text.secondary">
                   Median
                 </Typography>
@@ -709,7 +709,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
             </Typography>
             <Grid container spacing={2}>
               {products.map((p: any) => (
-                <Grid item xs={12} sm={6} md={4} key={p.id}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={p.id}>
                   <ProductCard product={p} marketStats={latestMarketStats[p.id]} />
                 </Grid>
               ))}
@@ -734,7 +734,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
 
         {/* Stats Grid */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <StatCard
               title="Last Run"
               value={last ? formatTime(last.runAt, true) : '—'}
@@ -742,7 +742,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
               color="#6366f1"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <StatCard
               title="Items Scanned (20 runs)"
               value={totalScanned.toLocaleString()}
@@ -750,7 +750,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
               color="#0ea5e9"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <StatCard
               title="Alerts Sent (20 runs)"
               value={totalAlerts}
@@ -758,7 +758,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
               color="#22c55e"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <StatCard
               title="Errors (20 runs)"
               value={totalErrors}
@@ -786,7 +786,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
             <AccordionDetails>
               <Grid container spacing={2} sx={{ mb: 2 }}>
                 {currentMarketStats.minPrice && (
-                  <Grid item xs={6} sm={3}>
+                  <Grid size={{ xs: 6, sm: 3 }}>
                     <Card variant="outlined">
                       <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
                         <Typography variant="caption" color="text.secondary">
@@ -800,7 +800,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
                   </Grid>
                 )}
                 {currentMarketStats.medianPrice && (
-                  <Grid item xs={6} sm={3}>
+                  <Grid size={{ xs: 6, sm: 3 }}>
                     <Card variant="outlined">
                       <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
                         <Typography variant="caption" color="text.secondary">
@@ -814,7 +814,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
                   </Grid>
                 )}
                 {currentMarketStats.avgPrice && (
-                  <Grid item xs={6} sm={3}>
+                  <Grid size={{ xs: 6, sm: 3 }}>
                     <Card variant="outlined">
                       <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
                         <Typography variant="caption" color="text.secondary">
@@ -828,7 +828,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
                   </Grid>
                 )}
                 {currentMarketStats.maxPrice && (
-                  <Grid item xs={6} sm={3}>
+                  <Grid size={{ xs: 6, sm: 3 }}>
                     <Card variant="outlined">
                       <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
                         <Typography variant="caption" color="text.secondary">
@@ -872,10 +872,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
               <>
                 <Grid container spacing={2}>
                   {allMatches.slice(0, 12).map((m, i) => (
-                    <Grid
-                      item
-                      xs={12}
-                      md={6}
+                    <Grid size={{ xs: 12, md: 6 }}
                       key={`${m.listing.source}-${m.listing.sourceId}-${i}`}
                     >
                       <HitCard match={m} />
@@ -899,7 +896,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
         {/* Charts */}
         {history.length > 0 && (
           <Grid container spacing={3} sx={{ mb: 4 }}>
-            <Grid item xs={12} md={8}>
+            <Grid size={{ xs: 12, md: 8 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
@@ -909,7 +906,7 @@ export default function Dashboard({ history, state, config }: DashboardProps) {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
