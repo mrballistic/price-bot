@@ -95,10 +95,78 @@ products:
       - 'speakers'
       - 'studio monitor'
 
+  - id: roland-system-1
+    name: 'Roland System-1'
+    minPriceUsd: 0
+    maxPriceUsd: 250
+    marketplaces: ['reverb', 'ebay']
+    includeTerms:
+      - 'roland system-1'
+      - 'roland system 1'
+      - 'system-1 synthesizer'
+      - 'system 1 synthesizer'
+      - 'system-1 keyboard'
+      - 'system 1 keyboard'
+      - 'system-1 25-key'
+      - 'system 1 25-key'
+      - 'system-1 plug-out'
+      - 'system 1 plug-out'
+      - 'system-1 plugout'
+      - 'system 1 plugout'
+    excludeTerms:
+      # Exclude the module version (System-1m)
+      - 'system-1m'
+      - 'system 1m'
+      - 'module'
+      - 'rack'
+      # Other Roland/gear
+      - 'brochure'
+      - 'catalog'
+      - 'manual'
+      # Accessories
+      - 'case'
+      - 'deck saver'
+      - 'decksaver'
+      - 'overlay'
+      - 'template'
+      - 'knob'
+      - 'stand'
+      - 'power supply'
+      - 'adapter'
+      - 'dust cover'
+      - 'cover'
+      - 'bag'
+      - 'gig bag'
+      - 'carry'
+      - 'flight'
+      - 'skin'
+      - 'sticker'
+      - 'panel'
+      - 'faceplate'
+      # Parts/Repairs
+      - 'parts'
+      - 'repair'
+      - 'broken'
+      - 'for parts'
+      - 'replacement'
+      - 'spare'
+      - 'button'
+      - 'slider'
+      - 'fader'
+      - 'encoder'
+      - 'pcb'
+      - 'board'
+      - 'screen'
+      - 'display'
+      - 'not working'
+      - 'faulty'
+      - 'damaged'
+      - 'potentiometer'
+
   - id: roland-system-1m
     name: 'Roland System 1m'
     minPriceUsd: 0
-    maxPriceUsd: 300
+    maxPriceUsd: 350
     marketplaces: ['reverb', 'ebay']
     includeTerms:
       - 'roland system-1m'
