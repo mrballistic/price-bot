@@ -1,11 +1,34 @@
 {
   "version": 1,
-  "updatedAt": "2026-02-07T23:28:25.865Z",
+  "updatedAt": "2026-02-23T18:39:36.897Z",
   "seen": {
     "ebay": {
-      "roland-s-1": {}
+      "roland-s-1": {},
+      "elektron-analog-heat-plus-fx": {
+        "v1|406710669357|0": {
+          "firstSeenAt": "2026-02-20T15:30:38.594Z",
+          "lastSeenAt": "2026-02-20T21:55:21.838Z",
+          "lastEffectivePrice": 850,
+          "url": "https://www.ebay.com/itm/406710669357?_skw=elektron+analog+heat+%2Bfx&hash=item5eb1d8502d:g:izYAAeSwnxppmHvj",
+          "title": "Elektron Analog Heat +FX Dynamic Sound Processor",
+          "missedRuns": 3,
+          "soldAt": "2026-02-20T23:28:43.908Z"
+        }
+      }
     },
-    "reverb": {},
+    "reverb": {
+      "elektron-analog-heat-plus-fx": {
+        "94579468": {
+          "firstSeenAt": "2026-02-20T20:29:16.407Z",
+          "lastSeenAt": "2026-02-21T04:49:03.982Z",
+          "lastEffectivePrice": 840,
+          "url": "https://reverb.com/item/94579468-elektron-analog-heat-fx-2023-present-black",
+          "title": "Elektron Analog Heat +FX 2023 - Present - Black",
+          "missedRuns": 3,
+          "soldAt": "2026-02-21T06:30:31.885Z"
+        }
+      }
+    },
     "amazon": {}
   }
 }
