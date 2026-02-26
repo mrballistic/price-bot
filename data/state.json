@@ -1,23 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-02-26T06:09:33.925Z",
+  "updatedAt": "2026-02-26T06:37:37.007Z",
   "seen": {
     "ebay": {
       "roland-s-1": {},
       "elektron-analog-heat-plus-fx": {}
     },
     "reverb": {
-      "elektron-analog-heat-plus-fx": {
-        "94579468": {
-          "firstSeenAt": "2026-02-20T20:29:16.407Z",
-          "lastSeenAt": "2026-02-21T04:49:03.982Z",
-          "lastEffectivePrice": 840,
-          "url": "https://reverb.com/item/94579468-elektron-analog-heat-fx-2023-present-black",
-          "title": "Elektron Analog Heat +FX 2023 - Present - Black",
-          "missedRuns": 3,
-          "soldAt": "2026-02-21T06:30:31.885Z"
-        }
-      }
+      "elektron-analog-heat-plus-fx": {}
     },
     "amazon": {}
   }
