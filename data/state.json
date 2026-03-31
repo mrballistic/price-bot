@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-31T13:15:24.213Z",
+  "updatedAt": "2026-03-31T13:59:28.531Z",
   "seen": {
     "ebay": {
       "roland-s-1": {},
@@ -15,7 +15,7 @@
           "lastEffectivePrice": 1300,
           "url": "https://reverb.com/item/95553308-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
           "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
-          "missedRuns": 0
+          "missedRuns": 1
         }
       }
     },
