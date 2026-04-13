@@ -295664,5 +295664,90 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-04-13T19:18:21.292Z",
+    "durationMs": 31427,
+    "scanned": 126,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 3,
+          "minPrice": 1499,
+          "maxPrice": 1850,
+          "avgPrice": 1716.33,
+          "medianPrice": 1800,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1499,
+              "url": "https://reverb.com/item/95823952-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2026-04-09T13:56:55-05:00"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1800,
+              "url": "https://reverb.com/item/95793384-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2026-04-08T21:28:04-05:00"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1850,
+              "url": "https://reverb.com/item/93245757-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2025-11-22T18:09:22-06:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1",
+        "productName": "Roland System-1",
+        "thresholdUsd": 250,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 1,
+          "minPrice": 529,
+          "maxPrice": 529,
+          "avgPrice": 529,
+          "medianPrice": 529,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-1 25-Key Plug-Out Synthesizer",
+              "price": 529,
+              "url": "https://reverb.com/item/61046423-roland-system-1-25-key-plug-out-synthesizer",
+              "source": "reverb",
+              "listedAt": "2022-09-21T12:31:55-05:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1m",
+        "productName": "Roland System 1m",
+        "thresholdUsd": 350,
+        "scanned": 26,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      }
+    ]
   }
 ]
