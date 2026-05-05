@@ -359527,5 +359527,83 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-05-05T21:39:51.122Z",
+    "durationMs": 30049,
+    "scanned": 125,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 1,
+          "minPrice": 1499,
+          "maxPrice": 1499,
+          "avgPrice": 1499,
+          "medianPrice": 1499,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1499,
+              "url": "https://reverb.com/item/95823952-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2026-04-09T19:56:55+01:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1",
+        "productName": "Roland System-1",
+        "thresholdUsd": 250,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 2,
+          "minPrice": 529,
+          "maxPrice": 1600,
+          "avgPrice": 1064.5,
+          "medianPrice": 1064.5,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-1 25-Key Plug-Out Synthesizer",
+              "price": 529,
+              "url": "https://reverb.com/item/61046423-roland-system-1-25-key-plug-out-synthesizer",
+              "source": "reverb",
+              "listedAt": "2022-09-21T12:31:55-05:00"
+            },
+            {
+              "title": "Roland SYSTEM-1 Synthesizer",
+              "price": 1600,
+              "url": "https://reverb.com/item/96499569-roland-system-1-synthesizer",
+              "source": "reverb",
+              "listedAt": "2026-04-28T17:02:13-05:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1m",
+        "productName": "Roland System 1m",
+        "thresholdUsd": 350,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      }
+    ]
   }
 ]
