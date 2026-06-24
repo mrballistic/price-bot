@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:15:41.667Z",
+  "updatedAt": "2026-06-24T16:05:46.129Z",
   "seen": {
     "ebay": {
       "roland-s-1": {},
@@ -8,7 +8,16 @@
     },
     "reverb": {
       "elektron-analog-heat-plus-fx": {},
-      "roland-system-8": {}
+      "roland-system-8": {
+        "98657055": {
+          "firstSeenAt": "2026-06-24T16:05:46.129Z",
+          "lastSeenAt": "2026-06-24T16:05:46.129Z",
+          "lastEffectivePrice": 1388,
+          "url": "https://reverb.com/item/98657055-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+          "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+          "missedRuns": 0
+        }
+      }
     },
     "amazon": {}
   }
