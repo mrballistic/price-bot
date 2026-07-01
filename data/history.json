@@ -476551,5 +476551,130 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-07-01T23:48:32.370Z",
+    "durationMs": 29416,
+    "scanned": 125,
+    "matches": 1,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [
+          {
+            "productId": "roland-system-8",
+            "productName": "Roland System-8",
+            "maxPriceUsd": 1400,
+            "listing": {
+              "source": "reverb",
+              "sourceId": "98657055",
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "url": "https://reverb.com/item/98657055-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "price": {
+                "amount": 1388,
+                "currency": "USD"
+              },
+              "shipping": {
+                "amount": 0,
+                "currency": "USD",
+                "known": false
+              },
+              "imageUrl": "https://rvb-img.reverb.com/i/s--IXjkg67m--/quality=medium-low,height=800,width=800,fit=contain/b2fd48bb-c98a-4d80-b729-f5c78b78a2e8.jpeg",
+              "condition": "[object Object]",
+              "listedAt": "2026-06-24T10:36:56-05:00"
+            },
+            "effectivePriceUsd": 1388,
+            "shippingNote": "Shipping unknown (verify on listing)"
+          }
+        ],
+        "marketStats": {
+          "count": 3,
+          "minPrice": 1388,
+          "maxPrice": 2159.99,
+          "avgPrice": 1715.66,
+          "medianPrice": 1599,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1388,
+              "url": "https://reverb.com/item/98657055-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2026-06-24T10:36:56-05:00"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 1599,
+              "url": "https://reverb.com/item/98604860-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2026-06-23T14:54:29-05:00"
+            },
+            {
+              "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer 2016 - Present - Black",
+              "price": 2159.99,
+              "url": "https://reverb.com/item/98038395-roland-system-8-49-key-plug-out-synthesizer-2016-present-black",
+              "source": "reverb",
+              "listedAt": "2026-06-09T16:05:35-05:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1",
+        "productName": "Roland System-1",
+        "thresholdUsd": 250,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 3,
+          "minPrice": 325,
+          "maxPrice": 1189,
+          "avgPrice": 681,
+          "medianPrice": 529,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-1 25-Key Plug-Out Synthesizer 2014 - Present Black",
+              "price": 325,
+              "url": "https://reverb.com/item/98289069-roland-system-1-25-key-plug-out-synthesizer-2014-present-black",
+              "source": "reverb",
+              "listedAt": "2026-06-16T18:47:52+01:00"
+            },
+            {
+              "title": "Roland SYSTEM-1 25-Key Plug-Out Synthesizer",
+              "price": 529,
+              "url": "https://reverb.com/item/61046423-roland-system-1-25-key-plug-out-synthesizer",
+              "source": "reverb",
+              "listedAt": "2022-09-21T18:31:55+01:00"
+            },
+            {
+              "title": "Roland SYSTEM-1 Synthesizer",
+              "price": 1189,
+              "url": "https://reverb.com/item/96499569-roland-system-1-synthesizer",
+              "source": "reverb",
+              "listedAt": "2026-04-28T23:02:13+01:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1m",
+        "productName": "Roland System 1m",
+        "thresholdUsd": 350,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      }
+    ]
   }
 ]
