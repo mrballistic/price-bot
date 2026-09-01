@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-01T04:18:50.021Z",
+  "updatedAt": "2026-09-01T04:48:49.365Z",
   "seen": {
     "ebay": {
       "roland-s-1": {},
@@ -11,7 +11,7 @@
       "roland-system-8": {
         "101275139": {
           "firstSeenAt": "2026-09-01T00:19:17.249Z",
-          "lastSeenAt": "2026-09-01T04:18:50.021Z",
+          "lastSeenAt": "2026-09-01T04:48:49.365Z",
           "lastEffectivePrice": 1299,
           "url": "https://reverb.com/item/101275139-roland-system-8-49-key-plug-out-synthesizer-los-angeles",
           "title": "Roland SYSTEM-8 49-Key Plug-Out Synthesizer (Los Angeles)",
@@ -34,7 +34,8 @@
           "lastEffectivePrice": 170,
           "url": "https://reverb.com/item/101282863-roland-system-1-25-key-plug-out-synthesizer-2014-present-black",
           "title": "Roland SYSTEM-1 25-Key Plug-Out Synthesizer 2014 - Present - Black",
-          "missedRuns": 2
+          "missedRuns": 3,
+          "soldAt": "2026-09-01T04:48:49.365Z"
         }
       }
     },
