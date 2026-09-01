@@ -553848,5 +553848,71 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-09-01T02:19:21.974Z",
+    "durationMs": 53225,
+    "scanned": 75,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [
+      {
+        "marketplace": "reverb",
+        "productId": "roland-system-8",
+        "message": "Reverb search error: 500 {}"
+      },
+      {
+        "marketplace": "reverb",
+        "productId": "roland-system-1",
+        "message": "Reverb search error: 500 {}"
+      }
+    ],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      },
+      {
+        "productId": "roland-system-1",
+        "productName": "Roland System-1",
+        "thresholdUsd": 250,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      },
+      {
+        "productId": "roland-system-1m",
+        "productName": "Roland System 1m",
+        "thresholdUsd": 350,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      }
+    ]
   }
 ]
