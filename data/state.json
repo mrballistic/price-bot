@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-06T00:15:37.569Z",
+  "updatedAt": "2026-09-06T04:49:55.348Z",
   "seen": {
     "ebay": {
       "roland-s-1": {},
@@ -19,17 +19,7 @@
           "soldAt": "2026-09-03T05:12:38.915Z"
         }
       },
-      "roland-system-1": {
-        "101282863": {
-          "firstSeenAt": "2026-09-01T03:18:46.687Z",
-          "lastSeenAt": "2026-09-01T03:18:46.687Z",
-          "lastEffectivePrice": 170,
-          "url": "https://reverb.com/item/101282863-roland-system-1-25-key-plug-out-synthesizer-2014-present-black",
-          "title": "Roland SYSTEM-1 25-Key Plug-Out Synthesizer 2014 - Present - Black",
-          "missedRuns": 3,
-          "soldAt": "2026-09-01T04:48:49.365Z"
-        }
-      }
+      "roland-system-1": {}
     },
     "amazon": {}
   }
