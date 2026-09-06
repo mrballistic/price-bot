@@ -560521,5 +560521,68 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-09-06T13:12:21.472Z",
+    "durationMs": 32357,
+    "scanned": 125,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 1,
+          "minPrice": 1499,
+          "maxPrice": 1499,
+          "avgPrice": 1499,
+          "medianPrice": 1499,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-8 Plug-Out 49-Key Synthesizer",
+              "price": 1499,
+              "url": "https://reverb.com/item/101460116-roland-system-8-plug-out-49-key-synthesizer",
+              "source": "reverb",
+              "listedAt": "2026-09-05T12:47:32-05:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1",
+        "productName": "Roland System-1",
+        "thresholdUsd": 250,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      },
+      {
+        "productId": "roland-system-1m",
+        "productName": "Roland System 1m",
+        "thresholdUsd": 350,
+        "scanned": 25,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      }
+    ]
   }
 ]
