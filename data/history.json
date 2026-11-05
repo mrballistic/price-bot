@@ -588502,5 +588502,68 @@
         }
       }
     ]
+  },
+  {
+    "runAt": "2026-11-05T02:36:20.537Z",
+    "durationMs": 34219,
+    "scanned": 150,
+    "matches": 0,
+    "alerts": 0,
+    "errors": [],
+    "byProduct": [
+      {
+        "productId": "roland-system-8",
+        "productName": "Roland System-8",
+        "thresholdUsd": 1400,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      },
+      {
+        "productId": "roland-system-1",
+        "productName": "Roland System-1",
+        "thresholdUsd": 250,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 1,
+          "minPrice": 425,
+          "maxPrice": 425,
+          "avgPrice": 425,
+          "medianPrice": 425,
+          "samples": [
+            {
+              "title": "Roland SYSTEM-1 25-Key Plug-Out Synthesizer w/ OEM PSU, Box, USB",
+              "price": 425,
+              "url": "https://reverb.com/item/103249833-roland-system-1-25-key-plug-out-synthesizer-w-oem-psu-box-usb",
+              "source": "reverb",
+              "listedAt": "2026-10-23T13:44:30-04:00"
+            }
+          ]
+        }
+      },
+      {
+        "productId": "roland-system-1m",
+        "productName": "Roland System 1m",
+        "thresholdUsd": 350,
+        "scanned": 50,
+        "matches": [],
+        "marketStats": {
+          "count": 0,
+          "minPrice": null,
+          "maxPrice": null,
+          "avgPrice": null,
+          "medianPrice": null,
+          "samples": []
+        }
+      }
+    ]
   }
 ]
